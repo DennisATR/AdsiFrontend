@@ -8,7 +8,7 @@ describe('EncabezadoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EncabezadoComponent]
+      declarations: [ EncabezadoComponent ]
     })
     .compileComponents();
 
