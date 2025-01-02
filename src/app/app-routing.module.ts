@@ -15,6 +15,14 @@ const routes: Routes = [
         redirectTo: '/inicio'
     },
     {
+        path: 'parametros',
+        loadChildren: () => import("./modulos/parametros/parametros.module").then(m => m.ParametrosModule)
+    },
+    {
+        path: 'reportes',
+        loadChildren: () => import("./modulos/reportes/reportes.module").then(m => m.ReportesModule)
+    },
+    {
         path:"seguridad",
         loadChildren: () => import("./modulos/seguridad/seguridad.module").then(m => m.SeguridadModule)
       },
