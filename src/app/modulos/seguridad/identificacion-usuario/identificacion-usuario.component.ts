@@ -5,6 +5,7 @@ import { UsuarioModel } from '../../../modelos/usuario.model';
 import { SeguridadService } from '../../../servicios/seguridad.service';
 import { MD5 } from 'crypto-js';
 import { Router } from '@angular/router';
+import { UsuarioValidadoModel } from '../../../modelos/usuario.validado.model';
 
 @Component({
   selector: 'app-identificacion-usuario',
@@ -42,10 +43,14 @@ export class IdentificacionUsuarioComponent {
       let claveCifrada = MD5(clave).toString();
       this.servicioSeguridad.IdentificarUsuario(usuario, claveCifrada).subscribe({
         next: (datos: UsuarioModel) => {
-          if (datos.id == undefined || datos.id == null) {
-            alert("Credenciales incorrectas o falta la validación del correo electrónico.");
-          } else {
-            console.log(datos);
+          if (datos && datos.id) {
+            if (this.servicioSeguridad.AlmacenarDatosUsuarioIdentificado(datos)) {
+              console.log(datos);
+              this.servicioSeguridad.AlmacenarDatosUsuarioValidado({user: datos,});
+              this.router.navigate(['/inicio']);
+            }
+          }else{
+            alert("Usuario o clave incorrectos");
           }
         },
         error: (err) => {
@@ -54,6 +59,7 @@ export class IdentificacionUsuarioComponent {
       });
     }
   }
+
 
   get obtenerFormGroup() {
     return this.fGroup.controls;

@@ -2,9 +2,12 @@
     <div class="nav-wrapper">
       <a routerLink="/inicio" class="brand-logo">ADSI</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a routerLink="/seguridad/identificar-usuario">Inicio Sesion</a></li>
-        <li><a routerLink="/seguridad/recuperar-clave">Recuperar Clave</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li>
+        <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesion</a></li>
+        <li><a *ngIf="sesionActiva"  routerLink="/seguridad/recuperar-clave">Recuperar Clave</a></li>
+        <li><a *ngIf="sesionActiva"  routerLink="/seguridad/cerrar-sesion">Cerrar Sesion</a></li>
       </ul>
     </div>
   </nav>
+  <div  *ngIf="sesionActiva">
+    <app-menu-lateral> </app-menu-lateral>
+  </div>
