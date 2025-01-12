@@ -1,1 +1,63 @@
-<p>cambio-clave works!</p>
+<div id="login-page" class="row small-box">
+    <div class="col s12 z-depth-6 card-panel">
+      <form [formGroup]="fGroup" class="login-form">
+        <div class="row">
+          <div class="info-box col s12 mb-4">
+            <h2>Cambiar Clave</h2>
+            <p>Por favor ingrese los datos para cambiar la clave</p>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">mail_outline</i>
+            <input
+              formControlName="correo"
+              #correo
+              (keydown.enter)="focusNext(correo, claveActual)"
+              type="email"
+              placeholder="Correo"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input
+              formControlName="claveActual"
+              #claveActual
+              (keydown.enter)="focusNext(claveActual, claveNueva)"
+              type="password"
+              placeholder="Clave Actual"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input
+              formControlName="claveNueva"
+              #claveNueva
+              (keydown.enter)="submitOrFocusNext(claveNueva)"
+              type="password"
+              placeholder="Clave Nueva"
+            />
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="input-field col s12">
+            <button
+              type="button"
+              (click)="CambiarClave()"
+              class="btn waves-effect waves-light col s12 black-button"
+            >
+              Cambiar Clave
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>  

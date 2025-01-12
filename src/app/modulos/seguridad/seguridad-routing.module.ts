@@ -4,6 +4,7 @@ import { IdentificacionUsuarioComponent } from './identificacion-usuario/identif
 import { CambioClaveComponent } from './cambio-clave/cambio-clave.component';
 import { RecuperarClaveComponent } from './recuperar-clave/recuperar-clave.component';
 import { CerrarSesionComponent } from './cerrar-sesion/cerrar-sesion.component';
+import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.component'; 
 
 const routes: Routes = [
   {
@@ -11,7 +12,7 @@ const routes: Routes = [
     component: IdentificacionUsuarioComponent,
   },
   {
-    path: 'cambiar-clave',
+    path: 'cambio-clave',
     component: CambioClaveComponent,
   },
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'cerrar-sesion',
     component:CerrarSesionComponent,
+  },
+  {
+    path: 'usuario/crear-usuario',
+    component: CrearUsuarioComponent,
   }
 ];
 

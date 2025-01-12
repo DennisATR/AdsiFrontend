@@ -5,7 +5,6 @@ import { UsuarioModel } from '../../../modelos/usuario.model';
 import { SeguridadService } from '../../../servicios/seguridad.service';
 import { MD5 } from 'crypto-js';
 import { Router } from '@angular/router';
-import { UsuarioValidadoModel } from '../../../modelos/usuario.validado.model';
 
 @Component({
   selector: 'app-identificacion-usuario',

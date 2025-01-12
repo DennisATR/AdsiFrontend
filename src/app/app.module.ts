@@ -7,6 +7,8 @@ import { InicioComponent } from './public/inicio/inicio.component';
 import { RutaNoEncontradaComponent } from './public/errores/ruta-no-encontrada/ruta-no-encontrada.component';
 import { MenuLateralComponent } from './public/pagina-maestra/menu-lateral/menu-lateral.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

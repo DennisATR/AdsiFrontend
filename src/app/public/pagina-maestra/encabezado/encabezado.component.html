@@ -3,7 +3,7 @@
       <a routerLink="/inicio" class="brand-logo">ADSI</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesion</a></li>
-        <li><a *ngIf="sesionActiva"  routerLink="/seguridad/recuperar-clave">Recuperar Clave</a></li>
+        <li><a *ngIf="sesionActiva"  routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
         <li><a *ngIf="sesionActiva"  routerLink="/seguridad/cerrar-sesion">Cerrar Sesion</a></li>
       </ul>
     </div>

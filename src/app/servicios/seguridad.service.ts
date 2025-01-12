@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UsuarioModel } from '../modelos/usuario.model';
 import { ConfiguracionRutasBackend } from '../config/configuracion.rutas.backend';
 import { UsuarioValidadoModel } from '../modelos/usuario.validado.model';
-import { ItemMenuModel } from '../modelos/items.menu.model';
+import { cambiarClavemodel } from '../modelos/cambiarClave.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,7 @@ export class SeguridadService {
       clave: clave
     });
   }
+
 
   RecuperarClavePorUsuario(usuario: string): Observable<UsuarioModel> {
     return this.http.post<UsuarioModel>(`${this.urlBase}recuperar-clave`, {
@@ -102,4 +103,21 @@ export class SeguridadService {
     localStorage.removeItem("menu-lateral");
     this.ActualizarComportamientoUsuario(new UsuarioValidadoModel());
   }
+
+  RegistrarUsuario(datos: any): Observable<UsuarioModel> {
+    return this.http.post<UsuarioModel>(`${this.urlBase}empleado`, datos);
+  }
+
+  CambiarClave(datos: any): Observable<cambiarClavemodel> {
+    return this.http.patch<cambiarClavemodel>(
+      `${this.urlBase}cambiar-clave`,
+      datos
+    );
+  }
+
+  // Método para obtener todos los usuarios
+  obtenerUsuarios(): Observable<UsuarioModel[]> {
+    return this.http.get<UsuarioModel[]>(`${this.urlBase}empleado`);
+  }
+
 }
