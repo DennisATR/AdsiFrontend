@@ -1,46 +1,105 @@
 <div class="card-container">
-    <div class="title">
-      <h5>Gestión de Usuarios</h5>
+  <div class="title">
+    <h5>Gestión de Usuarios</h5>
+  </div>
+  <form [formGroup]="fGroup" class="col s12">
+    <div class="row">
+      <div class="input col s4">
+        <input formControlName="Nombre" 
+               id="Nombre"  
+               #nombre
+               (keydown.enter)="focusNext(nombre, apellido)"
+               type="text" class="validate" />
+        <label for="Nombre">Nombre</label>
+        <div *ngIf="ObtenerFormGroup['Nombre'].invalid && ObtenerFormGroup['Nombre'].touched" class="error-message">
+          <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
+        </div>
+      </div>
+      <div class="input col s4">
+        <input formControlName="Apellido" 
+               id="Apellido" 
+               #apellido
+               (keydown.enter)="focusNext(apellido, rol)"
+               type="text" 
+               class="validate" />
+        <label for="Apellido">Apellido</label>
+        <div *ngIf="ObtenerFormGroup['Apellido'].invalid && ObtenerFormGroup['Apellido'].touched" class="error-message">
+          <small>El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
+        </div>
+      </div>
+      <div class="input col s4">
+        <input formControlName="Rol" 
+               id="Rol" 
+               list="roles" 
+               #rol
+               (keydown.enter)="onEnterRol(rol, correo)"
+               class="validate"/>
+        <label for="Rol">Rol</label>
+        <datalist id="roles">
+          <option value="1">Administrador</option>
+          <option value="2">Vendedor</option>
+          <option value="3">Bodeguero</option>
+        </datalist>
+        <div *ngIf="ObtenerFormGroup['Rol'].invalid && ObtenerFormGroup['Rol'].touched" class="error-message">
+          <small>El rol es obligatorio.</small>
+        </div>
+      </div>
     </div>
-      <form [formGroup]="fGroup" class="col s12">
-        <div class="row">
-          <div class="input-field col s3">
-            <input formControlName="Nombre" id="Nombre" type="text" class="validate" />
-            <label for="Nombre">Nombre</label>
-          </div>
-          <div class="input-field col s3">
-            <input formControlName="Apellido" id="Apellido" type="text" class="validate" />
-            <label for="Apellido">Apellido</label>
-          </div>
-          <div class="input-field col s3">
-            <input formControlName="Rol" id="Rol" type="text" class="validate" />
-            <label for="Rol">Rol</label>
-          </div>
+
+    <div class="row">
+      <div class="input col s6">
+        <input formControlName="Correo" 
+               id="Correo"
+               #correo
+               (keydown.enter)="focusNext(correo, contrasena)" 
+               type="email" 
+               class="validate" />
+        <label for="Correo">Correo</label>
+        <div *ngIf="ObtenerFormGroup['Correo'].invalid && ObtenerFormGroup['Correo'].touched" class="error-message">
+          <small>El correo es obligatorio y debe tener un formato válido.</small>
         </div>
-        <div class="row">
-          <div class="input-field col s8">
-            <input formControlName="correo" id="email" type="email" class="validate" />
-            <label for="email">Correo</label>
-          </div>
-          <div class="input-field col s4">
-            <input formControlName="telefono" id="telefono" type="text" class="validate" />
-            <label for="telefono">Teléfono Celular</label>
-          </div>
+      </div>
+
+
+      <div class="input col s3">
+        <input formControlName="Contraseña" 
+               id="Contraseña" 
+               #contrasena
+               (keydown.enter)="focusNext(contrasena, telefono)"
+               type="password" 
+               class="validate" />
+        <label for="Contraseña">Contraseña</label>
+        <div *ngIf="ObtenerFormGroup['Contraseña'].invalid && ObtenerFormGroup['Contraseña'].touched" class="error-message">
+          <small>La contraseña es obligatoria y debe tener al menos 3 caracteres.</small>
         </div>
-        <div class="row">
-          <div class="col s12">
-            <button
-              class="btn waves-effect waves-light"
-              type="button"
-              (click)="Registrarse()">
-                Guardar
-            </button>
-          </div>
-        </div>
-      </form>
+      </div>  
+      <div class="input col s3">
+        <input formControlName="Telefono" 
+               id="Telefono" 
+               #telefono
+               (keydown.enter)="submitOrFocusNext(telefono)"
+               type="text" 
+               class="validate" />
+        <label for="Telefono">Teléfono Celular</label>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <button class="btn waves-effect waves-light" 
+                type="button" 
+                (click)="Registrarse()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </form>
       <!-- Tabla de Usuarios -->
   <div class="table-container">
-    <h5>Lista de Usuarios</h5>
+    <div class="title">
+      <h5>Lista de Usuarios</h5>
+    </div>
     <table class="striped">
       <thead>
         <tr>
@@ -55,7 +114,7 @@
         <tr *ngFor="let usuario of usuarios">
           <td>{{ usuario.Nombre }}</td>
           <td>{{ usuario.Apellido }}</td>
-          <td>{{ usuario.RolId }}</td>
+          <td>{{ usuario.rolId }}</td>
           <td>{{ usuario.Correo }}</td>
           <td>{{ usuario.Telefono }}</td>
         </tr>

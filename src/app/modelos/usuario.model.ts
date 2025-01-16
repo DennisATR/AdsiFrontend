@@ -6,5 +6,5 @@ export class UsuarioModel{
     Apellido?: string;
     Clave?: string;
     Correo?: string;
-    RolId?: number;
+    rolId?: number;
 }

@@ -30,9 +30,10 @@ export class CrearUsuarioComponent {
     this.fGroup = this.fb.group({
       Nombre: ['', [Validators.required, Validators.minLength(2)]],
       Apellido: ['', [Validators.required, Validators.minLength(2)]],
-      Rol: ['', [Validators.required, Validators.minLength(2)]],
-      correo: ['', [Validators.required]],
-      telefono: ['', [Validators.required, Validators.minLength(12)]],
+      Rol: ['', [Validators.required, Validators.min(1), Validators.max(3)]],
+      Contraseña: ['', [Validators.required, Validators.minLength(3)]],    
+      Correo: ['', [Validators.required, Validators.email]],
+      Telefono: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
@@ -41,13 +42,23 @@ export class CrearUsuarioComponent {
    */
   Registrarse() {
     let campos = this.ObtenerFormGroup;
+    // mapear los valores del rol
+    if (campos["Rol"].value === 'Administrador') {
+      campos["Rol"].setValue(Number(1));
+    } else if (campos["Rol"].value === 'Vendedor') {
+      campos["Rol"].setValue(Number(2));
+    }
+    else if (campos["Rol"].value === 'Bodeguero') {
+      campos["Rol"].setValue(Number(3));
+    }
+
     let datos = {
-      primerNombre: campos["primerNombre"].value,
-      segundoNombre: campos["segundoNombre"].value,
-      primerApellido: campos["primerApellido"].value,
-      segundoApellido: campos["segundoApellido"].value,
-      correo: campos["correo"].value,
-      celular: campos["telefono"].value
+      Nombre: campos["Nombre"].value,
+      Telefono: campos["Telefono"].value,
+      Apellido: campos["Apellido"].value,
+      Clave: campos["Contraseña"].value,
+      Correo: campos["Correo"].value,
+      rolId: campos["Rol"].value,
     }
     this.servicioSeguridad.RegistrarUsuario(datos).subscribe({
       next: (respuesta:UsuarioModel) => {
@@ -76,4 +87,72 @@ export class CrearUsuarioComponent {
     return this.fGroup.controls;
   }
 
+  onEnterRol(rolInput: HTMLInputElement, nextField?: HTMLElement): void {
+    const rolValue = rolInput.value.trim();
+    let rolName = '';
+  
+    // Mapeo de valores numéricos a los nombres de los roles
+    switch (rolValue) {
+      case '1':
+        rolName = 'Administrador';
+        break;
+      case '2':
+        rolName = 'Vendedor';
+        break;
+      case '3':
+        rolName = 'Bodeguero';
+        break;
+      default:
+        rolName = ''; // Si no coincide, se deja vacío o se puede asignar un valor por defecto
+        break;
+    }
+  
+    // Actualizar el campo con el nombre del rol
+    rolInput.value = rolName;
+  
+    if (this.fGroup.get(rolInput.id)?.valid) {
+      rolInput.blur(); // Quita el foco actual
+      if (nextField) {
+        nextField.focus(); // Mueve el foco al siguiente campo
+      }
+    } else {
+      // Si el campo no es válido, mantenemos el foco en el campo actual
+      rolInput.focus();
+      this.fGroup.get(rolInput.id)?.markAsTouched();
+    }
+  }
+  
+  focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
+    // Verificamos si el campo actual es válido antes de mover el foco
+    if (this.fGroup.get(currentField.id)?.valid) {
+      currentField.blur(); // Quita el foco actual
+      if (nextField) {
+        nextField.focus(); // Mueve el foco al siguiente campo
+      }
+    } else {
+      // Si el campo no es válido, mantenemos el foco en el campo actual
+      currentField.focus();
+      this.fGroup.get(currentField.id)?.markAsTouched();
+    }
+  }
+  
+  submitOrFocusNext(currentField: HTMLElement) {
+    currentField.blur();
+    if (this.fGroup.valid) {
+      this.Registrarse();
+    } else {
+      // Si el formulario no es válido, mantener el foco en el campo que tiene el error
+      for (const controlName in this.fGroup.controls) {
+        const control = this.fGroup.get(controlName);
+        if (control && control.invalid) {
+          const invalidField = document.getElementById(controlName);
+          if (invalidField) {
+            invalidField.focus();
+          }
+          break; // Solo nos movemos al primer campo inválido
+        }
+      }
+    }
+  }
 }
+  

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioModel } from '../modelos/usuario.model';
 import { ConfiguracionRutasBackend } from '../config/configuracion.rutas.backend';
@@ -103,11 +103,34 @@ export class SeguridadService {
     localStorage.removeItem("menu-lateral");
     this.ActualizarComportamientoUsuario(new UsuarioValidadoModel());
   }
-
+  
   RegistrarUsuario(datos: any): Observable<UsuarioModel> {
-    return this.http.post<UsuarioModel>(`${this.urlBase}empleado`, datos);
+    console.log(datos);
+    
+    return this.http.post<UsuarioModel>(`${this.urlBase}empleado`, {
+        Nombre: datos.Nombre,
+        Telefono: datos.Telefono,
+        FechaReg: new Date().toISOString(),
+        Apellido: datos.Apellido,
+        Clave: datos.Clave,
+        Correo: datos.Correo,
+        rolId: 1
+      })
+      .pipe(
+        catchError(error => {
+          // Mostrar detalles del error en consola
+          console.error('Error al registrar usuario:', error);
+          
+          // Mostrar el error específico desde la respuesta del servidor
+          if (error.error) {
+            console.error('Detalles del error:', error.error);
+          }
+          
+          return throwError(() => new Error('Hubo un error al registrar el usuario.'));
+        })
+      );
   }
-
+  
   CambiarClave(datos: any): Observable<cambiarClavemodel> {
     return this.http.patch<cambiarClavemodel>(
       `${this.urlBase}cambiar-clave`,
