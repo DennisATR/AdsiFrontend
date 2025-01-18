@@ -1,1 +1,161 @@
-<p>crear-zapato works!</p>
+<div class="card-container">
+    <div class="title">
+      <h5>Gestión de Zapatos</h5>
+    </div>
+    <form [formGroup]="fGroup" class="col s12">
+      <div class="row">
+        <div class="input col s6">
+          <input formControlName="Descripcion" 
+                 id="Descripcion"  
+                 #descripcion
+                 (keydown.enter)="focusNext(descripcion, categoria)"
+                 type="text" class="validate" />
+          <label for="Descripcion">Descripción</label>
+          <div *ngIf="ObtenerFormGroup['Descripcion'].invalid && ObtenerFormGroup['Descripcion'].touched" class="error-message">
+            <small>La descripción es obligatoria.</small>
+          </div>
+        </div>
+        <div class="input col s4">
+          <input formControlName="Categoria" 
+                 id="Categoria" 
+                 #categoria
+                 (keydown.enter)="focusNext(categoria, talla)"
+                 type="text" 
+                 class="validate" />
+          <label for="Categoria">Categoría</label>
+          <div *ngIf="ObtenerFormGroup['Categoria'].invalid && ObtenerFormGroup['Categoria'].touched" class="error-message">
+            <small>La categoría es obligatoria.</small>
+          </div>
+        </div>
+        <div class="input col s2">
+          <input formControlName="Talla" 
+                 id="Talla" 
+                 #talla
+                 (keydown.enter)="focusNext(talla, color)"
+                 type="number" 
+                 class="validate"/>
+          <label for="Talla">Talla</label>
+          <div *ngIf="ObtenerFormGroup['Talla'].invalid && ObtenerFormGroup['Talla'].touched" class="error-message">
+            <small>La talla es obligatoria y debe ser un número.</small>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="input col s3">
+          <input formControlName="Color" 
+                 id="Color"
+                 #color
+                 (keydown.enter)="focusNext(color, ganancia)" 
+                 type="text" 
+                 class="validate" />
+          <label for="Color">Color</label>
+          <div *ngIf="ObtenerFormGroup['Color'].invalid && ObtenerFormGroup['Color'].touched" class="error-message">
+            <small>El color es obligatorio.</small>
+          </div>
+        </div>
+  
+        <div class="input col s3">
+          <input formControlName="proveedorId" 
+                 id="proveedorId" 
+                 #ganancia
+                 (keydown.enter)="focusNext(ganancia, precioCosto)"
+                 type="number" 
+                 class="validate" />
+          <label for="proveedorId">Proveedor</label>
+          <div *ngIf="ObtenerFormGroup['proveedorId'].invalid && ObtenerFormGroup['proveedorId'].touched" class="error-message">
+            <small>El proveedor es obligatoria.</small>
+          </div>
+        </div>  
+        <div class="input col s4">
+          <input formControlName="PrecioCosto" 
+                 id="PrecioCosto" 
+                 #precioCosto
+                 (keydown.enter)="focusNext(precioCosto, precioVentaMax)"
+                 type="number" 
+                 class="validate" />
+          <label for="PrecioCosto">Referencia</label>
+          <div *ngIf="ObtenerFormGroup['PrecioCosto'].invalid && ObtenerFormGroup['PrecioCosto'].touched" class="error-message">
+            <small>El precio de costo es obligatorio y debe ser un número válido.</small>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="input col s4">
+          <input formControlName="PrecioVentaMax" 
+                 id="PrecioVentaMax"
+                 #precioVentaMax
+                 (keydown.enter)="focusNext(precioVentaMax, precioVentaMin)"
+                 type="number" 
+                 class="validate" />
+          <label for="PrecioVentaMax">Precio de Venta Máx.</label>
+        </div>
+        <div class="input col s4">
+          <input formControlName="PrecioVentaMin" 
+                 id="PrecioVentaMin" 
+                 #precioVentaMin
+                 (keydown.enter)="focusNext(precioVentaMin, cantidad)"
+                 type="number" 
+                 class="validate" />
+          <label for="PrecioVentaMin">Precio de Venta Mín.</label>
+        </div>
+        <div class="input col s4">
+          <input formControlName="Cantidad" 
+                 id="Cantidad" 
+                 #cantidad
+                 (keydown.enter)="submitOrFocusNext(cantidad)"
+                 type="number" 
+                 class="validate" />
+          <label for="Cantidad">Cantidad</label>
+          <div *ngIf="ObtenerFormGroup['Cantidad'].invalid && ObtenerFormGroup['Cantidad'].touched" class="error-message">
+            <small>La cantidad es obligatoria y debe ser un número.</small>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col s12">
+          <button class="btn waves-effect waves-light" 
+                  type="button" 
+                  (click)="RegistrarZapato()">
+            Guardar
+          </button>
+        </div>
+      </div>
+    </form>
+    
+    <!-- Tabla de Zapatos -->
+    <div class="table-container">
+      <div class="title">
+        <h5>Lista de Zapatos</h5>
+      </div>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Talla</th>
+            <th>Color</th>
+            <th>Precio Costo</th>
+            <th>Precio Venta Máx.</th>
+            <th>Precio Venta Mín.</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let zapato of zapatos">
+            <td>{{ zapato.Descripcion }}</td>
+            <td>{{ zapato.Categoria }}</td>
+            <td>{{ zapato.Talla }}</td>
+            <td>{{ zapato.Color }}</td>
+            <td>{{ zapato.PrecioCosto }}</td>
+            <td>{{ zapato.PrecioVentaMax }}</td>
+            <td>{{ zapato.PrecioVentaMin }}</td>
+            <td>{{ zapato.Cantidad }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

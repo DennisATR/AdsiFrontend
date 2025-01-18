@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .title {
+    text-align: left;
+    font-size: 40px;
+    margin: 20px;
+    font-family: 'calibri';
+    color: #24303c;
+  }
+
+  .card-container {
+    width: 90%; /* Ocupa el 90% del ancho de la página */
+    margin: 20px auto; /* Centra el contenedor horizontalmente */
+    padding: 20px;
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    border-radius: 10px; /* Esquinas redondeadas */
+  }
+  
+  
+  
+  .form-register {
+    width: 400px;
+    background: #24303c;
+    padding: 30px;
+    margin: auto;
+    margin-top: 100px;
+    border-radius: 4px;
+    font-family: 'calibri';
+    color: white;
+    box-shadow: 7px 13px 37px #000;
+  }
+  
+  .form-register h4 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .controls {
+    width: 100%;
+    background: #24303c;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    border: 1px solid #1f53c5;
+    font-family: 'calibri';
+    font-size: 18px;
+    color: white;
+  }
+  
+  .form-register p {
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+  }
+  
+  .form-register a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .form-register a:hover {
+    color: white;
+    text-decoration: underline;
+  }
+  
+  .form-register .botons {
+    width: 100%;
+    background: #1f53c5;
+    border: none;
+    padding: 12px;
+    color: white;
+    margin: 16px 0;
+    font-size: 16px;
+  }
+
+  .table-container {
+    margin-top: 20px;
+  }
+  
+  table.striped {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table.striped th, table.striped td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  table.striped th {
+    background-color: #f4f4f4;
+  }
+  
+  table.striped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .form-errors {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  small {
+    font-size: 12px;
+    color: red;
+  }
+  

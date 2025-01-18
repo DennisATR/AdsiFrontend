@@ -36,9 +36,9 @@
                class="validate"/>
         <label for="Rol">Rol</label>
         <datalist id="roles">
-          <option value="1">Administrador</option>
-          <option value="2">Vendedor</option>
-          <option value="3">Bodeguero</option>
+          <option value= 1>Administrador</option>
+          <option value= 2>Vendedor</option>
+          <option value= 3>Bodeguero</option>
         </datalist>
         <div *ngIf="ObtenerFormGroup['Rol'].invalid && ObtenerFormGroup['Rol'].touched" class="error-message">
           <small>El rol es obligatorio.</small>
@@ -95,31 +95,39 @@
       </div>
     </div>
   </form>
-      <!-- Tabla de Usuarios -->
-  <div class="table-container">
-    <div class="title">
-      <h5>Lista de Usuarios</h5>
-    </div>
-    <table class="striped">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Rol</th>
-          <th>Correo</th>
-          <th>Teléfono</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let usuario of usuarios">
-          <td>{{ usuario.Nombre }}</td>
-          <td>{{ usuario.Apellido }}</td>
-          <td>{{ usuario.rolId }}</td>
-          <td>{{ usuario.Correo }}</td>
-          <td>{{ usuario.Telefono }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    
+  <!-- Tabla de Usuarios -->
+    <div class="table-container">
+        <div class="title">
+          <h5>Lista de Usuarios</h5>
+          <div class="search-bar">
+            <input type="text" 
+                   placeholder="Buscar usuario..." 
+                   [(ngModel)]="searchQuery" 
+                   (input)="filtrarUsuarios()" 
+                   class="validate" />
+          </div>
+        </div>
+        <table class="striped">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Rol</th>
+              <th>Correo</th>
+              <th>Teléfono</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuariosFiltrados">
+              <td>{{ usuario.Nombre }}</td>
+              <td>{{ usuario.Apellido }}</td>
+              <td>{{ usuario.rolId }}</td>
+              <td>{{ usuario.Correo }}</td>
+              <td>{{ usuario.Telefono }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
 </div>
   

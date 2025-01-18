@@ -114,7 +114,7 @@ export class SeguridadService {
         Apellido: datos.Apellido,
         Clave: datos.Clave,
         Correo: datos.Correo,
-        rolId: 1
+        rolId: datos.rolId
       })
       .pipe(
         catchError(error => {

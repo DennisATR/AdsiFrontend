@@ -11,6 +11,8 @@ import { UsuarioModel } from '../../../../modelos/usuario.model';
 export class CrearUsuarioComponent {
   fGroup: FormGroup = new FormGroup({});
   usuarios: UsuarioModel[] = [];
+  usuariosFiltrados: UsuarioModel[] = [];
+  searchQuery: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -44,12 +46,12 @@ export class CrearUsuarioComponent {
     let campos = this.ObtenerFormGroup;
     // mapear los valores del rol
     if (campos["Rol"].value === 'Administrador') {
-      campos["Rol"].setValue(Number(1));
+      campos["Rol"].setValue(1);
     } else if (campos["Rol"].value === 'Vendedor') {
-      campos["Rol"].setValue(Number(2));
+      campos["Rol"].setValue(2);
     }
     else if (campos["Rol"].value === 'Bodeguero') {
-      campos["Rol"].setValue(Number(3));
+      campos["Rol"].setValue(3);
     }
 
     let datos = {
@@ -58,16 +60,23 @@ export class CrearUsuarioComponent {
       Apellido: campos["Apellido"].value,
       Clave: campos["Contraseña"].value,
       Correo: campos["Correo"].value,
-      rolId: campos["Rol"].value,
+      rolId: Number(campos["Rol"].value)
+    }
+      // Confirmar si rolId es efectivamente un número
+    if (typeof datos.rolId !== 'number' || isNaN(datos.rolId)) {
+    alert("El rol seleccionado no es válido.");
+    return;
     }
     this.servicioSeguridad.RegistrarUsuario(datos).subscribe({
       next: (respuesta:UsuarioModel) => {
         alert("Registro correcto, se ha enviado un mensaje para validar su dirección de correo electrónico.")
+        this.obtenerUsuarios(); // Actualiza la lista de usuarios después del registro
       },
       error: (err) => {
         alert("Se ha producido un error en el registro.")
       }
     });
+
   }
 
   obtenerUsuarios(): void {
@@ -75,12 +84,32 @@ export class CrearUsuarioComponent {
       next: (respuesta) => {
         console.log('Respuesta obtenida:', respuesta);
         this.usuarios=respuesta; // Asigna la respuesta al array de usuarios
+        this.usuariosFiltrados = [...this.usuarios]; // Inicializa los usuarios filtrados con todos los usuarios
       },
       error: (err) => {
         console.log(err);
       }
     });
   }
+
+    /**
+   * Filtrar usuarios según el texto ingresado
+   */
+    filtrarUsuarios(): void {
+      const query = this.searchQuery.toLowerCase();
+      if (!query) {
+        // Si no hay texto en el campo de búsqueda, mostrar todos los usuarios
+        this.usuariosFiltrados = [...this.usuarios];
+      } else {
+          this.usuariosFiltrados = this.usuarios.filter(usuario => 
+          (usuario.Nombre?.toLowerCase().includes(query) || '') ||
+          (usuario.Apellido?.toLowerCase().includes(query) || '') ||
+          (usuario.Correo?.toLowerCase().includes(query) || '') ||
+          String(usuario.Telefono).includes(query) ||
+          String(usuario.rolId).includes(query)
+          );
+      }
+    }
   
   
   get ObtenerFormGroup(){
