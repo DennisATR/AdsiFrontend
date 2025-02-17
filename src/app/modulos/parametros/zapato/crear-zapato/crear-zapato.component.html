@@ -4,6 +4,24 @@
     </div>
     <form [formGroup]="fGroup" class="col s12">
       <div class="row">
+        <div class="col s9">
+          <label>
+            <input type="checkbox" (change)="habilitarCodigoBarra($event)" />
+            <span>Habilitar Código de Barras</span>
+          </label>
+        </div>
+        <div class="input col s4">
+          <input formControlName="CodigoBarra" 
+                 id="CodigoBarra" 
+                 type="text" 
+                 class="validate" />
+          <label for="CodigoBarra">Código de Barra</label>
+          <div *ngIf="fGroup.get('CodigoBarra')?.invalid && fGroup.get('CodigoBarra')?.touched" class="error-message">
+            <small>El código de barra es obligatorio.</small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="input col s6">
           <input formControlName="Descripcion" 
                  id="Descripcion"  
@@ -129,27 +147,34 @@
     <div class="table-container">
       <div class="title">
         <h5>Lista de Zapatos</h5>
+      <div class="search-bar">
+        <input type="text" 
+               placeholder="Buscar zapato..." 
+               [(ngModel)]="searchQuery" 
+               (input)="filtrarZapato()" 
+               class="validate" />
+      </div>
       </div>
       <table class="striped">
         <thead>
           <tr>
+            <th>id</th>
             <th>Descripción</th>
             <th>Categoría</th>
             <th>Talla</th>
             <th>Color</th>
-            <th>Precio Costo</th>
             <th>Precio Venta Máx.</th>
             <th>Precio Venta Mín.</th>
             <th>Cantidad</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let zapato of zapatos">
+          <tr *ngFor="let zapato of zapatosFiltrados">
+            <td>{{ zapato.id }}</td>
             <td>{{ zapato.Descripcion }}</td>
             <td>{{ zapato.Categoria }}</td>
             <td>{{ zapato.Talla }}</td>
             <td>{{ zapato.Color }}</td>
-            <td>{{ zapato.PrecioCosto }}</td>
             <td>{{ zapato.PrecioVentaMax }}</td>
             <td>{{ zapato.PrecioVentaMin }}</td>
             <td>{{ zapato.Cantidad }}</td>

@@ -11,6 +11,8 @@ import { ZapatoModel } from '../../../../modelos/zapato.model';
 export class CrearZapatoComponent {
   fGroup: FormGroup = new FormGroup({});
   zapatos: ZapatoModel[] = [];
+  zapatosFiltrados: ZapatoModel[] = [];
+  searchQuery: string = '';
 
 
   constructor(
@@ -19,9 +21,12 @@ export class CrearZapatoComponent {
   ) {
   }
 
+  codigoBarraHabilitado: boolean = false;
+
   ngOnInit() {
     this.ConstruirFormulario();
     this.obtenerZapatos();
+    this.fGroup.get('CodigoBarra')?.disable(); // Deshabilitar inicialmente
   }
 
   get ObtenerFormGroup(){
@@ -33,6 +38,7 @@ export class CrearZapatoComponent {
    */
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
+      CodigoBarra: ['', Validators.required],
       Descripcion: ['', Validators.required],
       Categoria: ['', Validators.required],
       Talla: ['', Validators.required],
@@ -50,21 +56,24 @@ export class CrearZapatoComponent {
   RegistrarZapato() {
     let campos = this.ObtenerFormGroup;
     let datos = {
+      id: campos["CodigoBarra"].value,
       Descripcion: campos["Descripcion"].value,
       Categoria: campos["Categoria"].value,
       Talla: campos["Talla"].value,
       Color: campos["Color"].value,
-      Ganancia: campos["Gananacia"].value,
+      Ganancia: 0,
       PrecioCosto: campos["PrecioCosto"].value,
       PrecioVentaMax: campos["PrecioVentaMax"].value,
       PrecioVentaMin: campos["PrecioVentaMin"].value,
       Cantidad: campos["Cantidad"].value,
-      Fecha: campos["Fecha"].value,
+      Fecha: new Date().toISOString(),
       proveedorId: campos["proveedorId"].value,
     };
+    console.log(datos);
     this.servicioParametros.RegistrarZapato(datos).subscribe({
       next: (respuesta: ZapatoModel) => {
         alert("Zapato registrado correctamente");
+        this.obtenerZapatos();
       },
       error: (err) => {
         alert("Error al registrar el zapato");
@@ -76,12 +85,40 @@ export class CrearZapatoComponent {
     this.servicioParametros.ObtenerZapatos().subscribe({
       next: (respuesta: ZapatoModel[]) => {
         this.zapatos = respuesta;
+        this.zapatosFiltrados = [...this.zapatos]; // Inicializa los usuarios filtrados con todos los usuarios
+      
       },
       error: (err) => {
         alert("Error al obtener los zapatos");
       }
     });
   }
+
+  habilitarCodigoBarra(event: Event) {
+    this.codigoBarraHabilitado = (event.target as HTMLInputElement).checked;
+  
+    if (this.codigoBarraHabilitado) {
+      this.fGroup.get('CodigoBarra')?.enable();
+    } else {
+      this.fGroup.get('CodigoBarra')?.disable();
+    }
+  }
+
+  filtrarZapato(): void {
+    const query = this.searchQuery.toLowerCase();
+    if (!query) {
+      // Si no hay texto en el campo de búsqueda, mostrar todos los usuarios
+      this.zapatosFiltrados = [...this.zapatos];
+    } else {
+        this.zapatosFiltrados = this.zapatos.filter(zapato => 
+        (zapato.id?.toLowerCase().includes(query) || '') ||
+        (zapato.Descripcion?.toLowerCase().includes(query) || '') ||
+        (zapato.Categoria?.toLowerCase().includes(query) || '') ||
+        String(zapato.proveedorId).includes(query)
+        );
+    }
+  }
+  
 
   focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
     // Verificamos si el campo actual es válido antes de mover el foco

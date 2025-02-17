@@ -82,7 +82,6 @@ export class CrearUsuarioComponent {
   obtenerUsuarios(): void {
     this.servicioSeguridad.obtenerUsuarios().subscribe({
       next: (respuesta) => {
-        console.log('Respuesta obtenida:', respuesta);
         this.usuarios=respuesta; // Asigna la respuesta al array de usuarios
         this.usuariosFiltrados = [...this.usuarios]; // Inicializa los usuarios filtrados con todos los usuarios
       },
