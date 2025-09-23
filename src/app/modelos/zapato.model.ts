@@ -5,7 +5,7 @@ export class ZapatoModel{
     Talla?: number;
     Color?: string;
     Gananacia?: number;
-    PrecioCosto?: number;
+    Referencia?: string;
     PrecioVentaMax?: number;
     PrecioVentaMin?: number;
     Cantidad?: number;

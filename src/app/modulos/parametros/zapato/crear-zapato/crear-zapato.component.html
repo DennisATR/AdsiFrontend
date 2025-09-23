@@ -3,138 +3,184 @@
       <h5>Gestión de Zapatos</h5>
     </div>
     <form [formGroup]="fGroup" class="col s12">
-      <div class="row">
-        <div class="col s9">
-          <label>
-            <input type="checkbox" (change)="habilitarCodigoBarra($event)" />
-            <span>Habilitar Código de Barras</span>
-          </label>
-        </div>
-        <div class="input col s4">
-          <input formControlName="CodigoBarra" 
-                 id="CodigoBarra" 
-                 type="text" 
-                 class="validate" />
-          <label for="CodigoBarra">Código de Barra</label>
-          <div *ngIf="fGroup.get('CodigoBarra')?.invalid && fGroup.get('CodigoBarra')?.touched" class="error-message">
-            <small>El código de barra es obligatorio.</small>
+      <!-- Sección de Identificación -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s4">
+            <input formControlName="CodigoBarra" 
+                   id="CodigoBarra" 
+                   type="text" 
+                   class="validate" />
+            <label for="CodigoBarra">Código de Barra</label>
+            <div *ngIf="fGroup.get('CodigoBarra')?.invalid && fGroup.get('CodigoBarra')?.touched" class="error-message">
+              <small>El código de barra es obligatorio.</small>
+            </div>
+          </div>
+          <div class="col s8 checkbox-container">
+            <label class="checkbox-label">
+              <input type="checkbox" (change)="habilitarCodigoBarra($event)" />
+              <span>Habilitar Código de Barras</span>
+            </label>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="input col s6">
-          <input formControlName="Descripcion" 
-                 id="Descripcion"  
-                 #descripcion
-                 (keydown.enter)="focusNext(descripcion, categoria)"
-                 type="text" class="validate" />
-          <label for="Descripcion">Descripción</label>
-          <div *ngIf="ObtenerFormGroup['Descripcion'].invalid && ObtenerFormGroup['Descripcion'].touched" class="error-message">
-            <small>La descripción es obligatoria.</small>
+
+      <!-- Sección de Información Básica -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s6">
+            <input formControlName="Descripcion" 
+                   id="Descripcion"  
+                   #descripcion
+                   (keydown.enter)="focusNext(descripcion, categoria)"
+                   type="text" class="validate" />
+            <label for="Descripcion">Descripción</label>
+            <div *ngIf="ObtenerFormGroup['Descripcion'].invalid && ObtenerFormGroup['Descripcion'].touched" class="error-message">
+              <small>La descripción es obligatoria.</small>
+            </div>
           </div>
-        </div>
-        <div class="input col s4">
-          <input formControlName="Categoria" 
-                 id="Categoria" 
-                 #categoria
-                 (keydown.enter)="focusNext(categoria, talla)"
-                 type="text" 
-                 class="validate" />
-          <label for="Categoria">Categoría</label>
-          <div *ngIf="ObtenerFormGroup['Categoria'].invalid && ObtenerFormGroup['Categoria'].touched" class="error-message">
-            <small>La categoría es obligatoria.</small>
-          </div>
-        </div>
-        <div class="input col s2">
-          <input formControlName="Talla" 
-                 id="Talla" 
-                 #talla
-                 (keydown.enter)="focusNext(talla, color)"
-                 type="number" 
-                 class="validate"/>
-          <label for="Talla">Talla</label>
-          <div *ngIf="ObtenerFormGroup['Talla'].invalid && ObtenerFormGroup['Talla'].touched" class="error-message">
-            <small>La talla es obligatoria y debe ser un número.</small>
+          <div class="input col s6">
+            <input formControlName="Categoria" 
+                   id="Categoria" 
+                   #categoria
+                   (keydown.enter)="focusNext(categoria, talla)"
+                   type="text" 
+                   class="validate" />
+            <label for="Categoria">Categoría</label>
+            <div *ngIf="ObtenerFormGroup['Categoria'].invalid && ObtenerFormGroup['Categoria'].touched" class="error-message">
+              <small>La categoría es obligatoria.</small>
+            </div>
           </div>
         </div>
       </div>
-  
-      <div class="row">
-        <div class="input col s3">
-          <input formControlName="Color" 
-                 id="Color"
-                 #color
-                 (keydown.enter)="focusNext(color, ganancia)" 
-                 type="text" 
-                 class="validate" />
-          <label for="Color">Color</label>
-          <div *ngIf="ObtenerFormGroup['Color'].invalid && ObtenerFormGroup['Color'].touched" class="error-message">
-            <small>El color es obligatorio.</small>
+
+      <!-- Sección de Características -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s2">
+            <input formControlName="Talla" 
+                   id="Talla" 
+                   #talla
+                   (keydown.enter)="focusNext(talla, color)"
+                   type="number" 
+                   class="validate"/>
+            <label for="Talla">Talla</label>
+            <div *ngIf="ObtenerFormGroup['Talla'].invalid && ObtenerFormGroup['Talla'].touched" class="error-message">
+              <small>La talla es obligatoria y debe ser un número.</small>
+            </div>
           </div>
-        </div>
-  
-        <div class="input col s3">
-          <input formControlName="proveedorId" 
-                 id="proveedorId" 
-                 #ganancia
-                 (keydown.enter)="focusNext(ganancia, precioCosto)"
-                 type="number" 
-                 class="validate" />
-          <label for="proveedorId">Proveedor</label>
-          <div *ngIf="ObtenerFormGroup['proveedorId'].invalid && ObtenerFormGroup['proveedorId'].touched" class="error-message">
-            <small>El proveedor es obligatoria.</small>
+          <div class="input col s3">
+            <input formControlName="Color" 
+                   id="Color"
+                   #color
+                   (keydown.enter)="focusNext(color, proveedorSearch)" 
+                   type="text" 
+                   class="validate" />
+            <label for="Color">Color</label>
+            <div *ngIf="ObtenerFormGroup['Color'].invalid && ObtenerFormGroup['Color'].touched" class="error-message">
+              <small>El color es obligatorio.</small>
+            </div>
           </div>
-        </div>  
-        <div class="input col s4">
-          <input formControlName="PrecioCosto" 
-                 id="PrecioCosto" 
-                 #precioCosto
-                 (keydown.enter)="focusNext(precioCosto, precioVentaMax)"
-                 type="number" 
-                 class="validate" />
-          <label for="PrecioCosto">Referencia</label>
-          <div *ngIf="ObtenerFormGroup['PrecioCosto'].invalid && ObtenerFormGroup['PrecioCosto'].touched" class="error-message">
-            <small>El precio de costo es obligatorio y debe ser un número válido.</small>
+
+          <!-- Nuevo componente de búsqueda de proveedor -->
+          <div class="input col s3">
+            <div class="search-select-container">
+              <input type="text" 
+                     #proveedorSearch
+                     [(ngModel)]="proveedorSearchQuery"
+                     [ngModelOptions]="{standalone: true}"
+                     (input)="onProveedorSearchInput()"
+                     (keydown)="onProveedorKeydown($event, referencia)"
+                     (focus)="onProveedorFocus()"
+                     (blur)="onProveedorBlur()"
+                     placeholder="Buscar proveedor por nombre o ID..."
+                     class="search-select-input"
+                     autocomplete="off" />
+              <label for="proveedor-search">Proveedor</label>
+              
+              <!-- Botón para limpiar selección -->
+              <button type="button" 
+                      class="clear-button"
+                      *ngIf="proveedorSeleccionado"
+                      (click)="limpiarProveedorSeleccionado()">
+                ×
+              </button>
+
+              <!-- Dropdown de opciones -->
+              <div class="search-select-dropdown" *ngIf="showProveedorDropdown">
+                <div class="search-select-option"
+                     *ngFor="let proveedor of proveedoresFiltrados; let i = index"
+                     (click)="seleccionarProveedor(proveedor)"
+                     (mouseenter)="onProveedorOptionHover(i)"
+                     [class.selected]="proveedorSeleccionado?.id === proveedor.id"
+                     [class.keyboard-selected]="selectedProveedorIndex === i">
+                  <span class="option-name">{{ proveedor.Nombre }}</span>
+                  <span class="option-id">(ID: {{ proveedor.id }})</span>
+                </div>
+                <div class="no-results" *ngIf="proveedoresFiltrados.length === 0">
+                  No se encontraron proveedores
+                </div>
+              </div>
+            </div>
+            <div *ngIf="ObtenerFormGroup['proveedorId'].invalid && ObtenerFormGroup['proveedorId'].touched" class="error-message">
+              <small>El proveedor es obligatorio.</small>
+            </div>
+          </div>  
+
+          <div class="input col s4">
+            <input formControlName="Referencia" 
+                   id="Referencia" 
+                   #referencia
+                   (keydown.enter)="focusNext(referencia, precioVentaMax)"
+                   type="Text" 
+                   class="validate" />
+            <label for="Referencia">Referencia</label>
+            <div *ngIf="ObtenerFormGroup['Referencia'].invalid && ObtenerFormGroup['Referencia'].touched" class="error-message">
+              <small>La referencia es obligatoria.</small>
+            </div>
           </div>
         </div>
       </div>
-  
-      <div class="row">
-        <div class="input col s4">
-          <input formControlName="PrecioVentaMax" 
-                 id="PrecioVentaMax"
-                 #precioVentaMax
-                 (keydown.enter)="focusNext(precioVentaMax, precioVentaMin)"
-                 type="number" 
-                 class="validate" />
-          <label for="PrecioVentaMax">Precio de Venta Máx.</label>
-        </div>
-        <div class="input col s4">
-          <input formControlName="PrecioVentaMin" 
-                 id="PrecioVentaMin" 
-                 #precioVentaMin
-                 (keydown.enter)="focusNext(precioVentaMin, cantidad)"
-                 type="number" 
-                 class="validate" />
-          <label for="PrecioVentaMin">Precio de Venta Mín.</label>
-        </div>
-        <div class="input col s4">
-          <input formControlName="Cantidad" 
-                 id="Cantidad" 
-                 #cantidad
-                 (keydown.enter)="submitOrFocusNext(cantidad)"
-                 type="number" 
-                 class="validate" />
-          <label for="Cantidad">Cantidad</label>
-          <div *ngIf="ObtenerFormGroup['Cantidad'].invalid && ObtenerFormGroup['Cantidad'].touched" class="error-message">
-            <small>La cantidad es obligatoria y debe ser un número.</small>
+
+      <!-- Sección de Precios e Inventario -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s4">
+            <input formControlName="PrecioVentaMax" 
+                   id="PrecioVentaMax"
+                   #precioVentaMax
+                   (keydown.enter)="focusNext(precioVentaMax, precioVentaMin)"
+                   type="number" 
+                   class="validate" />
+            <label for="PrecioVentaMax">Precio de Venta Máx.</label>
+          </div>
+          <div class="input col s4">
+            <input formControlName="PrecioVentaMin" 
+                   id="PrecioVentaMin" 
+                   #precioVentaMin
+                   (keydown.enter)="focusNext(precioVentaMin, cantidad)"
+                   type="number" 
+                   class="validate" />
+            <label for="PrecioVentaMin">Precio de Venta Mín.</label>
+          </div>
+          <div class="input col s4">
+            <input formControlName="Cantidad" 
+                   id="Cantidad" 
+                   #cantidad
+                   (keydown.enter)="submitOrFocusNext(cantidad)"
+                   type="number" 
+                   class="validate" />
+            <label for="Cantidad">Cantidad</label>
+            <div *ngIf="ObtenerFormGroup['Cantidad'].invalid && ObtenerFormGroup['Cantidad'].touched" class="error-message">
+              <small>La cantidad es obligatoria y debe ser un número.</small>
+            </div>
           </div>
         </div>
       </div>
-  
-      <div class="row">
-        <div class="col s12">
-          <button class="btn waves-effect waves-light" 
+
+      <div class="row button-row">
+        <div class="col s12 button-container">
+          <button class="btn-custom waves-effect waves-light" 
                   type="button" 
                   (click)="RegistrarZapato()">
             Guardar
@@ -142,45 +188,58 @@
         </div>
       </div>
     </form>
-    
+
     <!-- Tabla de Zapatos -->
     <div class="table-container">
-      <div class="title">
+      <div class="table-header">
         <h5>Lista de Zapatos</h5>
+      </div>
       <div class="search-bar">
-        <input type="text" 
-               placeholder="Buscar zapato..." 
-               [(ngModel)]="searchQuery" 
-               (input)="filtrarZapato()" 
-               class="validate" />
+          <input type="text" 
+                 placeholder="Buscar zapato..." 
+                 [(ngModel)]="searchQuery" 
+                 (input)="filtrarZapato()" 
+                 class="validate" />
       </div>
-      </div>
+      
+      
       <table class="striped">
         <thead>
           <tr>
-            <th>id</th>
+            <th>ID</th>
             <th>Descripción</th>
             <th>Categoría</th>
             <th>Talla</th>
             <th>Color</th>
+            <th>Proveedor</th>
             <th>Precio Venta Máx.</th>
             <th>Precio Venta Mín.</th>
             <th>Cantidad</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let zapato of zapatosFiltrados">
+          <tr *ngFor="let zapato of zapatosFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems}">
             <td>{{ zapato.id }}</td>
             <td>{{ zapato.Descripcion }}</td>
             <td>{{ zapato.Categoria }}</td>
             <td>{{ zapato.Talla }}</td>
             <td>{{ zapato.Color }}</td>
+            <td>{{ obtenerNombreProveedor(zapato.proveedorId ?? 0) }}</td>
             <td>{{ zapato.PrecioVentaMax }}</td>
             <td>{{ zapato.PrecioVentaMin }}</td>
             <td>{{ zapato.Cantidad }}</td>
           </tr>
         </tbody>
       </table>
+      
+      <!-- Control de paginación -->
+      <pagination-controls
+        (pageChange)="pag = $event"
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+        screenReaderPaginationLabel="Navegación"
+        screenReaderPageLabel="Página"
+        screenReaderCurrentLabel="Página Actual">
+      </pagination-controls>
     </div>
-  </div>
-  
+</div>

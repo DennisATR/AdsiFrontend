@@ -3,7 +3,7 @@ export class ZapatoSerieModel{
     Categoria?: string;
     Color?: string;
     Ganancia?: number;
-    PrecioCosto?: number;
+    Referencia?: string;
     PrecioVentaMax?: number;
     PrecioVentaMin?: number;
     Cantidad?: number;

@@ -7,6 +7,7 @@ import { CerrarSesionComponent } from './cerrar-sesion/cerrar-sesion.component';
 import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.component'; 
 import { ValidarSesionInactivaGuard } from '../../guardianes/validar-sesion-inactiva.guard';
 import { ValidarSesionActivaGuard } from '../../guardianes/validar-sesion-activa.guard';
+import { ListarUsuarioComponent } from './usuario/listar-usuario/listar-usuario.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: 'usuario/crear-usuario',
     component: CrearUsuarioComponent,
+  },
+  {
+    path: 'usuario/listar-usuario',
+    component: ListarUsuarioComponent,
   }
 ];
 

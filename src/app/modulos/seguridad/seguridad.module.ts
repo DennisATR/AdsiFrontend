@@ -6,6 +6,8 @@ import { RecuperarClaveComponent } from './recuperar-clave/recuperar-clave.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.component';
 import { CambioClaveComponent } from './cambio-clave/cambio-clave.component';
+import { ListarUsuarioComponent } from './usuario/listar-usuario/listar-usuario.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -13,13 +15,15 @@ import { CambioClaveComponent } from './cambio-clave/cambio-clave.component';
     IdentificacionUsuarioComponent,
     RecuperarClaveComponent,
     CrearUsuarioComponent,
+    ListarUsuarioComponent,
     CambioClaveComponent
   ],
   imports: [
     CommonModule,
     SeguridadRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ]
 })
 export class SeguridadModule { }
