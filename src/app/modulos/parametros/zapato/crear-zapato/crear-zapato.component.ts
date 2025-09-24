@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ParametrosService } from '../../../../servicios/parametros.service';
 import { ZapatoModel } from '../../../../modelos/zapato.model';
 import { ConfiguracionPaginacion } from '../../../../config/configuracion.paginacion';
 import { ProveedorModel } from '../../../../modelos/proveedor.model';
+import { ListarZapatoComponent } from '../listar-zapato/listar-zapato.component';
+import { ZapatoService } from '../../../../servicios/parametros/zapato.service';
+import { ProveedorService } from '../../../../servicios/parametros/proveedor.service';
 
 @Component({
   selector: 'app-crear-zapato',
@@ -11,6 +13,9 @@ import { ProveedorModel } from '../../../../modelos/proveedor.model';
   styleUrl: './crear-zapato.component.css'
 })
 export class CrearZapatoComponent {
+  // ViewChild para acceder al componente de listar zapatos
+  @ViewChild(ListarZapatoComponent) listarZapatoComponent!: ListarZapatoComponent;
+
   fGroup: FormGroup = new FormGroup({});
   zapatos: ZapatoModel[] = [];
   zapatosFiltrados: ZapatoModel[] = [];
@@ -31,13 +36,13 @@ export class CrearZapatoComponent {
 
   constructor(
     private fb: FormBuilder,
-    private servicioParametros: ParametrosService
+    private servicioZapato: ZapatoService,
+    private servicioProveedor: ProveedorService
   ) {
   }
 
   ngOnInit() {
     this.ConstruirFormulario();
-    this.obtenerZapatos();
     this.obtenerProveedores();
     this.fGroup.get('CodigoBarra')?.disable();
   }
@@ -83,11 +88,11 @@ export class CrearZapatoComponent {
       proveedorId: parseInt(campos["proveedorId"].value),
     };
     console.log(datos);
-    this.servicioParametros.RegistrarZapato(datos).subscribe({
+    this.servicioZapato.RegistrarZapato(datos).subscribe({
       next: (respuesta: ZapatoModel) => {
         alert("Zapato registrado correctamente");
-        this.obtenerZapatos();
         this.limpiarFormulario();
+        this.listarZapatoComponent.obtenerZapatos();
       },
       error: (err) => {
         alert("Error al registrar el zapato");
@@ -95,21 +100,8 @@ export class CrearZapatoComponent {
     });
   }
 
-  obtenerZapatos() {
-    this.servicioParametros.ObtenerZapatos().subscribe({
-      next: (respuesta: ZapatoModel[]) => {
-        this.zapatos = respuesta;
-        this.zapatosFiltrados = [...this.zapatos];
-        this.totalItems = this.zapatos.length;
-      },
-      error: (err) => {
-        alert("Error al obtener los zapatos");
-      }
-    });
-  }
-
   obtenerProveedores() {
-    this.servicioParametros.ObtenerProveedores().subscribe({
+    this.servicioProveedor.ObtenerProveedores().subscribe({
       next: (respuesta: ProveedorModel[]) => {
         this.proveedores = respuesta;
         this.proveedoresFiltrados = [...this.proveedores]; // Inicializar filtrados
@@ -118,14 +110,6 @@ export class CrearZapatoComponent {
         alert("Error al obtener los proveedores");
       }
     });
-  }
-
-  /**
-   * Obtiene el nombre del proveedor por su ID para mostrar en la tabla
-   */
-  obtenerNombreProveedor(proveedorId: number): string {
-    const proveedor = this.proveedores.find(p => p.id === proveedorId);
-    return proveedor ? (proveedor.Nombre ?? '') : `ID: ${proveedorId}`;
   }
 
   // Nuevos métodos para el select de búsqueda
@@ -270,30 +254,6 @@ export class CrearZapatoComponent {
     } else {
       this.fGroup.get('CodigoBarra')?.disable();
     }
-  }
-
-  filtrarZapato(): void {
-    const query = this.searchQuery?.toLowerCase().trim() || '';
-  
-    if (!query) {
-      this.zapatosFiltrados = [...this.zapatos];
-    } else {
-      this.zapatosFiltrados = this.zapatos.filter(zapato => {
-        const nombreProveedor = zapato.proveedorId !== undefined
-          ? this.obtenerNombreProveedor(zapato.proveedorId).toLowerCase()
-          : '';
-        return zapato.id?.toString().toLowerCase().includes(query) ||
-               zapato.Descripcion?.toLowerCase().includes(query) ||
-               zapato.Categoria?.toLowerCase().includes(query) ||
-               zapato.Color?.toLowerCase().includes(query) ||
-               zapato.Referencia?.toLowerCase().includes(query) ||
-               nombreProveedor.includes(query) ||
-               String(zapato.proveedorId).includes(query);
-      });
-    }
-  
-    this.totalItems = this.zapatosFiltrados.length;
-    this.pag = 1;
   }
 
   /**

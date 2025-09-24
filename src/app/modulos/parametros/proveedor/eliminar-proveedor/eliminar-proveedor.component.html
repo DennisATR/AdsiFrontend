@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <legend>Eliminación de Proveedores</legend>
+    </div>
+    
+    <div class="card-content">
+      <div class="confirmation-message">
+        <strong>¿Confirma la eliminación de estos datos?</strong>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Nombre</div>
+          <div class="info-value">{{ nombre }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Ciudad</div>
+          <div class="info-value">{{ ciudad }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">NIT</div>
+          <div class="info-value">{{ nit }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Teléfono</div>
+          <div class="info-value">{{ telefono }}</div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <a routerLink="/parametros/proveedor/crear-proveedor" class="btn-cancel">
+          Cancelar
+        </a>
+        <button (click)="EliminarRegistro()" class="btn-confirm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

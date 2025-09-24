@@ -6,19 +6,26 @@ import { CrearZapatoComponent } from './zapato/crear-zapato/crear-zapato.compone
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CrearProveedorComponent } from './proveedor/crear-proveedor/crear-proveedor.component';
+import { ListarZapatoComponent } from './zapato/listar-zapato/listar-zapato.component';
+import { ListarProveedorComponent } from './proveedor/listar-proveedor/listar-proveedor.component';
+import { EliminarProveedorComponent } from './proveedor/eliminar-proveedor/eliminar-proveedor.component';
 
 
 @NgModule({
   declarations: [
     CrearZapatoComponent,
-    CrearProveedorComponent
+    CrearProveedorComponent,
+    ListarZapatoComponent,
+    ListarProveedorComponent,
+    EliminarProveedorComponent
+
   ],
   imports: [
     CommonModule,
     ParametrosRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ]
 })
 export class ParametrosModule { }

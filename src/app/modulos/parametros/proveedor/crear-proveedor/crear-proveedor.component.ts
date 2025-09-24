@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProveedorModel } from '../../../../modelos/proveedor.model';
-import { ParametrosService } from '../../../../servicios/parametros.service';
-import { ConfiguracionPaginacion } from '../../../../config/configuracion.paginacion';
+import { ListarProveedorComponent } from '../listar-proveedor/listar-proveedor.component';
+import { ProveedorService } from '../../../../servicios/parametros/proveedor.service';
 
 @Component({
   selector: 'app-crear-proveedor',
@@ -10,14 +10,8 @@ import { ConfiguracionPaginacion } from '../../../../config/configuracion.pagina
   styleUrls: ['./crear-proveedor.component.css']
 })
 export class CrearProveedorComponent {
+  @ViewChild(ListarProveedorComponent) listarProveedorComponent!: ListarProveedorComponent;
   fGroup: FormGroup = new FormGroup({});
-  proveedores: ProveedorModel[] = [];
-  proveedoresFiltrados: ProveedorModel[] = [];
-  searchQuery: string = '';
-  pag = 1;
-  total = 0;
-  totalItems = 0;
-  registrosPorPagina = ConfiguracionPaginacion.registrosPorPagina;
 
   // Propiedades para el selector de ciudades inteligente
   ciudadSearchQuery: string = '';
@@ -38,12 +32,11 @@ export class CrearProveedorComponent {
 
   constructor(
     private fb: FormBuilder,
-    private servicioParametros: ParametrosService
+    private servicioProveedor: ProveedorService
   ) {}
 
   ngOnInit() {
     this.ConstruirFormulario();
-    this.obtenerProveedores();
     
     // Inicializar ciudades filtradas
     this.ciudadesFiltradas = [...this.ciudadesComunes];
@@ -76,49 +69,16 @@ export class CrearProveedorComponent {
     };
     console.log("Datos del proveedor a registrar:", datos);
 
-    this.servicioParametros.RegistrarProveedor(datos).subscribe({
+    this.servicioProveedor.RegistrarProveedor(datos).subscribe({
       next: (respuesta: ProveedorModel) => {
         alert('Proveedor registrado correctamente');
-        this.obtenerProveedores();
+        this.listarProveedorComponent.obtenerProveedores();
         this.limpiarFormulario();
       },
       error: () => {
         alert('Error al registrar el proveedor');
       }
     });
-  }
-
-  obtenerProveedores() {
-    this.servicioParametros.ObtenerProveedores().subscribe({
-      next: (respuesta: ProveedorModel[]) => {
-        this.proveedores = respuesta;
-        this.proveedoresFiltrados = [...this.proveedores];
-        this.totalItems = this.proveedoresFiltrados.length;
-      },
-      error: () => {
-        alert('Error al obtener los proveedores');
-      }
-    });
-  }
-
-  filtrarProveedor(): void {
-    const query = this.searchQuery?.toLowerCase().trim() || '';
-
-    if (!query) {
-      this.proveedoresFiltrados = [...this.proveedores];
-    } else {
-      this.proveedoresFiltrados = this.proveedores.filter(p =>
-        p.Nombre?.toLowerCase().includes(query) ||
-        p.Empresa?.toLowerCase().includes(query) ||
-        p.Correo?.toLowerCase().includes(query) ||
-        p.Ciudad?.toLowerCase().includes(query) ||
-        p.Telefono?.toLowerCase().includes(query) ||
-        p.NIT?.toLowerCase().includes(query)
-      );
-    }
-
-    this.totalItems = this.proveedoresFiltrados.length;
-    this.pag = 1;
   }
 
   // Métodos para el selector de ciudades inteligente

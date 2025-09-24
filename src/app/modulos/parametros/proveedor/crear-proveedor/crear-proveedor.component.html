@@ -132,51 +132,5 @@
     </form>
 
     <!-- Tabla de Proveedores -->
-    <div class="table-container">
-      <div class="table-header">
-        <h5>Lista de Proveedores</h5>
-      </div>
-      <div class="search-bar">
-        <input type="text"
-               placeholder="Buscar proveedor..."
-               [(ngModel)]="searchQuery"
-               (input)="filtrarProveedor()"
-               class="validate" />
-      </div>
-
-      <table class="striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Empresa</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            <th>Ciudad</th>
-            <th>NIT</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let proveedor of proveedoresFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems }">
-            <td>{{ proveedor.id }}</td>
-            <td>{{ proveedor.Nombre }}</td>
-            <td>{{ proveedor.Empresa }}</td>
-            <td>{{ proveedor.Telefono }}</td>
-            <td>{{ proveedor.Correo }}</td>
-            <td>{{ proveedor.Ciudad }}</td>
-            <td>{{ proveedor.NIT }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Control de paginación -->
-      <pagination-controls
-        (pageChange)="pag = $event"
-        previousLabel="Anterior"
-        nextLabel="Siguiente"
-        screenReaderPaginationLabel="Navegación"
-        screenReaderPageLabel="Página"
-        screenReaderCurrentLabel="Página Actual">
-      </pagination-controls>
-    </div>
+    <app-listar-proveedor></app-listar-proveedor>
 </div>

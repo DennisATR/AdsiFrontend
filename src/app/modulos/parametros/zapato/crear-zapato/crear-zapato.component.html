@@ -188,58 +188,6 @@
         </div>
       </div>
     </form>
-
     <!-- Tabla de Zapatos -->
-    <div class="table-container">
-      <div class="table-header">
-        <h5>Lista de Zapatos</h5>
-      </div>
-      <div class="search-bar">
-          <input type="text" 
-                 placeholder="Buscar zapato..." 
-                 [(ngModel)]="searchQuery" 
-                 (input)="filtrarZapato()" 
-                 class="validate" />
-      </div>
-      
-      
-      <table class="striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Descripción</th>
-            <th>Categoría</th>
-            <th>Talla</th>
-            <th>Color</th>
-            <th>Proveedor</th>
-            <th>Precio Venta Máx.</th>
-            <th>Precio Venta Mín.</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let zapato of zapatosFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems}">
-            <td>{{ zapato.id }}</td>
-            <td>{{ zapato.Descripcion }}</td>
-            <td>{{ zapato.Categoria }}</td>
-            <td>{{ zapato.Talla }}</td>
-            <td>{{ zapato.Color }}</td>
-            <td>{{ obtenerNombreProveedor(zapato.proveedorId ?? 0) }}</td>
-            <td>{{ zapato.PrecioVentaMax }}</td>
-            <td>{{ zapato.PrecioVentaMin }}</td>
-            <td>{{ zapato.Cantidad }}</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      <!-- Control de paginación -->
-      <pagination-controls
-        (pageChange)="pag = $event"
-        previousLabel="Anterior"
-        nextLabel="Siguiente"
-        screenReaderPaginationLabel="Navegación"
-        screenReaderPageLabel="Página"
-        screenReaderCurrentLabel="Página Actual">
-      </pagination-controls>
-    </div>
+    <app-listar-zapato></app-listar-zapato>
 </div>

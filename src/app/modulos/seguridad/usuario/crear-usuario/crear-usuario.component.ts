@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeguridadService } from '../../../../servicios/seguridad.service';
 import { UsuarioModel } from '../../../../modelos/usuario.model';
 import { ConfiguracionPaginacion } from '../../../../config/configuracion.paginacion';
+import { ListarUsuarioComponent } from '../listar-usuario/listar-usuario.component';
 
 interface RolModel {
   id: number;
@@ -15,14 +16,9 @@ interface RolModel {
   styleUrl: './crear-usuario.component.css'
 })
 export class CrearUsuarioComponent {
+  // ViewChild para acceder al componente de listar usuarios
+  @ViewChild(ListarUsuarioComponent) listarUsuarioComponent!: ListarUsuarioComponent;
   fGroup: FormGroup = new FormGroup({});
-  usuarios: UsuarioModel[] = [];
-  usuariosFiltrados: UsuarioModel[] = [];
-  searchQuery: string = '';
-  pag = 1;
-  total = 0;
-  totalItems = 0;
-  registrosPorPagina = ConfiguracionPaginacion.registrosPorPagina;
 
   // Propiedades para el selector de roles inteligente
   rolSearchQuery: string = '';
@@ -44,7 +40,6 @@ export class CrearUsuarioComponent {
 
   ngOnInit() {
     this.ConstruirFormulario();
-    this.obtenerUsuarios();
     
     // Inicializar roles filtrados
     this.rolesFiltrados = [...this.rolesDisponibles];
@@ -88,63 +83,13 @@ export class CrearUsuarioComponent {
     this.servicioSeguridad.RegistrarUsuario(datos).subscribe({
       next: (respuesta: UsuarioModel) => {
         alert("Registro correcto, se ha enviado un mensaje para validar su dirección de correo electrónico.")
-        this.obtenerUsuarios(); // Actualiza la lista de usuarios después del registro
+        this.listarUsuarioComponent.obtenerUsuarios();
         this.limpiarFormulario(); // Limpiar formulario después de guardar
       },
       error: (err) => {
         alert("Se ha producido un error en el registro.")
       }
     });
-  }
-
-  obtenerUsuarios(): void {
-    this.servicioSeguridad.obtenerUsuarios().subscribe({
-      next: (respuesta) => {
-        this.usuarios = respuesta; // Asigna la respuesta al array de usuarios
-        this.usuariosFiltrados = [...this.usuarios]; // Inicializa los usuarios filtrados con todos los usuarios
-        this.totalItems = this.usuarios.length;
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    });
-  }
-
-  /**
-   * Filtrar usuarios según el texto ingresado
-   */
-  filtrarUsuarios(): void {
-    const query = this.searchQuery?.toLowerCase().trim() || '';
-  
-    if (!query) {
-      this.usuariosFiltrados = [...this.usuarios];
-    } else {
-      this.usuariosFiltrados = this.usuarios.filter(usuario => {
-        const nombreRol = usuario.rolId !== undefined
-          ? this.obtenerNombreRol(usuario.rolId).toLowerCase()
-          : '';
-        return (usuario.Nombre?.toLowerCase().includes(query)) ||
-               (usuario.Apellido?.toLowerCase().includes(query)) ||
-               (usuario.Correo?.toLowerCase().includes(query)) ||
-               String(usuario.Telefono).includes(query) ||
-               String(usuario.rolId).includes(query) ||
-               nombreRol.includes(query);
-      });
-    }
-  
-    // Actualizar el número total de elementos
-    this.totalItems = this.usuariosFiltrados.length;
-  
-    // Reiniciar la paginación a la primera página si se cambia el filtro
-    this.pag = 1;
-  }
-
-  /**
-   * Obtiene el nombre del rol por su ID para mostrar en la tabla
-   */
-  obtenerNombreRol(rolId: number): string {
-    const rol = this.rolesDisponibles.find(r => r.id === rolId);
-    return rol ? rol.nombre : `ID: ${rolId}`;
   }
 
   // Métodos para el selector de roles inteligente

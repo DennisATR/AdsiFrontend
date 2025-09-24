@@ -1,0 +1,220 @@
+/* Estilos para las tablas */
+table.striped {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+table.striped th {
+  background-color: #f8fafc;
+  color: #374151;
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+table.striped td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+table.striped tbody tr:nth-child(odd) {
+  background-color: #f9fafb;
+}
+
+table.striped tbody tr:hover {
+  background-color: #e0f2fe;
+  transition: background-color 0.2s ease;
+}
+
+table.striped tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Estilos para la sección de tabla */
+.table-container {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-header h5 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Estilos para la barra de búsqueda */
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 0.875rem;
+  margin-bottom: 10px;
+  margin-top: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-bar input:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-bar input:hover {
+  border-color: #9ca3af;
+}
+
+/* Estilos para botones de acciones */
+.actions-cell {
+  width: 140px;
+  min-width: 140px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.btn-action {
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+/* Botón Editar */
+.btn-edit {
+  background-color: #1976d2;
+  color: white;
+  border-color: #1976d2;
+}
+
+.btn-edit:hover {
+  background-color: #1565c0;
+  border-color: #1565c0;
+  transform: translateY(-1px);
+}
+
+/* Botón Eliminar */
+.btn-delete {
+  background-color: #6b7280;
+  color: white;
+  border-color: #6b7280;
+}
+
+.btn-delete:hover {
+  background-color: #4b5563;
+  border-color: #4b5563;
+  transform: translateY(-1px);
+}
+
+/* Estados de enfoque para accesibilidad */
+.btn-action:focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+}
+
+/* Estilos para la paginación */
+::ng-deep .ngx-pagination {
+  display: flex;
+  background-color: #F4F4F4; 
+  justify-content: center;
+}
+
+::ng-deep .ngx-pagination .current {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .table-header h5 {
+    text-align: center;
+  }
+  
+  .search-bar input {
+    width: 100%;
+  }
+  
+  table.striped {
+    font-size: 12px;
+  }
+  
+  table.striped th,
+  table.striped td {
+    padding: 8px;
+  }
+
+  .actions-cell {
+    width: 120px;
+    min-width: 120px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .btn-action {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  table.striped th,
+  table.striped td {
+    padding: 6px;
+    font-size: 11px;
+  }
+
+  .actions-cell {
+    width: 100px;
+    min-width: 100px;
+  }
+
+  .btn-action {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+  }
+}
