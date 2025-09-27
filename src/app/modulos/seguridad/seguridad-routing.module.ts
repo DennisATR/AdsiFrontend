@@ -8,6 +8,8 @@ import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.com
 import { ValidarSesionInactivaGuard } from '../../guardianes/validar-sesion-inactiva.guard';
 import { ValidarSesionActivaGuard } from '../../guardianes/validar-sesion-activa.guard';
 import { ListarUsuarioComponent } from './usuario/listar-usuario/listar-usuario.component';
+import { EliminarUsuarioComponent } from './usuario/eliminar-usuario/eliminar-usuario.component';
+import { EditarUsuarioComponent } from './usuario/editar-usuario/editar-usuario.component';
 
 const routes: Routes = [
   {
@@ -33,11 +35,24 @@ const routes: Routes = [
   {
     path: 'usuario/crear-usuario',
     component: CrearUsuarioComponent,
+    canActivate: [ValidarSesionActivaGuard]
   },
   {
     path: 'usuario/listar-usuario',
     component: ListarUsuarioComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'usuario/editar-usuario/:id',
+    component:  EditarUsuarioComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'usuario/eliminar-usuario/:id',
+    component: EliminarUsuarioComponent,
+    canActivate: [ValidarSesionActivaGuard]
   }
+
 ];
 
 @NgModule({

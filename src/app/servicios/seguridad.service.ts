@@ -143,4 +143,22 @@ export class SeguridadService {
     return this.http.get<UsuarioModel[]>(`${this.urlBase}empleado`);
   }
 
+  BuscarUsuario(id: number): Observable<UsuarioModel>{
+    return this.http.get<UsuarioModel>(`${this.urlBase}empleado/${id}`);
+  }
+
+  EditarUsuario(id: number, datos: any): Observable<any>{
+    console.log(datos);
+    try {
+      return this.http.put<any>(`${this.urlBase}empleado/${id}`, datos);
+    } catch (error) {
+      console.error('Error al editar el usuario:', error);
+      throw new Error('Hubo un error al editar el usuario.');
+    }
+  }
+
+  EliminarUsuario(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.urlBase}empleado/${id}`);
+  }
+
 }

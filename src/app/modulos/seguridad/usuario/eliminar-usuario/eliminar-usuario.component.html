@@ -1,1 +1,45 @@
-<p>eliminar-usuario works!</p>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <legend>Eliminar Usuario</legend>
+    </div>
+    
+    <div class="card-content">
+      <div class="confirmation-message">
+        <strong>¿Confirma la eliminación de este usuario?</strong>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Nombre</div>
+          <div class="info-value">{{ nombre }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Apellido</div>
+          <div class="info-value">{{ apellido }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Correo</div>
+          <div class="info-value">{{ correo }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Teléfono</div>
+          <div class="info-value">{{ telefono }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Rol</div>
+          <div class="info-value">{{ getRolNombre(rolId) }}</div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <a routerLink="/seguridad/usuario/crear-usuario" class="btn-cancel">
+          Cancelar
+        </a>
+        <button (click)="EliminarRegistro()" class="btn-confirm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,8 @@
             <th>Rol</th>
             <th>Correo</th>
             <th>Teléfono</th>
+            <th>Fecha de Registro</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -27,6 +29,20 @@
             <td>{{ usuario.rolId !== undefined ? obtenerNombreRol(usuario.rolId) : '' }}</td>
             <td>{{ usuario.Correo }}</td>
             <td>{{ usuario.Telefono }}</td>
+            <td>{{ usuario.FechaReg | date: 'short' }}</td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <a [routerLink]="['/seguridad/usuario/editar-usuario', usuario.id]" 
+                   class="btn-action btn-edit" 
+                   title="Editar usuario">
+                  ✏️
+                </a>
+                <a [routerLink]="['/seguridad/usuario/eliminar-usuario', usuario.id]" 
+                   class="btn-action btn-delete" 
+                   title="Eliminar usuario">
+                  ✕
+                </a>
+              </div>
           </tr>
         </tbody>
       </table>

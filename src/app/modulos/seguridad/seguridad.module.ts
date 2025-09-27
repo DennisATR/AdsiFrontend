@@ -8,6 +8,8 @@ import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.com
 import { CambioClaveComponent } from './cambio-clave/cambio-clave.component';
 import { ListarUsuarioComponent } from './usuario/listar-usuario/listar-usuario.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { EditarUsuarioComponent } from './usuario/editar-usuario/editar-usuario.component';
+import { EliminarUsuarioComponent } from './usuario/eliminar-usuario/eliminar-usuario.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RecuperarClaveComponent,
     CrearUsuarioComponent,
     ListarUsuarioComponent,
-    CambioClaveComponent
+    CambioClaveComponent,
+    EliminarUsuarioComponent,
+    EditarUsuarioComponent
   ],
   imports: [
     CommonModule,
