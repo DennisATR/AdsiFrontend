@@ -8,9 +8,10 @@
 
 /* Card principal */
 .card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
   overflow: hidden;
   margin: 1rem 0;
 }
@@ -22,9 +23,9 @@ fieldset {
   background: transparent;
 }
 
-/* Header de la card */
+/* Header de la card con el mismo estilo del título */
 .card-header {
-  background: linear-gradient(135deg, #1976d2, #1565c0);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
   padding: 1.5rem;
   text-align: center;

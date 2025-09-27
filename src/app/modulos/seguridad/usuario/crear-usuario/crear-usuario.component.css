@@ -316,28 +316,6 @@ small {
     padding: 0;
   }
   
-  .table-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-  
-  .table-header h5 {
-    text-align: center;
-  }
-  
-  .search-bar input {
-    width: 100%;
-  }
-  
-  table.striped {
-    font-size: 12px;
-  }
-  
-  table.striped th,
-  table.striped td {
-    padding: 8px;
-  }
 
   .search-select-dropdown {
     max-height: 150px;
@@ -358,12 +336,6 @@ small {
   
   .form-section {
     padding: 0;
-  }
-  
-  table.striped th,
-  table.striped td {
-    padding: 6px;
-    font-size: 11px;
   }
 
   .search-select-dropdown {

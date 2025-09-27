@@ -13,6 +13,7 @@ export class EliminarProveedorComponent {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
   nombre: string = "";
+  empresa: string = "";
   ciudad: string = "";
   nit: string = "";
   telefono: string = ""
@@ -33,6 +34,7 @@ export class EliminarProveedorComponent {
       next: (datos: ProveedorModel) => {
         this.recordId = datos.id!;
         this.nombre = datos.Nombre!;
+        this.empresa = datos.Empresa!;
         this.ciudad = datos.Ciudad!;
         this.nit = datos.NIT!;
         this.telefono = datos.Telefono!;

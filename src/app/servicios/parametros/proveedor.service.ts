@@ -33,4 +33,9 @@ export class ProveedorService {
   EliminarProveedor(id: number): Observable<any>{
     return this.http.delete<any>(`${this.urlBase}proveedor/${id}`);
   }
+
+  EditarProveedor(id: number, datos: any): Observable<any>{
+    return this.http.put<any>(`${this.urlBase}proveedor/${id}`, datos);
+  }
+  
 }
