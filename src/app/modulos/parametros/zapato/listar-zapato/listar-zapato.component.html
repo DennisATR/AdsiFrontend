@@ -23,6 +23,7 @@
             <th>Precio Venta Máx.</th>
             <th>Precio Venta Mín.</th>
             <th>Cantidad</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -36,6 +37,20 @@
             <td>{{ zapato.PrecioVentaMax }}</td>
             <td>{{ zapato.PrecioVentaMin }}</td>
             <td>{{ zapato.Cantidad }}</td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <a [routerLink]="['/parametros/zapato/editar-zapato', zapato.id]" 
+                   class="btn-action btn-edit" 
+                   title="Editar zapato">
+                  ✏️
+                </a>
+                <a [routerLink]="['/parametros/zapato/eliminar-zapato', zapato.id]" 
+                   class="btn-action btn-delete" 
+                   title="Eliminar zapato">
+                  ✕
+                </a>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

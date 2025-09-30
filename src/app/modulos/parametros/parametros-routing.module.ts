@@ -7,6 +7,8 @@ import { ValidarSesionActivaGuard } from '../../guardianes/validar-sesion-activa
 import { ListarProveedorComponent } from './proveedor/listar-proveedor/listar-proveedor.component';
 import { EliminarProveedorComponent } from './proveedor/eliminar-proveedor/eliminar-proveedor.component';
 import { EditarProveedorComponent } from './proveedor/editar-proveedor/editar-proveedor.component';
+import { EliminarZapatoComponent } from './zapato/eliminar-zapato/eliminar-zapato.component';
+import { EditarZapatoComponent } from './zapato/editar-zapato/editar-zapato.component';
 
 const routes: Routes = [
   {
@@ -38,7 +40,20 @@ const routes: Routes = [
     path: 'proveedor/editar-proveedor/:id',
     component: EditarProveedorComponent,
     canActivate: [ValidarSesionActivaGuard]
-  }
+  },
+  
+  {
+    path: 'zapato/eliminar-zapato/:id',
+    component: EliminarZapatoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+
+  {
+    path: 'zapato/editar-zapato/:id',
+    component: EditarZapatoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+
 ];
 
 @NgModule({

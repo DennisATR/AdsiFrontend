@@ -1,1 +1,61 @@
-<p>eliminar-zapato works!</p>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <legend>Eliminación de Zapatos</legend>
+    </div>
+    
+    <div class="card-content">
+      <div class="confirmation-message">
+        <strong>¿Confirma la eliminación de estos datos?</strong>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Descripción</div>
+          <div class="info-value">{{ descripcion }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Categoría</div>
+          <div class="info-value">{{ categoria }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Color</div>
+          <div class="info-value">{{ color }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Talla</div>
+          <div class="info-value">{{ talla }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Referencia</div>
+          <div class="info-value">{{ referencia }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Precio de Venta Máximo</div>
+          <div class="info-value">{{ precioVentaMax }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Precio de Venta Mínimo</div>
+          <div class="info-value">{{ precioVentaMin }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Cantidad</div>
+          <div class="info-value">{{ cantidad }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Proveedor</div>
+          <div class="info-value">{{ proveedorNombre }}</div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <a routerLink="/parametros/zapato/crear-zapato" class="btn-cancel">
+          Cancelar
+        </a>
+        <button (click)="EliminarRegistro()" class="btn-confirm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,23 +8,37 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ZapatoService {
-    urlBase: string = ConfiguracionRutasBackend.urlBackend;
-  
-    constructor(private http: HttpClient ) { }
-  
-    RegistrarZapato(datos: any) {
-      console.log(datos);
-      return this.http.post(`${this.urlBase}zapato`, datos).pipe(
-        catchError(error => {
-                  // Mostrar detalles del error en consola
-                  console.error('Error al registrar el zapato:', error);  
-                  return throwError(() => new Error('Hubo un error al registrar el zapato.'));
-                })
-              );
-    }
-  
-    // Método para obtener todos los zapatos
-    ObtenerZapatos(): Observable<ZapatoModel[]> {
+  urlBase: string = ConfiguracionRutasBackend.urlBackend;
+
+  constructor(private http: HttpClient) { }
+
+  RegistrarZapato(datos: any) {
+    console.log(datos);
+    return this.http.post(`${this.urlBase}zapato`, datos).pipe(
+      catchError(error => {
+        console.error('Error al registrar el zapato:', error);
+        return throwError(() => new Error('Hubo un error al registrar el zapato.'));
+      })
+    );
+  }
+
+  ObtenerZapatos(): Observable<ZapatoModel[]> {
     return this.http.get<ZapatoModel[]>(`${this.urlBase}zapato`);
-    }
+  }
+
+  BuscarZapato(id: string): Observable<ZapatoModel> {
+    return this.http.get<ZapatoModel>(`${this.urlBase}zapato/${id}`);
+  }
+
+  EliminarZapato(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.urlBase}zapato/${id}`);
+  }
+
+  EditarZapato(id: string, datos: any): Observable<any> {
+    return this.http.put<any>(`${this.urlBase}zapato/${id}`, datos);
+  }
+
+  ObtenerReferencia(id: string): Observable<{ referencia: string }> {
+    return this.http.get<{ referencia: string }>(`${this.urlBase}zapato/referencia/${id}`);
+  }
 }
