@@ -1,1 +1,62 @@
-<p>listar-cliente works!</p>
+<div class="table-container">
+  <div class="table-header">
+    <h5>Lista de Clientes</h5>
+  </div>
+  <div class="search-bar">
+    <input type="text"
+           placeholder="Buscar cliente..."
+           [(ngModel)]="searchQuery"
+           (input)="filtrarCliente()"
+           class="validate" />
+  </div>
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Ciudad</th>
+        <th>Identificación</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Fecha Nacimiento</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientesFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems }">
+        <td>{{ cliente.id }}</td>
+        <td>{{ cliente.Nombre }}</td>
+        <td>{{ cliente.Ciudad }}</td>
+        <td>{{ cliente.Identificacion || 'N/A' }}</td>
+        <td>{{ cliente.Correo }}</td>
+        <td>{{ cliente.Telefono }}</td>
+        <td>{{ formatearFecha(cliente.FechaNac) }}</td>
+        <td class="actions-cell">
+          <div class="action-buttons">
+            <a [routerLink]="['/parametros/cliente/editar-cliente', cliente.id]" 
+               class="btn-action btn-edit" 
+               title="Editar cliente">
+              ✏️
+            </a>
+            <a [routerLink]="['/parametros/cliente/eliminar-cliente', cliente.id]" 
+               class="btn-action btn-delete" 
+               title="Eliminar cliente">
+              ✕
+            </a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Control de paginación -->
+  <pagination-controls
+    (pageChange)="pag = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+    screenReaderPaginationLabel="Navegación"
+    screenReaderPageLabel="Página"
+    screenReaderCurrentLabel="Página Actual">
+  </pagination-controls>
+</div>

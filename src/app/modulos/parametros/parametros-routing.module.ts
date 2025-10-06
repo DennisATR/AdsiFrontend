@@ -9,6 +9,10 @@ import { EliminarProveedorComponent } from './proveedor/eliminar-proveedor/elimi
 import { EditarProveedorComponent } from './proveedor/editar-proveedor/editar-proveedor.component';
 import { EliminarZapatoComponent } from './zapato/eliminar-zapato/eliminar-zapato.component';
 import { EditarZapatoComponent } from './zapato/editar-zapato/editar-zapato.component';
+import { CrearClienteComponent } from './cliente/crear-cliente/crear-cliente.component';
+import { ListarClienteComponent } from './cliente/listar-cliente/listar-cliente.component';
+import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.component';
+import { EliminarClienteComponent } from './cliente/eliminar-cliente/eliminar-cliente.component';
 
 const routes: Routes = [
   {
@@ -53,6 +57,27 @@ const routes: Routes = [
     component: EditarZapatoComponent,
     canActivate: [ValidarSesionActivaGuard]
   },
+
+  {
+    path: 'cliente/crear-cliente',
+    component: CrearClienteComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'cliente/listar-cliente',
+    component: ListarClienteComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'cliente/editar-cliente/:id',
+    component: EditarClienteComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'cliente/eliminar-cliente/:id',
+    component: EliminarClienteComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  }
 
 ];
 

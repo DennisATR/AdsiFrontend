@@ -1,1 +1,85 @@
-<p>editar-cliente works!</p>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <legend>Editar Cliente</legend>
+        </div>
+
+        <div class="card-content">
+            <form [formGroup]="fgValidador" (ngSubmit)="ActualizarRegistro()">
+                <div class="form-grid">
+                    <!-- Nombre -->
+                    <div class="input">
+                        <input type="text" id="nombre" formControlName="nombre" class="validate"
+                            [class.error]="nombre?.invalid && nombre?.touched">
+                        <label for="nombre">Nombre</label>
+                        <div *ngIf="nombre?.invalid && nombre?.touched" class="error-message">
+                            <small *ngIf="nombre?.errors?.['required']">El nombre es requerido</small>
+                        </div>
+                    </div>
+
+                    <!-- Identificación -->
+                    <div class="input">
+                        <input type="text" id="identificacion" formControlName="identificacion" class="validate"
+                            [class.error]="identificacion?.invalid && identificacion?.touched">
+                        <label for="identificacion">Identificación</label>
+                        <div *ngIf="identificacion?.invalid && identificacion?.touched" class="error-message">
+                            <small *ngIf="identificacion?.errors?.['required']">La identificación es requerida</small>
+                        </div>
+                    </div>
+
+                    <!-- Ciudad -->
+                    <div class="input">
+                        <input type="text" id="ciudad" formControlName="ciudad" class="validate"
+                            [class.error]="ciudad?.invalid && ciudad?.touched">
+                        <label for="ciudad">Ciudad</label>
+                        <div *ngIf="ciudad?.invalid && ciudad?.touched" class="error-message">
+                            <small *ngIf="ciudad?.errors?.['required']">La ciudad es requerida</small>
+                        </div>
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="input">
+                        <input type="email" id="correo" formControlName="correo" class="validate"
+                            [class.error]="correo?.invalid && correo?.touched">
+                        <label for="correo">Correo Electrónico</label>
+                        <div *ngIf="correo?.invalid && correo?.touched" class="error-message">
+                            <small *ngIf="correo?.errors?.['required']">El correo es requerido</small>
+                            <small *ngIf="correo?.errors?.['email']">El formato del correo no es válido</small>
+                        </div>
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="input">
+                        <input type="tel" id="telefono" formControlName="telefono" class="validate"
+                            [class.error]="telefono?.invalid && telefono?.touched">
+                        <label for="telefono">Teléfono</label>
+                        <div *ngIf="telefono?.invalid && telefono?.touched" class="error-message">
+                            <small *ngIf="telefono?.errors?.['required']">El teléfono es requerido</small>
+                        </div>
+                    </div>
+
+
+                    <!-- Fecha de Nacimiento -->
+                    <div class="input">
+                        <input type="date" id="fechaNac" formControlName="fechaNac" class="validate"
+                            [class.error]="fechaNac?.invalid && fechaNac?.touched">
+                        <label for="fechaNac">Fecha de Nacimiento</label>
+                        <div *ngIf="fechaNac?.invalid && fechaNac?.touched" class="error-message">
+                            <small *ngIf="fechaNac?.errors?.['required']">La fecha de nacimiento es requerida</small>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="button-container">
+                    <a routerLink="/parametros/cliente/crear-cliente" class="btn-cancel">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn-confirm" [disabled]="fgValidador.invalid">
+                        Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

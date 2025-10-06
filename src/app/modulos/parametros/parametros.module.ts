@@ -12,6 +12,10 @@ import { EliminarProveedorComponent } from './proveedor/eliminar-proveedor/elimi
 import { EditarProveedorComponent } from './proveedor/editar-proveedor/editar-proveedor.component';
 import { EliminarZapatoComponent } from './zapato/eliminar-zapato/eliminar-zapato.component';
 import { EditarZapatoComponent } from './zapato/editar-zapato/editar-zapato.component';
+import { CrearClienteComponent } from './cliente/crear-cliente/crear-cliente.component';
+import { ListarClienteComponent } from './cliente/listar-cliente/listar-cliente.component';
+import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.component';
+import { EliminarClienteComponent } from './cliente/eliminar-cliente/eliminar-cliente.component';
 
 
 @NgModule({
@@ -23,7 +27,11 @@ import { EditarZapatoComponent } from './zapato/editar-zapato/editar-zapato.comp
     EliminarProveedorComponent,
     EditarProveedorComponent,
     EliminarZapatoComponent,
-    EditarZapatoComponent
+    EditarZapatoComponent,
+    CrearClienteComponent,
+    ListarClienteComponent,
+    EditarClienteComponent,
+    EliminarClienteComponent
   ],
   imports: [
     CommonModule,
