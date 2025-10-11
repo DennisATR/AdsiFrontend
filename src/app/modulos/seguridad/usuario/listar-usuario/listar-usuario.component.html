@@ -29,7 +29,7 @@
             <td>{{ usuario.rolId !== undefined ? obtenerNombreRol(usuario.rolId) : '' }}</td>
             <td>{{ usuario.Correo }}</td>
             <td>{{ usuario.Telefono }}</td>
-            <td>{{ usuario.FechaReg | date: 'short' }}</td>
+            <td>{{ usuario.FechaReg | date: 'dd/MM/yyyy hh:mm a' }}</td>
             <td class="actions-cell">
               <div class="action-buttons">
                 <a [routerLink]="['/seguridad/usuario/editar-usuario', usuario.id]" 

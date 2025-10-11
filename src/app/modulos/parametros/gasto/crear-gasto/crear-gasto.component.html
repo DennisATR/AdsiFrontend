@@ -1,0 +1,107 @@
+<div class="card-container">
+  <div class="title">
+    <h5>Gestión de Gastos</h5>
+  </div>
+  <form [formGroup]="fGroup" class="col s12">
+    <!-- Sección de Información del Gasto -->
+    <div class="form-section">
+      <div class="row">
+        <div class="input col s7">
+          <div class="search-select-container">
+            <input type="text" 
+                   #conceptoSelect
+                   [(ngModel)]="ConceptoSearchQuery"
+                   [ngModelOptions]="{standalone: true}"
+                   (input)="onConceptoSearchInput()"
+                   (keydown)="onConceptoKeydown($event, valor)"
+                   (focus)="onConceptoFocus()"
+                   (blur)="onConceptoBlur()"
+                   placeholder="Escribe o selecciona un concepto..."
+                   class="search-select-input"
+                   autocomplete="off" />
+            <label for="concepto-search">Concepto</label>
+            
+            <!-- Botón para limpiar selección -->
+            <button type="button" 
+                    class="clear-button"
+                    *ngIf="ConceptoSearchQuery"
+                    (click)="limpiarConceptoSeleccionado()">
+              ×
+            </button>
+
+            <!-- Dropdown de opciones de conceptos -->
+            <div class="search-select-dropdown" *ngIf="showConceptoDropdown">
+              <div class="search-select-option"
+                   *ngFor="let concepto of conceptosFiltrados; let i = index"
+                   (click)="seleccionarConcepto(concepto)"
+                   (mouseenter)="onConceptoOptionHover(i)"
+                   [class.keyboard-selected]="selectedConceptoIndex === i">
+                <span class="option-name">{{ concepto }}</span>
+              </div>
+              <div class="no-results" *ngIf="conceptosFiltrados.length === 0">
+                No se encontraron conceptos
+              </div>
+            </div>
+          </div>
+          <div *ngIf="ObtenerFormGroup['Concepto'].invalid && ObtenerFormGroup['Concepto'].touched" class="error-message">
+            <small>El concepto es obligatorio.</small>
+          </div>
+        </div>
+        <div class="input col s5">
+          <input formControlName="Valor"
+                appFormatoMiles
+                 id="Valor"
+                 #valor
+                 (keydown.enter)="focusNext(valor, descripcion)"
+                 type="text"
+                 class="validate" />
+          <label for="Valor">Valor</label>
+          <div *ngIf="ObtenerFormGroup['Valor'].invalid && ObtenerFormGroup['Valor'].touched" class="error-message">
+            <small *ngIf="ObtenerFormGroup['Valor'].errors?.['required']">El valor es obligatorio.</small>
+            <small *ngIf="ObtenerFormGroup['Valor'].errors?.['min']">El valor debe ser mayor o igual a 0.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Fecha y Descripcion -->
+    <div class="form-section">
+      <div class="row">
+        <div class="input col s7">
+          <input formControlName="Descripcion"
+                 id="Descripcion"
+                 #descripcion
+                 (keydown.enter)="focusNext(descripcion, fecha)"
+                 type="text"
+                 class="validate" />
+          <label for="Descripcion">Descripción (Opcional)</label>
+        </div>
+        <div class="input col s5">
+          <input formControlName="Fecha"
+                 id="Fecha"
+                 #fecha
+                 (keydown.enter)="submitOrFocusNext(fecha)"
+                 type="date"
+                 class="validate" />
+          <label for="Fecha">Fecha</label>
+          <div *ngIf="ObtenerFormGroup['Fecha'].invalid && ObtenerFormGroup['Fecha'].touched" class="error-message">
+            <small>La fecha es obligatoria.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row button-row">
+      <div class="col s12 button-container">
+        <button class="btn-custom waves-effect waves-light"
+                type="button"
+                (click)="RegistrarGasto()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Tabla de Gastos -->
+  <app-listar-gasto></app-listar-gasto>
+</div>

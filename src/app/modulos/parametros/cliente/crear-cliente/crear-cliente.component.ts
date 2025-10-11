@@ -56,10 +56,12 @@ export class CrearClienteComponent implements OnInit {
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
       Nombre: ['', [Validators.required, Validators.minLength(2)]],
+      Apellido: ['', [Validators.required, Validators.minLength(2)]],
       Ciudad: ['', [Validators.required]],
-      Correo: ['', [Validators.required, Validators.email]],
-      Telefono: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(10)]],
-      FechaNac: ['', [Validators.required]],
+      Barrio: [''],
+      Correo: ['', [Validators.email]],
+      Telefono: ['', [Validators.minLength(7), Validators.maxLength(10)]],
+      FechaNac: [''],
       Identificacion:[''] 
     });
   }
@@ -68,10 +70,12 @@ export class CrearClienteComponent implements OnInit {
     let campos = this.ObtenerFormGroup;
     let datos = {
       Nombre: campos["Nombre"].value,
+      Apellido: campos["Apellido"].value,
       Identificacion: campos["Identificacion"].value || "", 
       Ciudad: campos["Ciudad"].value,
-      Correo: campos["Correo"].value,
-      Telefono: campos["Telefono"].value,
+      Barrio: campos["Barrio"].value || "",
+      Correo: campos["Correo"].value || "",
+      Telefono: campos["Telefono"].value || "",
       FechaNac: new Date(campos["FechaNac"].value).toISOString(),
     };
     

@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <legend>Eliminación de Gastos</legend>
+    </div>
+    
+    <div class="card-content">
+      <div class="confirmation-message">
+        <strong>¿Confirma la eliminación de estos datos?</strong>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Concepto</div>
+          <div class="info-value">{{ concepto }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Valor</div>
+          <div class="info-value">{{ valor }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Descripción</div>
+          <div class="info-value">{{ descripcion }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Fecha</div>
+          <div class="info-value">{{ fecha }}</div>
+        </div>
+      </div>
+      <div class="button-container">
+        <a routerLink="/parametros/gasto/crear-gasto" class="btn-cancel">
+          Cancelar
+        </a>
+        <button (click)="EliminarRegistro()" class="btn-confirm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

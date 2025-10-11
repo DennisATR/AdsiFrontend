@@ -11,7 +11,7 @@ import { ClienteModel } from '../../../../modelos/cliente.model';
   styleUrl: './editar-cliente.component.css'
 })
 export class EditarClienteComponent {
-BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
+  BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
   fgValidador!: FormGroup;
 
@@ -32,10 +32,12 @@ BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   ConstruirFormulario() {
     this.fgValidador = this.fb.group({
       nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]],
       identificacion: [''],
       telefono: [''],
       correo: ['', [Validators.email]],
       ciudad: ['', [Validators.required]],
+      barrio: [''],
       fechaNac: ['']
     });
   }
@@ -45,10 +47,12 @@ BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
       next: (datos: ClienteModel) => {
         this.fgValidador.patchValue({
           nombre: datos.Nombre,
+          apellido: datos.Apellido,
           identificacion: datos.Identificacion,
           telefono: datos.Telefono,
           correo: datos.Correo,
           ciudad: datos.Ciudad,
+          barrio: datos.Barrio,
           fechaNac: datos.FechaNac ? new Date(datos.FechaNac).toISOString().split('T')[0] : ''
         });
       },
@@ -67,10 +71,12 @@ BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
 
     let datos = {
       Nombre: this.fgValidador.controls['nombre'].value,
+      Apellido: this.fgValidador.controls['apellido'].value,
       Identificacion: this.fgValidador.controls['identificacion'].value || "",
       Telefono: this.fgValidador.controls['telefono'].value || "",
       Correo: this.fgValidador.controls['correo'].value || "",
       Ciudad: this.fgValidador.controls['ciudad'].value,
+      Barrio: this.fgValidador.controls['barrio'].value || "",
       FechaNac: this.fgValidador.controls['fechaNac'].value ? new Date(this.fgValidador.controls['fechaNac'].value).toISOString() : null
     };
 
@@ -88,9 +94,11 @@ BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
 
   // Métodos para validaciones
   get nombre() { return this.fgValidador.get('nombre'); }
+  get apellido() {return this.fgValidador.get('apellido')}
   get identificacion() { return this.fgValidador.get('identificacion'); }
   get telefono() { return this.fgValidador.get('telefono'); }
   get correo() { return this.fgValidador.get('correo'); }
   get ciudad() { return this.fgValidador.get('ciudad'); }
+  get barrio(){return this.fgValidador.get('barrio')}
   get fechaNac() { return this.fgValidador.get('fechaNac'); }
 }

@@ -1,0 +1,60 @@
+<div class="table-container">
+  <div class="table-header">
+    <h5>Lista de Gastos</h5>
+  </div>
+  <div class="search-bar">
+    <input type="text"
+           placeholder="Buscar gasto..."
+           [(ngModel)]="searchQuery"
+           (input)="filtrarGasto()"
+           class="validate" />
+  </div>
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Concepto</th>
+        <th>Descripción</th>
+        <th>Valor</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let gasto of gastosFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems }">
+        <td>{{ gasto.id }}</td>
+        <td>{{ gasto.Concepto }}</td>
+        <td>{{ gasto.Descripcion || 'N/A'}}</td>
+        <td>{{ gasto.Valor }}</td>
+        <td>{{ formatearFecha(gasto.Fecha)}}</td>
+
+        <td class="actions-cell">
+          <div class="action-buttons">
+            <a [routerLink]="['/parametros/gasto/editar-gasto', gasto.id]" 
+               class="btn-action btn-edit" 
+               title="Editar gasto">
+              ✏️
+            </a>
+            <a [routerLink]="['/parametros/gasto/eliminar-gasto', gasto.id]" 
+               class="btn-action btn-delete" 
+               title="Eliminar gasto">
+              ✕
+            </a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Control de paginación -->
+  <pagination-controls
+    (pageChange)="pag = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+    screenReaderPaginationLabel="Navegación"
+    screenReaderPageLabel="Página"
+    screenReaderCurrentLabel="Página Actual">
+  </pagination-controls>
+</div>

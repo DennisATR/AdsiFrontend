@@ -13,6 +13,10 @@ import { CrearClienteComponent } from './cliente/crear-cliente/crear-cliente.com
 import { ListarClienteComponent } from './cliente/listar-cliente/listar-cliente.component';
 import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.component';
 import { EliminarClienteComponent } from './cliente/eliminar-cliente/eliminar-cliente.component';
+import { CrearGastoComponent } from './gasto/crear-gasto/crear-gasto.component';
+import { ListarGastoComponent } from './gasto/listar-gasto/listar-gasto.component';
+import { EditarGastoComponent } from './gasto/editar-gasto/editar-gasto.component';
+import { EliminarGastoComponent } from './gasto/eliminar-gasto/eliminar-gasto.component';
 
 const routes: Routes = [
   {
@@ -77,8 +81,27 @@ const routes: Routes = [
     path: 'cliente/eliminar-cliente/:id',
     component: EliminarClienteComponent,
     canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'gasto/crear-gasto',
+    component: CrearGastoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'gasto/listar-gasto',
+    component: ListarGastoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'gasto/eliminar-gasto/:id',
+    component: EliminarGastoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'gasto/editar-gasto/:id',
+    component: EditarGastoComponent,
+    canActivate: [ValidarSesionActivaGuard]
   }
-
 ];
 
 @NgModule({

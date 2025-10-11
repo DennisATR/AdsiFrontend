@@ -16,10 +16,16 @@ import { CrearClienteComponent } from './cliente/crear-cliente/crear-cliente.com
 import { ListarClienteComponent } from './cliente/listar-cliente/listar-cliente.component';
 import { EditarClienteComponent } from './cliente/editar-cliente/editar-cliente.component';
 import { EliminarClienteComponent } from './cliente/eliminar-cliente/eliminar-cliente.component';
+import { CrearGastoComponent } from './gasto/crear-gasto/crear-gasto.component';
+import { ListarGastoComponent } from './gasto/listar-gasto/listar-gasto.component';
+import { EliminarGastoComponent } from './gasto/eliminar-gasto/eliminar-gasto.component';
+import { EditarGastoComponent } from './gasto/editar-gasto/editar-gasto.component';
+import { FormatoMilesDirective } from '../../directivas/formato-miles.directive';
 
 
 @NgModule({
   declarations: [
+    FormatoMilesDirective,
     CrearZapatoComponent,
     CrearProveedorComponent,
     ListarZapatoComponent,
@@ -31,7 +37,11 @@ import { EliminarClienteComponent } from './cliente/eliminar-cliente/eliminar-cl
     CrearClienteComponent,
     ListarClienteComponent,
     EditarClienteComponent,
-    EliminarClienteComponent
+    EliminarClienteComponent,
+    CrearGastoComponent,
+    ListarGastoComponent,
+    EliminarGastoComponent,
+    EditarGastoComponent
   ],
   imports: [
     CommonModule,

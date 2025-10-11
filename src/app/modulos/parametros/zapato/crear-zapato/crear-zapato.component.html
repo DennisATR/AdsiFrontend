@@ -148,18 +148,20 @@
           <div class="input col s4">
             <input formControlName="PrecioVentaMax" 
                    id="PrecioVentaMax"
+                   appFormatoMiles
                    #precioVentaMax
                    (keydown.enter)="focusNext(precioVentaMax, precioVentaMin)"
-                   type="number" 
+                   type="text" 
                    class="validate" />
             <label for="PrecioVentaMax">Precio de Venta Máx.</label>
           </div>
           <div class="input col s4">
             <input formControlName="PrecioVentaMin" 
-                   id="PrecioVentaMin" 
+                   id="PrecioVentaMin"
+                   appFormatoMiles 
                    #precioVentaMin
                    (keydown.enter)="focusNext(precioVentaMin, cantidad)"
-                   type="number" 
+                   type="text" 
                    class="validate" />
             <label for="PrecioVentaMin">Precio de Venta Mín.</label>
           </div>

@@ -1,16 +1,28 @@
-<nav class = "blue">
-    <div class="nav-wrapper">
-      <a routerLink="/inicio" class="brand-logo">ADSI</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesion</a></li>
-        <li><a *ngIf="sesionActiva"  routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
-        <li><a *ngIf="sesionActiva"  routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
-        <li><a *ngIf="sesionActiva"  routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
-        <li><a *ngIf="sesionActiva"  routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
-        <li><a *ngIf="sesionActiva"  routerLink="/seguridad/cerrar-sesion">Cerrar Sesion</a></li>
-      </ul>
-    </div>
-  </nav>
-  <div  *ngIf="sesionActiva">
-    <app-menu-lateral> </app-menu-lateral>
+<nav class="blue">
+  <div class="nav-wrapper">
+    <a routerLink="/inicio" class="brand-logo">ADSI</a>
+    <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+      <i class="material-icons">menu</i>
+    </a>
+    <ul class="right hide-on-med-and-down">
+      <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/seguridad/cerrar-sesion">Cerrar Sesión</a></li>
+    </ul>
   </div>
+</nav>
+
+<!-- Menú lateral para móviles -->
+<ul class="sidenav" id="mobile-demo">
+  <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
+  <li><a *ngIf="sesionActiva" routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
+  <li><a *ngIf="sesionActiva" routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
+  <li><a *ngIf="sesionActiva" routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
+  <li><a *ngIf="sesionActiva" routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
+  <li><a *ngIf="sesionActiva" routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
+  <li><a *ngIf="sesionActiva" routerLink="/seguridad/cerrar-sesion">Cerrar Sesión</a></li>
+</ul>

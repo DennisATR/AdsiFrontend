@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <legend>Editar Gasto</legend>
+        </div>
+
+        <div class="card-content">
+            <form [formGroup]="fgValidador" (ngSubmit)="ActualizarRegistro()">
+                <div class="form-grid">
+                    <!-- Concepto -->
+                    <div class="input">
+                        <input type="text" id="concepto" formControlName="concepto" class="validate"
+                            [class.error]="concepto?.invalid && concepto?.touched">
+                        <label for="concepto">Concepto</label>
+                        <div *ngIf="concepto?.invalid && concepto?.touched" class="error-message">
+                            <small *ngIf="concepto?.errors?.['required']">El concepto es requerido</small>
+                        </div>
+                    </div>
+
+                    <!-- Descripción     -->
+                    <div class="input">
+                        <input type="text" id="descripcion" formControlName="descripcion" class="validate"
+                            [class.error]="descripcion?.invalid && descripcion?.touched">
+                        <label for="descripcion">Descripción (Opcional)</label>
+                    </div>
+                    <!-- Valor -->
+                    <div class="input">
+                        <input type="text" id="valor" appFormatoMiles formControlName="valor" class="validate"
+                            [class.error]="valor?.invalid && valor?.touched">
+                        <label for="valor">Valor</label>
+                        <div *ngIf="valor?.invalid && valor?.touched" class="error-message">
+                            <small *ngIf="valor?.errors?.['required']">El valor es requerido</small>
+                            <small *ngIf="valor?.errors?.['min']">El valor debe ser mayor o igual a 0</small>
+                        </div>
+                    </div>
+                    <!-- Fecha -->
+                    <div class="input">
+                        <input type="date" id="fecha" formControlName="fecha" class="validate"
+                            [class.error]="fecha?.invalid && fecha?.touched">
+                        <label for="fecha">Fecha</label>
+                        <div *ngIf="fecha?.invalid && fecha?.touched" class="error-message">
+                            <small *ngIf="fecha?.errors?.['required']">La fecha es requerida</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <a routerLink="/parametros/gasto/crear-gasto" class="btn-cancel">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn-confirm" [disabled]="fgValidador.invalid">
+                        Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

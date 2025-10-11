@@ -125,8 +125,9 @@
           <!-- Precio Venta Máximo -->
           <div class="input">
             <input 
-              type="number" 
+              type="text" 
               id="precioVentaMax"
+              appFormatoMiles
               formControlName="precioVentaMax"
               class="validate"
               [class.error]="precioVentaMax?.invalid && precioVentaMax?.touched">
@@ -139,8 +140,9 @@
           <!-- Precio Venta Mínimo -->
           <div class="input">
             <input 
-              type="number" 
+              type="text" 
               id="precioVentaMin"
+              appFormatoMiles
               formControlName="precioVentaMin"
               class="validate"
               [class.error]="precioVentaMin?.invalid && precioVentaMin?.touched">
