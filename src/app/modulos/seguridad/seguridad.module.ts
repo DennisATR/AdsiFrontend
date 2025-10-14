@@ -10,6 +10,7 @@ import { ListarUsuarioComponent } from './usuario/listar-usuario/listar-usuario.
 import { NgxPaginationModule } from 'ngx-pagination';
 import { EditarUsuarioComponent } from './usuario/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from './usuario/eliminar-usuario/eliminar-usuario.component';
+import { SharedDirectivesModule } from '../../shared/shared-directives.module';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { EliminarUsuarioComponent } from './usuario/eliminar-usuario/eliminar-us
     SeguridadRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    SharedDirectivesModule
   ]
 })
 export class SeguridadModule { }

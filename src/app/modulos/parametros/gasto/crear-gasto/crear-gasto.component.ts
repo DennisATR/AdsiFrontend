@@ -3,6 +3,7 @@ import { ListarGastoComponent } from '../listar-gasto/listar-gasto.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GastoService } from '../../../../servicios/parametros/gasto.service';
 import { GastoModel } from '../../../../modelos/gasto.model';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
 
 @Component({
   selector: 'app-crear-gasto',
@@ -18,10 +19,7 @@ export class CrearGastoComponent implements OnInit {
   conceptosFiltrados: string[] = [];
   showConceptoDropdown: boolean = false;
   selectedConceptoIndex: number = -1;
-  conceptosComunes: string[] = [
-    'Arriendo', 'Servicio de Luz', 'Servicio de Agua', 'Pan del Dia', 'Internet',
-    'Papel Higiénico', 'Artículos de Limpieza', 'Retiro de Caja', 'Otros'
-  ];
+  conceptosComunes = ConfiguracionListas.conceptosGasto
 
   constructor(
     private fb: FormBuilder,
@@ -82,163 +80,8 @@ export class CrearGastoComponent implements OnInit {
     });
   }
 
-  // Métodos para el selector de conceptos inteligente
-  onConceptoSearchInput(): void {
-    const query = this.ConceptoSearchQuery.toLowerCase().trim();
-    
-    if (!query) {
-      this.conceptosFiltrados = [...this.conceptosComunes];
-    } else {
-      this.conceptosFiltrados = this.conceptosComunes.filter(concepto => 
-        concepto.toLowerCase().includes(query)
-      );
-    }
-    
-    this.showConceptoDropdown = true;
-    this.selectedConceptoIndex = -1;
-    
-    // Solo establecer el valor si existe en la lista
-    const existeEnLista = this.conceptosComunes.some(
-      concepto => concepto.toLowerCase() === query
-    );
-    if (existeEnLista) {
-      this.fGroup.get('Concepto')?.setValue(this.ConceptoSearchQuery);
-    } else {
-      this.fGroup.get('Concepto')?.setValue('');
-    }
-  }
-
-  onConceptoKeydown(event: KeyboardEvent, nextField?: HTMLElement): void {
-    if (!this.showConceptoDropdown) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        // Solo permitir avanzar si hay un concepto válido seleccionado
-        const conceptoValido = this.conceptosComunes.some(
-          concepto => concepto.toLowerCase() === this.ConceptoSearchQuery.toLowerCase().trim()
-        );
-        if (conceptoValido) {
-          this.fGroup.get('Concepto')?.setValue(this.ConceptoSearchQuery.trim());
-          this.fGroup.get('Concepto')?.markAsTouched();
-          if (nextField) {
-            nextField.focus();
-          }
-        } else {
-          this.fGroup.get('Concepto')?.markAsTouched();
-        }
-      }
-      return;
-    }
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        this.selectedConceptoIndex = Math.min(
-          this.selectedConceptoIndex + 1,
-          this.conceptosFiltrados.length - 1
-        );
-        this.scrollToSelectedConceptoOption();
-        break;
-        
-      case 'ArrowUp':
-        event.preventDefault();
-        this.selectedConceptoIndex = Math.max(this.selectedConceptoIndex - 1, 0);
-        this.scrollToSelectedConceptoOption();
-        break;
-        
-      case 'Enter':
-        event.preventDefault();
-        if (this.selectedConceptoIndex >= 0 && this.selectedConceptoIndex < this.conceptosFiltrados.length) {
-          this.seleccionarConcepto(this.conceptosFiltrados[this.selectedConceptoIndex]);
-          if (nextField) {
-            nextField.focus();
-          }
-        }
-        break;
-        
-      case 'Escape':
-        event.preventDefault();
-        this.showConceptoDropdown = false;
-        this.selectedConceptoIndex = -1;
-        break;
-        
-      case 'Tab':
-        // Solo permitir tab si hay un concepto válido
-        const conceptoValido = this.conceptosComunes.some(
-          concepto => concepto.toLowerCase() === this.ConceptoSearchQuery.toLowerCase().trim()
-        );
-        if (conceptoValido) {
-          this.fGroup.get('Concepto')?.setValue(this.ConceptoSearchQuery.trim());
-        }
-        this.showConceptoDropdown = false;
-        this.selectedConceptoIndex = -1;
-        break;
-    }
-  }
-
-  scrollToSelectedConceptoOption(): void {
-    if (this.selectedConceptoIndex >= 0) {
-      setTimeout(() => {
-        const dropdown = document.querySelector('.search-select-dropdown');
-        const selectedOption = dropdown?.querySelector(`.search-select-option:nth-child(${this.selectedConceptoIndex + 1})`);
-        
-        if (dropdown && selectedOption) {
-          const dropdownRect = dropdown.getBoundingClientRect();
-          const optionRect = selectedOption.getBoundingClientRect();
-          
-          if (optionRect.bottom > dropdownRect.bottom) {
-            dropdown.scrollTop += optionRect.bottom - dropdownRect.bottom;
-          } else if (optionRect.top < dropdownRect.top) {
-            dropdown.scrollTop -= dropdownRect.top - optionRect.top;
-          }
-        }
-      });
-    }
-  }
-
-  onConceptoFocus(): void {
-    this.showConceptoDropdown = true;
-    this.conceptosFiltrados = [...this.conceptosComunes];
-    this.selectedConceptoIndex = -1;
-  }
-
-  onConceptoBlur(): void {
-    setTimeout(() => {
-      this.showConceptoDropdown = false;
-      this.selectedConceptoIndex = -1;
-      
-      // Validar que el concepto escrito existe en la lista
-      const conceptoValido = this.conceptosComunes.some(
-        concepto => concepto.toLowerCase() === this.ConceptoSearchQuery.toLowerCase().trim()
-      );
-      
-      if (!conceptoValido) {
-        this.ConceptoSearchQuery = '';
-        this.fGroup.get('Concepto')?.setValue('');
-      }
-    }, 200);
-  }
-
-  seleccionarConcepto(concepto: string): void {
-    this.ConceptoSearchQuery = concepto;
-    this.fGroup.get('Concepto')?.setValue(concepto);
-    this.showConceptoDropdown = false;
-    this.selectedConceptoIndex = -1;
-  }
-
-  onConceptoOptionHover(index: number): void {
-    this.selectedConceptoIndex = index;
-  }
-
-  limpiarConceptoSeleccionado(): void {
-    this.ConceptoSearchQuery = '';
-    this.fGroup.get('Concepto')?.setValue('');
-    this.conceptosFiltrados = [...this.conceptosComunes];
-    this.selectedConceptoIndex = -1;
-  }
-
   limpiarFormulario(): void {
     this.fGroup.reset();
-    this.limpiarConceptoSeleccionado();
     this.establecerFechaActual();
   }
 

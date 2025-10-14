@@ -4,6 +4,7 @@ import { ConfiguracionRutasBackend } from '../../../../config/configuracion.ruta
 import { ProveedorModel } from '../../../../modelos/proveedor.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProveedorService } from '../../../../servicios/parametros/proveedor.service';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
 
 @Component({
   selector: 'app-editar-proveedor',
@@ -14,6 +15,7 @@ export class EditarProveedorComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
   fgValidador!: FormGroup;
+  ciudadesComunes = ConfiguracionListas.ciudadesColombia 
 
   constructor(
     private fb: FormBuilder,

@@ -3,17 +3,13 @@
     <div class="card-header">
       <legend>Editar Zapato</legend>
     </div>
-    
+
     <div class="card-content">
       <form [formGroup]="fgValidador" (ngSubmit)="ActualizarRegistro()">
         <div class="form-grid">
           <!-- Descripción -->
           <div class="input">
-            <input 
-              type="text" 
-              id="descripcion"
-              formControlName="descripcion"
-              class="validate"
+            <input type="text" id="descripcion" formControlName="descripcion" class="validate"
               [class.error]="descripcion?.invalid && descripcion?.touched">
             <label for="descripcion">Descripción</label>
             <div *ngIf="descripcion?.invalid && descripcion?.touched" class="error-message">
@@ -23,39 +19,17 @@
 
           <!-- Categoría -->
           <div class="input">
-            <input 
-              type="text" 
-              id="categoria"
-              formControlName="categoria"
-              class="validate"
-              [class.error]="categoria?.invalid && categoria?.touched">
+            <input type="text" id="categoria" appSearchSelect [opciones]="categorias" [permitirPersonalizado]="true"
+              formControlName="categoria" class="validate" [class.error]="categoria?.invalid && categoria?.touched">
             <label for="categoria">Categoría</label>
             <div *ngIf="categoria?.invalid && categoria?.touched" class="error-message">
               <small *ngIf="categoria?.errors?.['required']">La categoría es requerida</small>
             </div>
           </div>
 
-          <!-- Color -->
-          <div class="input">
-            <input 
-              type="text" 
-              id="color"
-              formControlName="color"
-              class="validate"
-              [class.error]="color?.invalid && color?.touched">
-            <label for="color">Color</label>
-            <div *ngIf="color?.invalid && color?.touched" class="error-message">
-              <small *ngIf="color?.errors?.['required']">El color es requerido</small>
-            </div>
-          </div>
-
           <!-- Talla -->
           <div class="input">
-            <input 
-              type="number" 
-              id="talla"
-              formControlName="talla"
-              class="validate"
+            <input type="number" id="talla" formControlName="talla" class="validate"
               [class.error]="talla?.invalid && talla?.touched">
             <label for="talla">Talla</label>
             <div *ngIf="talla?.invalid && talla?.touched" class="error-message">
@@ -63,13 +37,19 @@
             </div>
           </div>
 
+          <!-- Color -->
+          <div class="input">
+            <input type="text" id="color" appMultiSelect [opciones]="colores" placeholder="Selecciona colores..."
+              formControlName="color" class="validate" [class.error]="color?.invalid && color?.touched">
+            <label for="color">Color</label>
+            <div *ngIf="color?.invalid && color?.touched" class="error-message">
+              <small *ngIf="color?.errors?.['required']">El color es requerido</small>
+            </div>
+          </div>
+
           <!-- Referencia -->
           <div class="input">
-            <input 
-              type="text" 
-              id="referencia"
-              formControlName="referencia"
-              class="validate"
+            <input type="text" id="referencia" formControlName="referencia" class="validate"
               [class.error]="referencia?.invalid && referencia?.touched">
             <label for="referencia">Referencia</label>
             <div *ngIf="referencia?.invalid && referencia?.touched" class="error-message">
@@ -77,59 +57,18 @@
             </div>
           </div>
 
-          <!-- Proveedor con búsqueda inteligente -->
-          <div class="input">
-            <div class="search-select-container">
-              <input type="text" 
-                     [(ngModel)]="proveedorSearchQuery"
-                     [ngModelOptions]="{standalone: true}"
-                     (input)="onProveedorSearchInput()"
-                     (keydown)="onProveedorKeydown($event)"
-                     (focus)="onProveedorFocus()"
-                     (blur)="onProveedorBlur()"
-                     placeholder="Selecciona un proveedor..."
-                     class="search-select-input"
-                     [class.error]="proveedorId?.invalid && proveedorId?.touched"
-                     autocomplete="off" />
-              <label for="proveedor-search">Proveedor</label>
-              
-              <!-- Botón para limpiar selección -->
-              <button type="button" 
-                      class="clear-button"
-                      *ngIf="proveedorSeleccionado"
-                      (click)="limpiarProveedorSeleccionado()">
-                ×
-              </button>
-
-              <!-- Dropdown de opciones de proveedores -->
-              <div class="search-select-dropdown" *ngIf="showProveedorDropdown">
-                <div class="search-select-option"
-                     *ngFor="let proveedor of proveedoresFiltrados; let i = index"
-                     (click)="seleccionarProveedor(proveedor)"
-                     (mouseenter)="onProveedorOptionHover(i)"
-                     [class.selected]="proveedorSeleccionado?.id === proveedor.id"
-                     [class.keyboard-selected]="selectedProveedorIndex === i">
-                  <span class="option-name">{{ proveedor.Nombre }}</span>
-                  <span class="option-id">(ID: {{ proveedor.id }})</span>
-                </div>
-                <div class="no-results" *ngIf="proveedoresFiltrados.length === 0">
-                  No se encontraron proveedores
-                </div>
-              </div>
-            </div>
-            <div *ngIf="proveedorId?.invalid && proveedorId?.touched" class="error-message">
-              <small *ngIf="proveedorId?.errors?.['required']">El proveedor es requerido</small>
-            </div>
+          <div class="input col s3">
+            <input formControlName="proveedorNombre" appSearchSelect [opciones]="proveedoresNombres"
+              [permitirPersonalizado]="false" (opcionSeleccionada)="onProveedorSeleccionado($event)"
+              placeholder="Busca un proveedor..." id="proveedorNombre" #proveedor type="text" class="validate">
+            <label for="proveedorNombre">Proveedor</label>
           </div>
+
+
 
           <!-- Precio Venta Máximo -->
           <div class="input">
-            <input 
-              type="text" 
-              id="precioVentaMax"
-              appFormatoMiles
-              formControlName="precioVentaMax"
-              class="validate"
+            <input type="text" id="precioVentaMax" appFormatoMiles formControlName="precioVentaMax" class="validate"
               [class.error]="precioVentaMax?.invalid && precioVentaMax?.touched">
             <label for="precioVentaMax">Precio Venta Máximo</label>
             <div *ngIf="precioVentaMax?.invalid && precioVentaMax?.touched" class="error-message">
@@ -139,12 +78,7 @@
 
           <!-- Precio Venta Mínimo -->
           <div class="input">
-            <input 
-              type="text" 
-              id="precioVentaMin"
-              appFormatoMiles
-              formControlName="precioVentaMin"
-              class="validate"
+            <input type="text" id="precioVentaMin" appFormatoMiles formControlName="precioVentaMin" class="validate"
               [class.error]="precioVentaMin?.invalid && precioVentaMin?.touched">
             <label for="precioVentaMin">Precio Venta Mínimo</label>
             <div *ngIf="precioVentaMin?.invalid && precioVentaMin?.touched" class="error-message">
@@ -154,11 +88,7 @@
 
           <!-- Cantidad -->
           <div class="input">
-            <input 
-              type="number" 
-              id="cantidad"
-              formControlName="cantidad"
-              class="validate"
+            <input type="number" id="cantidad" formControlName="cantidad" class="validate"
               [class.error]="cantidad?.invalid && cantidad?.touched">
             <label for="cantidad">Cantidad</label>
             <div *ngIf="cantidad?.invalid && cantidad?.touched" class="error-message">

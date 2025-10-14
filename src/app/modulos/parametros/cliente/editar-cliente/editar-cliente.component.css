@@ -238,6 +238,16 @@ small {
   box-shadow: 0 4px 15px rgba(156, 163, 175, 0.3);
 }
 
+.search-select-option {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
 /* Responsive design siguiendo el mismo patrón */
 @media (max-width: 768px) {
   .container {

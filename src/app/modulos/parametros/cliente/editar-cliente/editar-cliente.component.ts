@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClienteService } from '../../../../servicios/parametros/cliente.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClienteModel } from '../../../../modelos/cliente.model';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
 
 @Component({
   selector: 'app-editar-cliente',
@@ -14,6 +15,7 @@ export class EditarClienteComponent {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
   fgValidador!: FormGroup;
+  ciudadesComunes = ConfiguracionListas.ciudadesColombia;
 
   constructor(
     private fb: FormBuilder,

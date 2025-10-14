@@ -41,6 +41,23 @@
                         <label for="fechaNac">Fecha de Nacimiento</label>
                     </div>
 
+                    <!-- Ciudad -->
+                    <div class="input">
+                        <input type="text" id="ciudad" appSearchSelect [opciones]="ciudadesComunes" [permitirPersonalizado]="true" formControlName="ciudad" class="validate"
+                            [class.error]="ciudad?.invalid && ciudad?.touched">
+                        <label for="ciudad">Ciudad</label>
+                        <div *ngIf="ciudad?.invalid && ciudad?.touched" class="error-message">
+                            <small *ngIf="ciudad?.errors?.['required']">La ciudad es requerida</small>
+                        </div>
+                    </div>
+
+                    <!-- Barrio -->
+                    <div class="input">
+                        <input type="text" id="barrio" formControlName="barrio" class="validate"
+                            [class.error]="barrio?.invalid && barrio?.touched">
+                        <label for="barrio">Barrio</label>
+                    </div>
+
                     <!-- Correo -->
                     <div class="input">
                         <input type="email" id="correo" formControlName="correo" class="validate"
@@ -58,25 +75,6 @@
                             [class.error]="telefono?.invalid && telefono?.touched">
                         <label for="telefono">Teléfono</label>
                     </div>
-
-                    <!-- Ciudad -->
-                    <div class="input">
-                        <input type="text" id="ciudad" formControlName="ciudad" class="validate"
-                            [class.error]="ciudad?.invalid && ciudad?.touched">
-                        <label for="ciudad">Ciudad</label>
-                        <div *ngIf="ciudad?.invalid && ciudad?.touched" class="error-message">
-                            <small *ngIf="ciudad?.errors?.['required']">La ciudad es requerida</small>
-                        </div>
-                    </div>
-
-                    <!-- Barrio -->
-                    <div class="input">
-                        <input type="text" id="barrio" formControlName="barrio" class="validate"
-                            [class.error]="barrio?.invalid && barrio?.touched">
-                        <label for="barrio">Barrio</label>
-                    </div>
-
-
                 </div>
 
                 <div class="button-container">

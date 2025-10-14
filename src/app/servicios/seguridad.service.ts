@@ -5,6 +5,7 @@ import { UsuarioModel } from '../modelos/usuario.model';
 import { ConfiguracionRutasBackend } from '../config/configuracion.rutas.backend';
 import { UsuarioValidadoModel } from '../modelos/usuario.validado.model';
 import { cambiarClavemodel } from '../modelos/cambiarClave.model';
+import { RolModel } from '../modelos/rol.model';
 
 @Injectable({
   providedIn: 'root'
@@ -161,4 +162,8 @@ export class SeguridadService {
     return this.http.delete<any>(`${this.urlBase}empleado/${id}`);
   }
 
+  //  Metodo para obtener todos los roles
+  ObtenerRoles(): Observable<RolModel[]> {
+    return this.http.get<RolModel[]>(`${this.urlBase}rol`);
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZapatoModel } from '../../../../modelos/zapato.model';
 import { ConfiguracionPaginacion } from '../../../../config/configuracion.paginacion';
@@ -6,40 +6,37 @@ import { ProveedorModel } from '../../../../modelos/proveedor.model';
 import { ListarZapatoComponent } from '../listar-zapato/listar-zapato.component';
 import { ZapatoService } from '../../../../servicios/parametros/zapato.service';
 import { ProveedorService } from '../../../../servicios/parametros/proveedor.service';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
+import { MultiSelectDirective } from '../../../../directivas/multi-select.directive';
 
 @Component({
   selector: 'app-crear-zapato',
   templateUrl: './crear-zapato.component.html',
   styleUrl: './crear-zapato.component.css'
 })
-export class CrearZapatoComponent {
-  // ViewChild para acceder al componente de listar zapatos
+export class CrearZapatoComponent implements OnInit {
   @ViewChild(ListarZapatoComponent) listarZapatoComponent!: ListarZapatoComponent;
+  @ViewChild(MultiSelectDirective) colorDirective!: MultiSelectDirective;
 
   fGroup: FormGroup = new FormGroup({});
   zapatos: ZapatoModel[] = [];
   zapatosFiltrados: ZapatoModel[] = [];
   proveedores: ProveedorModel[] = [];
+  proveedoresNombres: string[] = [];
+  colores = ConfiguracionListas.colores
   searchQuery: string = '';
   pag = 1;
   total = 0;
   totalItems = 0;
   registrosPorPagina = ConfiguracionPaginacion.registrosPorPagina;
   codigoBarraHabilitado: boolean = false;
-
-  // Nuevas propiedades para el select de búsqueda
-  proveedorSearchQuery: string = '';
-  proveedoresFiltrados: ProveedorModel[] = [];
-  showProveedorDropdown: boolean = false;
-  proveedorSeleccionado: ProveedorModel | null = null;
-  selectedProveedorIndex: number = -1; // Índice del proveedor seleccionado con teclado
+  categoriasComunes = ConfiguracionListas.categoriasZapatos
 
   constructor(
     private fb: FormBuilder,
     private servicioZapato: ZapatoService,
     private servicioProveedor: ProveedorService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.ConstruirFormulario();
@@ -47,13 +44,10 @@ export class CrearZapatoComponent {
     this.fGroup.get('CodigoBarra')?.disable();
   }
 
-  get ObtenerFormGroup(){
+  get ObtenerFormGroup() {
     return this.fGroup.controls;
   }
 
-  /**
-   * Construcción del formulario con los controles
-   */
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
       CodigoBarra: ['', Validators.required],
@@ -68,34 +62,40 @@ export class CrearZapatoComponent {
       Cantidad: ['', Validators.required],
       Fecha: ['', Validators.required],
       proveedorId: ['', Validators.required],
+      ProveedorNombre: ['', Validators.required],
     });
   }
 
   RegistrarZapato() {
     let campos = this.ObtenerFormGroup;
     let datos = {
-      id: campos["CodigoBarra"].value,
-      Descripcion: campos["Descripcion"].value,
-      Categoria: campos["Categoria"].value,
-      Talla: campos["Talla"].value,
-      Color: campos["Color"].value,
+      id: campos['CodigoBarra'].value,
+      Descripcion: campos['Descripcion'].value,
+      Categoria: campos['Categoria'].value,
+      Talla: campos['Talla'].value,
+      Color: campos['Color'].value,
       Ganancia: 0,
-      Referencia: campos["Referencia"].value,
-      PrecioVentaMax: campos["PrecioVentaMax"].value,
-      PrecioVentaMin: campos["PrecioVentaMin"].value,
-      Cantidad: campos["Cantidad"].value,
+      Referencia: campos['Referencia'].value,
+      PrecioVentaMax: campos['PrecioVentaMax'].value,
+      PrecioVentaMin: campos['PrecioVentaMin'].value,
+      Cantidad: campos['Cantidad'].value,
       Fecha: new Date().toISOString(),
-      proveedorId: parseInt(campos["proveedorId"].value),
+      proveedorId: parseInt(campos['proveedorId'].value),
     };
+
     console.log(datos);
+
     this.servicioZapato.RegistrarZapato(datos).subscribe({
       next: (respuesta: ZapatoModel) => {
-        alert("Zapato registrado correctamente");
+        alert('Zapato registrado correctamente');
         this.limpiarFormulario();
-        this.listarZapatoComponent.obtenerZapatos();
+        if (this.listarZapatoComponent) {
+          this.listarZapatoComponent.obtenerZapatos();
+        }
       },
       error: (err) => {
-        alert("Error al registrar el zapato");
+        alert('Error al registrar el zapato');
+        console.error('Error:', err);
       }
     });
   }
@@ -104,151 +104,28 @@ export class CrearZapatoComponent {
     this.servicioProveedor.ObtenerProveedores().subscribe({
       next: (respuesta: ProveedorModel[]) => {
         this.proveedores = respuesta;
-        this.proveedoresFiltrados = [...this.proveedores]; // Inicializar filtrados
+        this.proveedoresNombres = this.proveedores.map(
+          p => `${p.Nombre} (ID: ${p.id})`
+        );
       },
       error: (err) => {
-        alert("Error al obtener los proveedores");
+        alert('Error al obtener los proveedores');
+        console.error('Error:', err);
       }
     });
   }
 
-  // Nuevos métodos para el select de búsqueda
-  onProveedorSearchInput(): void {
-    const query = this.proveedorSearchQuery.toLowerCase().trim();
-    
-    if (!query) {
-      this.proveedoresFiltrados = [...this.proveedores];
-    } else {
-      this.proveedoresFiltrados = this.proveedores.filter(proveedor => {
-        return proveedor.Nombre?.toLowerCase().includes(query) ||
-               proveedor.id?.toString().includes(query);
-      });
+  onProveedorSeleccionado(nombreCompleto: string): void {
+    const match = nombreCompleto.match(/\(ID:\s*(\d+)\)/);
+    if (match) {
+      const proveedorId = match[1];
+      this.fGroup.get('proveedorId')?.setValue(proveedorId);
     }
-    
-    this.showProveedorDropdown = true;
-    this.selectedProveedorIndex = -1; // Resetear selección de teclado
-    
-    // Limpiar selección si no hay coincidencias exactas
-    if (this.proveedorSeleccionado && 
-        !this.proveedorSeleccionado.Nombre?.toLowerCase().includes(query) &&
-        !this.proveedorSeleccionado.id?.toString().includes(query)) {
-      this.proveedorSeleccionado = null;
-      this.fGroup.get('proveedorId')?.setValue('');
-    }
-  }
-
-  onProveedorKeydown(event: KeyboardEvent, nextField?: HTMLElement): void {
-    if (!this.showProveedorDropdown) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        if (nextField) {
-          nextField.focus();
-        }
-      }
-      return;
-    }
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        this.selectedProveedorIndex = Math.min(
-          this.selectedProveedorIndex + 1,
-          this.proveedoresFiltrados.length - 1
-        );
-        this.scrollToSelectedOption();
-        break;
-        
-      case 'ArrowUp':
-        event.preventDefault();
-        this.selectedProveedorIndex = Math.max(this.selectedProveedorIndex - 1, 0);
-        this.scrollToSelectedOption();
-        break;
-        
-      case 'Enter':
-        event.preventDefault();
-        if (this.selectedProveedorIndex >= 0 && this.selectedProveedorIndex < this.proveedoresFiltrados.length) {
-          this.seleccionarProveedor(this.proveedoresFiltrados[this.selectedProveedorIndex]);
-          if (nextField) {
-            nextField.focus();
-          }
-        } else if (nextField) {
-          // Si no hay selección con teclado, verificar si el campo es válido y pasar al siguiente
-          if (this.fGroup.get('proveedorId')?.valid) {
-            nextField.focus();
-          }
-        }
-        break;
-        
-      case 'Escape':
-        event.preventDefault();
-        this.showProveedorDropdown = false;
-        this.selectedProveedorIndex = -1;
-        break;
-        
-      case 'Tab':
-        this.showProveedorDropdown = false;
-        this.selectedProveedorIndex = -1;
-        break;
-    }
-  }
-
-  scrollToSelectedOption(): void {
-    if (this.selectedProveedorIndex >= 0) {
-      setTimeout(() => {
-        const dropdown = document.querySelector('.search-select-dropdown');
-        const selectedOption = document.querySelector(`.search-select-option:nth-child(${this.selectedProveedorIndex + 1})`);
-        
-        if (dropdown && selectedOption) {
-          const dropdownRect = dropdown.getBoundingClientRect();
-          const optionRect = selectedOption.getBoundingClientRect();
-          
-          if (optionRect.bottom > dropdownRect.bottom) {
-            dropdown.scrollTop += optionRect.bottom - dropdownRect.bottom;
-          } else if (optionRect.top < dropdownRect.top) {
-            dropdown.scrollTop -= dropdownRect.top - optionRect.top;
-          }
-        }
-      });
-    }
-  }
-
-  onProveedorFocus(): void {
-    this.showProveedorDropdown = true;
-    this.proveedoresFiltrados = [...this.proveedores];
-    this.selectedProveedorIndex = -1;
-  }
-
-  onProveedorBlur(): void {
-    // Delay para permitir que el click en la opción se registre
-    setTimeout(() => {
-      this.showProveedorDropdown = false;
-      this.selectedProveedorIndex = -1;
-    }, 200);
-  }
-
-  seleccionarProveedor(proveedor: ProveedorModel): void {
-    this.proveedorSeleccionado = proveedor;
-    this.proveedorSearchQuery = `${proveedor.Nombre} (ID: ${proveedor.id})`;
-    this.fGroup.get('proveedorId')?.setValue(proveedor.id);
-    this.showProveedorDropdown = false;
-    this.selectedProveedorIndex = -1;
-  }
-
-  onProveedorOptionHover(index: number): void {
-    this.selectedProveedorIndex = index;
-  }
-
-  limpiarProveedorSeleccionado(): void {
-    this.proveedorSeleccionado = null;
-    this.proveedorSearchQuery = '';
-    this.fGroup.get('proveedorId')?.setValue('');
-    this.proveedoresFiltrados = [...this.proveedores];
-    this.selectedProveedorIndex = -1;
   }
 
   habilitarCodigoBarra(event: Event) {
     this.codigoBarraHabilitado = (event.target as HTMLInputElement).checked;
-  
+
     if (this.codigoBarraHabilitado) {
       this.fGroup.get('CodigoBarra')?.enable();
     } else {
@@ -256,17 +133,11 @@ export class CrearZapatoComponent {
     }
   }
 
-  /**
-   * Limpia el formulario después de guardar exitosamente
-   */
   limpiarFormulario(): void {
     this.fGroup.reset();
     this.fGroup.get('CodigoBarra')?.disable();
     this.codigoBarraHabilitado = false;
-    
-    // Limpiar campos del proveedor
-    this.limpiarProveedorSeleccionado();
-    
+
     const checkbox = document.querySelector('input[type="checkbox"]') as HTMLInputElement;
     if (checkbox) {
       checkbox.checked = false;
@@ -275,18 +146,23 @@ export class CrearZapatoComponent {
 
   focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
     const fieldName = currentField.id || currentField.getAttribute('formControlName') || '';
-    
+
     if (this.fGroup.get(fieldName)?.valid) {
       currentField.blur();
       if (nextField) {
-        nextField.focus();
+        // Verificar si el siguiente campo es el Color (multiselect)
+        if (nextField.id === 'Color' && this.colorDirective) {
+          this.colorDirective.focus();
+        } else {
+          nextField.focus();
+        }
       }
     } else {
       currentField.focus();
       this.fGroup.get(fieldName)?.markAsTouched();
     }
   }
-  
+
   submitOrFocusNext(currentField: HTMLElement) {
     currentField.blur();
     if (this.fGroup.valid) {
@@ -297,11 +173,17 @@ export class CrearZapatoComponent {
         if (control && control.invalid) {
           const invalidField = document.getElementById(controlName);
           if (invalidField) {
-            invalidField.focus();
+            // Si el campo inválido es Color, usar la directiva
+            if (controlName === 'Color' && this.colorDirective) {
+              this.colorDirective.focus();
+            } else {
+              invalidField.focus();
+            }
           }
           break;
         }
       }
     }
   }
+
 }

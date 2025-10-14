@@ -7,49 +7,35 @@
     <div class="form-section">
       <div class="row">
         <div class="input col s3">
-          <input formControlName="Nombre"
-                 id="Nombre"
-                 #nombre
-                 (keydown.enter)="focusNext(nombre, apellido)"
-                 type="text"
-                 class="validate" />
+          <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, apellido)" type="text"
+            class="validate" />
           <label for="Nombre">Nombre</label>
           <div *ngIf="ObtenerFormGroup['Nombre'].invalid && ObtenerFormGroup['Nombre'].touched" class="error-message">
             <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
           </div>
         </div>
         <div class="input col s3">
-          <input formControlName="Apellido"
-                 id="Apellido"
-                 #apellido
-                 (keydown.enter)="focusNext(apellido, identificacion)"
-                 type="text"
-                 class="validate" />
+          <input formControlName="Apellido" id="Apellido" #apellido
+            (keydown.enter)="focusNext(apellido, identificacion)" type="text" class="validate" />
           <label for="Apellido">Apellido</label>
-          <div *ngIf="ObtenerFormGroup['Apellido'].invalid && ObtenerFormGroup['Apellido'].touched" class="error-message">
+          <div *ngIf="ObtenerFormGroup['Apellido'].invalid && ObtenerFormGroup['Apellido'].touched"
+            class="error-message">
             <small>El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
           </div>
         </div>
 
         <div class="input col s3">
-          <input formControlName="Identificacion"
-                 id="Identificacion"
-                 #identificacion
-                 (keydown.enter)="focusNext(identificacion,  fechaNac)"
-                 type="text"
-                 class="validate" />
+          <input formControlName="Identificacion" id="Identificacion" #identificacion
+            (keydown.enter)="focusNext(identificacion, fechaNac)" type="text" class="validate" />
           <label for="Identificacion">Identificación (Opcional)</label>
         </div>
 
         <div class="input col s3">
-          <input formControlName="FechaNac"
-                 id="FechaNac"
-                 #fechaNac
-                 (keydown.enter)="focusNext(fechaNac, correo)"
-                 type="date"
-                 class="validate" />
+          <input formControlName="FechaNac" id="FechaNac" #fechaNac (keydown.enter)="focusNext(fechaNac, correo)"
+            type="date" class="validate" />
           <label for="FechaNac">Fecha de Nacimiento</label>
-          <div *ngIf="ObtenerFormGroup['FechaNac'].invalid && ObtenerFormGroup['FechaNac'].touched" class="error-message">
+          <div *ngIf="ObtenerFormGroup['FechaNac'].invalid && ObtenerFormGroup['FechaNac'].touched"
+            class="error-message">
             <small>La fecha de nacimiento es obligatoria.</small>
           </div>
         </div>
@@ -60,12 +46,8 @@
     <div class="form-section">
       <div class="row">
         <div class="input col s3">
-          <input formControlName="Correo"
-                 id="Correo"
-                 #correo
-                 (keydown.enter)="focusNext(correo, telefono)"
-                 type="email"
-                 class="validate" />
+          <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, telefono)" type="email"
+            class="validate" />
           <label for="Correo">Correo Electrónico</label>
           <div *ngIf="ObtenerFormGroup['Correo'].invalid && ObtenerFormGroup['Correo'].touched" class="error-message">
             <small>El correo es obligatorio y debe ser válido.</small>
@@ -73,66 +55,28 @@
         </div>
 
         <div class="input col s3">
-          <input formControlName="Telefono"
-                 id="Telefono"
-                 #telefono
-                 (keydown.enter)="focusNext(telefono, ciudadSelect)"
-                 type="text"
-                 class="validate" />
+          <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="focusNext(telefono, ciudadSelect)"
+            type="text" class="validate" />
           <label for="Telefono">Teléfono</label>
-          <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched" class="error-message">
+          <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched"
+            class="error-message">
             <small>El teléfono es obligatorio y debe tener entre 7 y 10 dígitos.</small>
           </div>
         </div>
 
         <div class="input col s3">
-          <div class="search-select-container">
-            <input type="text" 
-                   #ciudadSelect
-                   [(ngModel)]="ciudadSearchQuery"
-                   [ngModelOptions]="{standalone: true}"
-                   (input)="onCiudadSearchInput()"
-                   (keydown)="onCiudadKeydown($event, barrio)"
-                   (focus)="onCiudadFocus()"
-                   (blur)="onCiudadBlur()"
-                   placeholder="Escribe o selecciona una ciudad..."
-                   class="search-select-input"
-                   autocomplete="off" />
-            <label for="ciudad-search">Ciudad</label>
-            
-            <!-- Botón para limpiar selección -->
-            <button type="button" 
-                    class="clear-button"
-                    *ngIf="ciudadSearchQuery"
-                    (click)="limpiarCiudadSeleccionada()">
-              ×
-            </button>
-
-            <!-- Dropdown de opciones de ciudades -->
-            <div class="search-select-dropdown" *ngIf="showCiudadDropdown">
-              <div class="search-select-option"
-                   *ngFor="let ciudad of ciudadesFiltradas; let i = index"
-                   (click)="seleccionarCiudad(ciudad)"
-                   (mouseenter)="onCiudadOptionHover(i)"
-                   [class.keyboard-selected]="selectedCiudadIndex === i">
-                <span class="option-name">{{ ciudad }}</span>
-              </div>
-              <div class="no-results" *ngIf="ciudadesFiltradas.length === 0">
-                No se encontraron ciudades
-              </div>
-            </div>
-          </div>
+          <input formControlName="Ciudad" appSearchSelect [opciones]="ciudadesComunes" [permitirPersonalizado]="true"
+            placeholder="Escribe o selecciona una ciudad..." id="Ciudad" #ciudadSelect
+            (keydown.enter)="focusNext(ciudadSelect, barrio)" type="text" class="validate" />
+          <label for="Ciudad">Ciudad</label>
           <div *ngIf="ObtenerFormGroup['Ciudad'].invalid && ObtenerFormGroup['Ciudad'].touched" class="error-message">
             <small>La ciudad es obligatoria.</small>
           </div>
         </div>
-         <div class="input col s3">
-          <input formControlName="Barrio"
-                 id="Barrio"
-                 #barrio
-                 (keydown.enter)="submitOrFocusNext(barrio)"
-                 type="text"
-                 class="validate" />
+
+        <div class="input col s3">
+          <input formControlName="Barrio" id="Barrio" #barrio (keydown.enter)="submitOrFocusNext(barrio)" type="text"
+            class="validate" />
           <label for="Barrio">Barrio (Opcional)</label>
         </div>
       </div>
@@ -140,9 +84,7 @@
 
     <div class="row button-row">
       <div class="col s12 button-container">
-        <button class="btn-custom waves-effect waves-light"
-                type="button"
-                (click)="RegistrarCliente()">
+        <button class="btn-custom waves-effect waves-light" type="button" (click)="RegistrarCliente()">
           Guardar
         </button>
       </div>

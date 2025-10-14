@@ -64,46 +64,14 @@
           </div>
 
           <div class="input col s4">
-            <div class="search-select-container">
-              <input type="text" 
-                     #ciudadSelect
-                     [(ngModel)]="ciudadSearchQuery"
-                     [ngModelOptions]="{standalone: true}"
-                     (input)="onCiudadSearchInput()"
-                     (keydown)="onCiudadKeydown($event, nit)"
-                     (focus)="onCiudadFocus()"
-                     (blur)="onCiudadBlur()"
-                     placeholder="Escribe o selecciona una ciudad..."
-                     class="search-select-input"
-                     autocomplete="off" />
-              <label for="ciudad-search">Ciudad</label>
-              
-              <!-- Botón para limpiar selección -->
-              <button type="button" 
-                      class="clear-button"
-                      *ngIf="ciudadSearchQuery"
-                      (click)="limpiarCiudadSeleccionada()">
-                ×
-              </button>
-
-              <!-- Dropdown de opciones de ciudades -->
-              <div class="search-select-dropdown" *ngIf="showCiudadDropdown">
-                <div class="search-select-option"
-                     *ngFor="let ciudad of ciudadesFiltradas; let i = index"
-                     (click)="seleccionarCiudad(ciudad)"
-                     (mouseenter)="onCiudadOptionHover(i)"
-                     [class.keyboard-selected]="selectedCiudadIndex === i">
-                  <span class="option-name">{{ ciudad }}</span>
-                </div>
-                <div class="no-results" *ngIf="ciudadesFiltradas.length === 0">
-                  No se encontraron ciudades
-                </div>
-              </div>
-            </div>
-            <div *ngIf="ObtenerFormGroup['Ciudad'].invalid && ObtenerFormGroup['Ciudad'].touched" class="error-message">
-              <small>La ciudad es obligatoria.</small>
-            </div>
+          <input formControlName="Ciudad" appSearchSelect [opciones]="ciudadesComunes" [permitirPersonalizado]="true"
+            placeholder="Escribe o selecciona una ciudad..." id="Ciudad" #ciudadSelect
+            (keydown.enter)="focusNext(ciudadSelect, nit)" type="text" class="validate" />
+          <label for="Ciudad">Ciudad</label>
+          <div *ngIf="ObtenerFormGroup['Ciudad'].invalid && ObtenerFormGroup['Ciudad'].touched" class="error-message">
+            <small>La ciudad es obligatoria.</small>
           </div>
+        </div>
 
           <div class="input col s4">
             <input formControlName="NIT"

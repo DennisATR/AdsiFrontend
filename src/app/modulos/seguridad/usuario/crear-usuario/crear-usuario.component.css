@@ -102,75 +102,6 @@ body {
 }
 
 /* Estilos para el componente de búsqueda inteligente */
-.search-select-container {
-  position: relative;
-  width: 100%;
-}
-
-.search-select-input {
-  width: 100%;
-  max-width: 100%;
-  padding: 0.75rem 1rem;
-  padding-right: 2.5rem; /* Espacio para el botón de limpiar */
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  background-color: white;
-  box-sizing: border-box;
-}
-
-.search-select-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  background-color: #fefefe;
-}
-
-.search-select-input:hover {
-  border-color: #9ca3af;
-}
-
-.clear-button {
-  position: absolute;
-  right: 10px;
-  top: 40%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #9ca3af;
-  cursor: pointer;
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.clear-button:hover {
-  background-color: #f3f4f6;
-  color: #6b7280;
-}
-
-.search-select-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: white;
-  border: 1px solid #d1d5db;
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
 .search-select-option {
   padding: 0.75rem 1rem;
   cursor: pointer;
@@ -179,47 +110,6 @@ body {
   justify-content: space-between;
   align-items: center;
   transition: background-color 0.2s ease;
-}
-
-.search-select-option:hover {
-  background-color: #f8fafc;
-}
-
-.search-select-option.selected {
-  background-color: #e0f2fe;
-  border-color: #3b82f6;
-}
-
-.search-select-option.keyboard-selected {
-  background-color: #dbeafe;
-  outline: 2px solid #3b82f6;
-  outline-offset: -2px;
-}
-
-.search-select-option.selected.keyboard-selected {
-  background-color: #bfdbfe;
-}
-
-.search-select-option:last-child {
-  border-bottom: none;
-}
-
-.option-name {
-  font-weight: 500;
-  color: #374151;
-}
-
-.option-id {
-  font-size: 0.75rem;
-  color: #6b7280;
-  font-style: italic;
-}
-
-.no-results {
-  padding: 1rem;
-  text-align: center;
-  color: #9ca3af;
-  font-style: italic;
 }
 
 /* Estados de validación */

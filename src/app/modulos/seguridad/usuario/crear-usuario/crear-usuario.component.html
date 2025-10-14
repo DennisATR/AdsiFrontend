@@ -1,133 +1,81 @@
 <div class="card-container">
-    <div class="title">
-      <h5>Gestión de Usuarios</h5>
+  <div class="title">
+    <h5>Gestión de Usuarios</h5>
+  </div>
+  <form [formGroup]="fGroup" class="col s12">
+    <!-- Sección de Información del Usuario -->
+    <div class="form-section">
+      <div class="row">
+        <div class="input col s4">
+          <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, apellido)" type="text"
+            class="validate" />
+          <label for="Nombre">Nombre</label>
+          <div *ngIf="ObtenerFormGroup['Nombre'].invalid && ObtenerFormGroup['Nombre'].touched" class="error-message">
+            <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
+          </div>
+        </div>
+        <div class="input col s4">
+          <input formControlName="Apellido" id="Apellido" #apellido (keydown.enter)="focusNext(apellido, rol)"
+            type="text" class="validate" />
+          <label for="Apellido">Apellido</label>
+          <div *ngIf="ObtenerFormGroup['Apellido'].invalid && ObtenerFormGroup['Apellido'].touched"
+            class="error-message">
+            <small>El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
+          </div>
+        </div>
+        <div class="input col s4">
+          <input formControlName="RolNombre" appSearchSelect [opciones]="rolesNombres" [permitirPersonalizado]="false"
+            (opcionSeleccionada)="onRolSeleccionado($event)" placeholder="Busca un rol..." id="RolNombre" #rol
+            (keydown.enter)="focusNext(rol, correo)" type="text" class="validate" />
+          <label for="RolNombre">Rol</label>
+          <div *ngIf="ObtenerFormGroup['Rol'].invalid && ObtenerFormGroup['Rol'].touched" class="error-message">
+            <small>El rol es obligatorio.</small>
+          </div>
+        </div>
+      </div>
     </div>
-    <form [formGroup]="fGroup" class="col s12">
-      <!-- Sección de Información del Usuario -->
-      <div class="form-section">
-        <div class="row">
-          <div class="input col s4">
-            <input formControlName="Nombre" 
-                   id="Nombre"  
-                   #nombre
-                   (keydown.enter)="focusNext(nombre, apellido)"
-                   type="text" class="validate" />
-            <label for="Nombre">Nombre</label>
-            <div *ngIf="ObtenerFormGroup['Nombre'].invalid && ObtenerFormGroup['Nombre'].touched" class="error-message">
-              <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
-            </div>
-          </div>
-          <div class="input col s4">
-            <input formControlName="Apellido" 
-                   id="Apellido" 
-                   #apellido
-                   (keydown.enter)="focusNext(apellido, rolSelect)"
-                   type="text" 
-                   class="validate" />
-            <label for="Apellido">Apellido</label>
-            <div *ngIf="ObtenerFormGroup['Apellido'].invalid && ObtenerFormGroup['Apellido'].touched" class="error-message">
-              <small>El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
-            </div>
-          </div>
-          <div class="input col s4">
-            <div class="search-select-container">
-              <input type="text" 
-                     #rolSelect
-                     [(ngModel)]="rolSearchQuery"
-                     [ngModelOptions]="{standalone: true}"
-                     (input)="onRolSearchInput()"
-                     (keydown)="onRolKeydown($event, correo)"
-                     (focus)="onRolFocus()"
-                     (blur)="onRolBlur()"
-                     placeholder="Selecciona un rol..."
-                     class="search-select-input"
-                     autocomplete="off" />
-              <label for="rol-search">Rol</label>
-              
-              <!-- Botón para limpiar selección -->
-              <button type="button" 
-                      class="clear-button"
-                      *ngIf="rolSeleccionado"
-                      (click)="limpiarRolSeleccionado()">
-                ×
-              </button>
 
-              <!-- Dropdown de opciones de roles -->
-              <div class="search-select-dropdown" *ngIf="showRolDropdown">
-                <div class="search-select-option"
-                     *ngFor="let rol of rolesFiltrados; let i = index"
-                     (click)="seleccionarRol(rol)"
-                     (mouseenter)="onRolOptionHover(i)"
-                     [class.selected]="rolSeleccionado?.id === rol.id"
-                     [class.keyboard-selected]="selectedRolIndex === i">
-                  <span class="option-name">{{ rol.nombre }}</span>
-                  <span class="option-id">(ID: {{ rol.id }})</span>
-                </div>
-                <div class="no-results" *ngIf="rolesFiltrados.length === 0">
-                  No se encontraron roles
-                </div>
-              </div>
-            </div>
-            <div *ngIf="ObtenerFormGroup['Rol'].invalid && ObtenerFormGroup['Rol'].touched" class="error-message">
-              <small>El rol es obligatorio.</small>
-            </div>
+    <!-- Sección de Contacto y Seguridad -->
+    <div class="form-section">
+      <div class="row">
+        <div class="input col s4">
+          <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, contrasena)"
+            type="email" class="validate" />
+          <label for="Correo">Correo Electrónico</label>
+          <div *ngIf="ObtenerFormGroup['Correo'].invalid && ObtenerFormGroup['Correo'].touched" class="error-message">
+            <small>El correo es obligatorio y debe tener un formato válido.</small>
+          </div>
+        </div>
+        <div class="input col s4">
+          <input formControlName="Contraseña" id="Contraseña" #contrasena
+            (keydown.enter)="focusNext(contrasena, telefono)" type="password" class="validate" />
+          <label for="Contraseña">Contraseña</label>
+          <div *ngIf="ObtenerFormGroup['Contraseña'].invalid && ObtenerFormGroup['Contraseña'].touched"
+            class="error-message">
+            <small>La contraseña es obligatoria y debe tener al menos 3 caracteres.</small>
+          </div>
+        </div>
+        <div class="input col s4">
+          <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="submitOrFocusNext(telefono)"
+            type="text" class="validate" />
+          <label for="Telefono">Teléfono Celular</label>
+          <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched"
+            class="error-message">
+            <small>El teléfono debe tener al menos 10 caracteres.</small>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Sección de Contacto y Seguridad -->
-      <div class="form-section">
-        <div class="row">
-          <div class="input col s4">
-            <input formControlName="Correo" 
-                   id="Correo"
-                   #correo
-                   (keydown.enter)="focusNext(correo, contrasena)" 
-                   type="email" 
-                   class="validate" />
-            <label for="Correo">Correo Electrónico</label>
-            <div *ngIf="ObtenerFormGroup['Correo'].invalid && ObtenerFormGroup['Correo'].touched" class="error-message">
-              <small>El correo es obligatorio y debe tener un formato válido.</small>
-            </div>
-          </div>
-          <div class="input col s4">
-            <input formControlName="Contraseña" 
-                   id="Contraseña" 
-                   #contrasena
-                   (keydown.enter)="focusNext(contrasena, telefono)"
-                   type="password" 
-                   class="validate" />
-            <label for="Contraseña">Contraseña</label>
-            <div *ngIf="ObtenerFormGroup['Contraseña'].invalid && ObtenerFormGroup['Contraseña'].touched" class="error-message">
-              <small>La contraseña es obligatoria y debe tener al menos 3 caracteres.</small>
-            </div>
-          </div>  
-          <div class="input col s4">
-            <input formControlName="Telefono" 
-                   id="Telefono" 
-                   #telefono
-                   (keydown.enter)="submitOrFocusNext(telefono)"
-                   type="text" 
-                   class="validate" />
-            <label for="Telefono">Teléfono Celular</label>
-            <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched" class="error-message">
-              <small>El teléfono debe tener al menos 10 caracteres.</small>
-            </div>
-          </div>
-        </div>
+    <div class="row button-row">
+      <div class="col s12 button-container">
+        <button class="btn-custom waves-effect waves-light" type="button" (click)="Registrarse()">
+          Guardar
+        </button>
       </div>
+    </div>
+  </form>
 
-      <div class="row button-row">
-        <div class="col s12 button-container">
-          <button class="btn-custom waves-effect waves-light" 
-                  type="button" 
-                  (click)="Registrarse()">
-            Guardar
-          </button>
-        </div>
-      </div>
-    </form>
-    
-    <!-- Tabla de Usuarios -->
-    <app-listar-usuario></app-listar-usuario>
+  <!-- Tabla de Usuarios -->
+  <app-listar-usuario></app-listar-usuario>
 </div>

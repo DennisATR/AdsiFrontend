@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfiguracionRutasBackend } from '../../../../config/configuracion.rutas.backend';
 import { UsuarioModel } from '../../../../modelos/usuario.model';
+import { RolModel } from '../../../../modelos/rol.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeguridadService } from '../../../../servicios/seguridad.service';
 
@@ -15,18 +16,8 @@ export class EditarUsuarioComponent implements OnInit {
   recordId: number = 0;
   fgValidador!: FormGroup;
   
-  // Datos para el componente de búsqueda de rol
-  rolesDisponibles = [
-    { id: 1, nombre: 'Administrador' },
-    { id: 2, nombre: 'Vendedor' },
-    { id: 3, nombre: 'Bodeguero' }
-  ];
-  
-  rolSearchQuery: string = '';
-  rolesFiltrados = [...this.rolesDisponibles];
-  rolSeleccionado: any = null;
-  showRolDropdown: boolean = false;
-  selectedRolIndex: number = -1;
+  rolesDisponibles: RolModel[] = [];
+  rolesNombres: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -39,7 +30,7 @@ export class EditarUsuarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.BuscarRegistro();
+    this.obtenerRoles();
   }
 
   ConstruirFormulario() {
@@ -49,28 +40,46 @@ export class EditarUsuarioComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.minLength(10)]],
       clave: ['', [Validators.required, Validators.minLength(3)]],
-      rol: ['', [Validators.required]]
+      rol: ['', [Validators.required]],
+      rolNombre: ['', [Validators.required]]
+    });
+  }
+
+  obtenerRoles() {
+    this.servicio.ObtenerRoles().subscribe({
+      next: (respuesta: RolModel[]) => {
+        this.rolesDisponibles = respuesta;
+        this.rolesNombres = this.rolesDisponibles.map(
+          rol => `${rol.Nombre} (ID: ${rol.id})`
+        );
+        // Después de obtener los roles, buscar el registro
+        this.BuscarRegistro();
+      },
+      error: (err) => {
+        alert('Error al obtener los roles');
+        console.error('Error:', err);
+      }
     });
   }
 
   BuscarRegistro() {
     this.servicio.BuscarUsuario(this.recordId).subscribe({
       next: (datos: UsuarioModel) => {
+        // Buscar el nombre del rol para mostrar en el input
+        const rolEncontrado = this.rolesDisponibles.find(r => r.id === datos.rolId);
+        const rolNombreCompleto = rolEncontrado 
+          ? `${rolEncontrado.Nombre} (ID: ${rolEncontrado.id})`
+          : '';
+
         this.fgValidador.patchValue({
           nombre: datos.Nombre,
           apellido: datos.Apellido,
           correo: datos.Correo,
           telefono: datos.Telefono,
           clave: datos.Clave,
-          rol: datos.rolId
+          rol: datos.rolId,
+          rolNombre: rolNombreCompleto
         });
-        
-        // Configurar el rol seleccionado para el componente de búsqueda
-        const rolEncontrado = this.rolesDisponibles.find(r => r.id === datos.rolId);
-        if (rolEncontrado) {
-          this.rolSeleccionado = rolEncontrado;
-          this.rolSearchQuery = rolEncontrado.nombre;
-        }
       },
       error: (err) => {
         alert("El registro no existe.");
@@ -79,7 +88,15 @@ export class EditarUsuarioComponent implements OnInit {
     });
   }
 
-    ActualizarRegistro() {
+  onRolSeleccionado(nombreCompleto: string): void {
+    const match = nombreCompleto.match(/\(ID:\s*(\d+)\)/);
+    if (match) {
+      const rolId = parseInt(match[1], 10);
+      this.fgValidador.patchValue({ rol: rolId });
+    }
+  }
+
+  ActualizarRegistro() {
     if (this.fgValidador.invalid) {
       alert("Formulario inválido. Por favor complete todos los campos correctamente.");
       return;
@@ -111,69 +128,7 @@ export class EditarUsuarioComponent implements OnInit {
     });
   }
 
-  // Métodos para el componente de búsqueda de rol
-  onRolSearchInput() {
-    this.rolesFiltrados = this.rolesDisponibles.filter(rol =>
-      rol.nombre.toLowerCase().includes(this.rolSearchQuery.toLowerCase())
-    );
-    this.selectedRolIndex = -1;
-  }
-
-  onRolFocus() {
-    this.showRolDropdown = true;
-    this.onRolSearchInput();
-  }
-
-  onRolBlur() {
-    setTimeout(() => {
-      this.showRolDropdown = false;
-    }, 200);
-  }
-
-  seleccionarRol(rol: any) {
-    this.rolSeleccionado = rol;
-    this.rolSearchQuery = rol.nombre;
-    this.fgValidador.patchValue({ rol: rol.id });
-    this.showRolDropdown = false;
-  }
-
-  limpiarRolSeleccionado() {
-    this.rolSeleccionado = null;
-    this.rolSearchQuery = '';
-    this.fgValidador.patchValue({ rol: '' });
-    this.rolesFiltrados = [...this.rolesDisponibles];
-  }
-
-  onRolKeydown(event: KeyboardEvent, nextElement?: HTMLElement) {
-    if (!this.showRolDropdown) return;
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        this.selectedRolIndex = Math.min(this.selectedRolIndex + 1, this.rolesFiltrados.length - 1);
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        this.selectedRolIndex = Math.max(this.selectedRolIndex - 1, -1);
-        break;
-      case 'Enter':
-        event.preventDefault();
-        if (this.selectedRolIndex >= 0 && this.selectedRolIndex < this.rolesFiltrados.length) {
-          this.seleccionarRol(this.rolesFiltrados[this.selectedRolIndex]);
-        }
-        if (nextElement) nextElement.focus();
-        break;
-      case 'Escape':
-        this.showRolDropdown = false;
-        break;
-    }
-  }
-
-  onRolOptionHover(index: number) {
-    this.selectedRolIndex = index;
-  }
-
-  // Métodos para validaciones
+  // Getters para validaciones
   get nombre() { return this.fgValidador.get('nombre'); }
   get apellido() { return this.fgValidador.get('apellido'); }
   get correo() { return this.fgValidador.get('correo'); }

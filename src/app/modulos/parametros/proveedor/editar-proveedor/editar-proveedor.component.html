@@ -3,17 +3,13 @@
     <div class="card-header">
       <legend>Editar Proveedor</legend>
     </div>
-    
+
     <div class="card-content">
       <form [formGroup]="fgValidador" (ngSubmit)="ActualizarRegistro()">
         <div class="form-grid">
           <!-- Nombre -->
           <div class="input">
-            <input 
-              type="text" 
-              id="nombre"
-              formControlName="nombre"
-              class="validate"
+            <input type="text" id="nombre" formControlName="nombre" class="validate"
               [class.error]="nombre?.invalid && nombre?.touched">
             <label for="nombre">Nombre</label>
             <div *ngIf="nombre?.invalid && nombre?.touched" class="error-message">
@@ -23,11 +19,7 @@
 
           <!-- Empresa -->
           <div class="input">
-            <input 
-              type="text" 
-              id="empresa"
-              formControlName="empresa"
-              class="validate"
+            <input type="text" id="empresa" formControlName="empresa" class="validate"
               [class.error]="empresa?.invalid && empresa?.touched">
             <label for="empresa">Empresa</label>
             <div *ngIf="empresa?.invalid && empresa?.touched" class="error-message">
@@ -35,13 +27,29 @@
             </div>
           </div>
 
+          <!-- NIT -->
+          <div class="input">
+            <input type="text" id="nit" formControlName="nit" class="validate"
+              [class.error]="nit?.invalid && nit?.touched">
+            <label for="nit">NIT</label>
+            <div *ngIf="nit?.invalid && nit?.touched" class="error-message">
+              <small *ngIf="nit?.errors?.['required']">El NIT es requerido</small>
+            </div>
+          </div>
+
+          <!-- Ciudad -->
+          <div class="input">
+            <input type="text" id="ciudad" appSearchSelect [opciones]="ciudadesComunes" [permitirPersonalizado]="true"
+              formControlName="ciudad" class="validate" [class.error]="ciudad?.invalid && ciudad?.touched">
+            <label for="ciudad">Ciudad</label>
+            <div *ngIf="ciudad?.invalid && ciudad?.touched" class="error-message">
+              <small *ngIf="ciudad?.errors?.['required']">La ciudad es requerida</small>
+            </div>
+          </div>
+
           <!-- Teléfono -->
           <div class="input">
-            <input 
-              type="tel" 
-              id="telefono"
-              formControlName="telefono"
-              class="validate"
+            <input type="tel" id="telefono" formControlName="telefono" class="validate"
               [class.error]="telefono?.invalid && telefono?.touched">
             <label for="telefono">Teléfono</label>
             <div *ngIf="telefono?.invalid && telefono?.touched" class="error-message">
@@ -51,44 +59,12 @@
 
           <!-- Correo -->
           <div class="input">
-            <input 
-              type="email" 
-              id="correo"
-              formControlName="correo"
-              class="validate"
+            <input type="email" id="correo" formControlName="correo" class="validate"
               [class.error]="correo?.invalid && correo?.touched">
             <label for="correo">Correo Electrónico</label>
             <div *ngIf="correo?.invalid && correo?.touched" class="error-message">
               <small *ngIf="correo?.errors?.['required']">El correo es requerido</small>
               <small *ngIf="correo?.errors?.['email']">Ingrese un correo válido</small>
-            </div>
-          </div>
-
-          <!-- Ciudad -->
-          <div class="input">
-            <input 
-              type="text" 
-              id="ciudad"
-              formControlName="ciudad"
-              class="validate"
-              [class.error]="ciudad?.invalid && ciudad?.touched">
-            <label for="ciudad">Ciudad</label>
-            <div *ngIf="ciudad?.invalid && ciudad?.touched" class="error-message">
-              <small *ngIf="ciudad?.errors?.['required']">La ciudad es requerida</small>
-            </div>
-          </div>
-
-          <!-- NIT -->
-          <div class="input">
-            <input 
-              type="text" 
-              id="nit"
-              formControlName="nit"
-              class="validate"
-              [class.error]="nit?.invalid && nit?.touched">
-            <label for="nit">NIT</label>
-            <div *ngIf="nit?.invalid && nit?.touched" class="error-message">
-              <small *ngIf="nit?.errors?.['required']">El NIT es requerido</small>
             </div>
           </div>
         </div>

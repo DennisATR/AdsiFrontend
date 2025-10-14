@@ -20,12 +20,13 @@ import { CrearGastoComponent } from './gasto/crear-gasto/crear-gasto.component';
 import { ListarGastoComponent } from './gasto/listar-gasto/listar-gasto.component';
 import { EliminarGastoComponent } from './gasto/eliminar-gasto/eliminar-gasto.component';
 import { EditarGastoComponent } from './gasto/editar-gasto/editar-gasto.component';
-import { FormatoMilesDirective } from '../../directivas/formato-miles.directive';
+import { SharedDirectivesModule } from '../../shared/shared-directives.module';
+import { MultiSelectDirective } from '../../directivas/multi-select.directive';
+
 
 
 @NgModule({
   declarations: [
-    FormatoMilesDirective,
     CrearZapatoComponent,
     CrearProveedorComponent,
     ListarZapatoComponent,
@@ -49,6 +50,7 @@ import { FormatoMilesDirective } from '../../directivas/formato-miles.directive'
     ReactiveFormsModule,
     FormsModule,
     NgxPaginationModule,
+    SharedDirectivesModule
   ]
 })
 export class ParametrosModule { }
