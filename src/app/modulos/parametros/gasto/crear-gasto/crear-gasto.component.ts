@@ -73,8 +73,12 @@ export class CrearGastoComponent implements OnInit {
           this.listarGastoComponent.obtenerGastos();
         }
       },
-      error: (err) => {
-        alert('Error al registrar el gasto');
+      error: (err: any) => {
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });

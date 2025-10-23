@@ -11,7 +11,7 @@ import { GastoModel } from '../../../../modelos/gasto.model';
   styleUrl: './editar-gasto.component.css'
 })
 export class EditarGastoComponent {
- BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
+  BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
   fgValidador!: FormGroup;
 
@@ -74,7 +74,11 @@ export class EditarGastoComponent {
         this.router.navigate(['/parametros/gasto/crear-gasto']);
       },
       error: (err: any) => {
-        alert("Ha ocurrido un error al actualizar");
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });
@@ -82,7 +86,7 @@ export class EditarGastoComponent {
 
   // Métodos para validaciones
   get concepto() { return this.fgValidador.get('concepto'); }
-  get valor() { return this.fgValidador.get('valor'); } 
+  get valor() { return this.fgValidador.get('valor'); }
   get fecha() { return this.fgValidador.get('fecha'); }
   get descripcion() { return this.fgValidador.get('descripcion'); }
 }

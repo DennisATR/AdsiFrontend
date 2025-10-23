@@ -74,7 +74,11 @@ export class CrearClienteComponent implements OnInit {
         }
       },
       error: (err) => {
-        alert("Error al registrar el cliente");
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });

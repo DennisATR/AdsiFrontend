@@ -23,7 +23,7 @@ body {
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
   border-radius: 8px 8px 0 0;
-  margin: -1.5rem -1.5rem 2.5rem -1.5rem;
+  margin: -1.5rem -1.5rem 0.5rem -1.5rem;
 }
 
 .card-container {
@@ -36,7 +36,70 @@ body {
   border: 1px solid #e2e8f0;
 }
 
-/* Secciones del formulario - SIN divisiones visibles */
+/* ==================== SISTEMA DE PESTAÑAS ==================== */
+.tabs-container {
+  margin: -1.5rem -1.5rem 2.5rem -1.5rem;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+.tabs {
+  display: flex;
+  list-style: none;
+  gap: 8px;
+  background-color: transparent;
+}
+
+.tab {
+  flex: 0 1 auto;
+}
+
+.tab a {
+  left: 8px;
+  display: block;
+  padding: 0.2rem 2rem;
+  text-align: center;
+  color: #64748b;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background-color: #f8fafc;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+}
+
+.tab a:hover {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.tab a.active {
+  color: #1e293b;
+  background-color: #ffffff;
+  font-weight: 700;
+}
+
+/* Contenido de las pestañas */
+.tab-content {
+  padding: 0;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== SECCIONES DEL FORMULARIO ==================== */
 .form-section {
   margin-bottom: 1.5rem;
   padding: 0;
@@ -49,7 +112,7 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Estilos para inputs */
+/* ==================== ESTILOS PARA INPUTS ==================== */
 .input {
   position: relative;
   margin-bottom: 1.5rem;
@@ -95,7 +158,7 @@ body {
   z-index: 1;
 }
 
-/* Estilos para el checkbox */
+/* ==================== ESTILOS PARA CHECKBOX ==================== */
 .checkbox-container {
   display: flex;
   padding: 0.6rem 1rem;
@@ -127,7 +190,7 @@ body {
   background-color: #e2e8f0;
 }
 
-/* Estilos para el componente de búsqueda de proveedor */
+/* ==================== BÚSQUEDA DE PROVEEDOR ==================== */
 .search-select-option {
   padding: 0.75rem 1rem;
   cursor: pointer;
@@ -138,7 +201,7 @@ body {
   transition: background-color 0.2s ease;
 }
 
-/* Estados de validación */
+/* ==================== ESTADOS DE VALIDACIÓN ==================== */
 .input input.ng-invalid.ng-touched {
   border-color: #dc2626;
 }
@@ -165,7 +228,7 @@ small {
   font-weight: 500;
 }
 
-/* Estilos para el botón personalizado */
+/* ==================== ESTILOS PARA BOTONES ==================== */
 .button-row {
   margin-top: 1rem;
   margin-bottom: 0;
@@ -214,7 +277,7 @@ small {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
-/* Responsive */
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .card-container {
     width: 95%;
@@ -234,6 +297,16 @@ small {
 
   .search-select-dropdown {
     max-height: 150px;
+  }
+
+  /* Pestañas responsive */
+  .tabs-container {
+    margin: 0 0 1.5rem 0;
+  }
+  
+  .tab a {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -259,5 +332,15 @@ small {
 
   .search-select-option {
     padding: 0.5rem 0.75rem;
+  }
+
+  /* Pestañas en móvil */
+  .tabs {
+    gap: 4px;
+  }
+  
+  .tab a {
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
   }
 }

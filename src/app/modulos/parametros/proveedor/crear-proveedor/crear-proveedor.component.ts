@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProveedorModel } from '../../../../modelos/proveedor.model';
 import { ListarProveedorComponent } from '../listar-proveedor/listar-proveedor.component';
 import { ProveedorService } from '../../../../servicios/parametros/proveedor.service';
-import { ConfiguracionListas} from '../../../../config/configuracion.listas';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
 
 
 @Component({
@@ -25,11 +25,11 @@ export class CrearProveedorComponent {
   constructor(
     private fb: FormBuilder,
     private servicioProveedor: ProveedorService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.ConstruirFormulario();
-    
+
     // Inicializar ciudades filtradas
     this.ciudadesFiltradas = [...this.ciudadesComunes];
   }
@@ -67,8 +67,13 @@ export class CrearProveedorComponent {
         this.listarProveedorComponent.obtenerProveedores();
         this.limpiarFormulario();
       },
-      error: () => {
-        alert('Error al registrar el proveedor');
+      error: (err: any) => {
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
+        console.error('Error:', err);
       }
     });
   }

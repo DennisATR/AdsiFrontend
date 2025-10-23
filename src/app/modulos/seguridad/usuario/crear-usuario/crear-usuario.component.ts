@@ -12,7 +12,7 @@ import { ListarUsuarioComponent } from '../listar-usuario/listar-usuario.compone
 })
 export class CrearUsuarioComponent implements OnInit {
   @ViewChild(ListarUsuarioComponent) listarUsuarioComponent!: ListarUsuarioComponent;
-  
+
   fGroup: FormGroup = new FormGroup({});
   rolesDisponibles: RolModel[] = [];
   rolesNombres: string[] = [];
@@ -20,7 +20,7 @@ export class CrearUsuarioComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private servicioSeguridad: SeguridadService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.ConstruirFormulario();
@@ -33,7 +33,7 @@ export class CrearUsuarioComponent implements OnInit {
       Apellido: ['', [Validators.required, Validators.minLength(2)]],
       Rol: ['', [Validators.required]],
       RolNombre: ['', [Validators.required]],
-      Contraseña: ['', [Validators.required, Validators.minLength(3)]],    
+      Contraseña: ['', [Validators.required, Validators.minLength(3)]],
       Correo: ['', [Validators.required, Validators.email]],
       Telefono: ['', [Validators.required, Validators.minLength(10)]],
     });
@@ -73,12 +73,12 @@ export class CrearUsuarioComponent implements OnInit {
       Correo: campos['Correo'].value,
       rolId: Number(campos['Rol'].value)
     };
-    
+
     if (typeof datos.rolId !== 'number' || isNaN(datos.rolId)) {
       alert('El rol seleccionado no es válido.');
       return;
     }
-    
+
     this.servicioSeguridad.RegistrarUsuario(datos).subscribe({
       next: (respuesta: UsuarioModel) => {
         alert('Registro correcto, se ha enviado un mensaje para validar su dirección de correo electrónico.');
@@ -88,7 +88,11 @@ export class CrearUsuarioComponent implements OnInit {
         this.limpiarFormulario();
       },
       error: (err) => {
-        alert('Se ha producido un error en el registro.');
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });
@@ -104,7 +108,7 @@ export class CrearUsuarioComponent implements OnInit {
 
   focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
     const fieldName = currentField.id || currentField.getAttribute('formControlName') || '';
-    
+
     if (this.fGroup.get(fieldName)?.valid) {
       currentField.blur();
       if (nextField) {
@@ -115,7 +119,7 @@ export class CrearUsuarioComponent implements OnInit {
       this.fGroup.get(fieldName)?.markAsTouched();
     }
   }
-  
+
   submitOrFocusNext(currentField: HTMLElement) {
     currentField.blur();
     if (this.fGroup.valid) {

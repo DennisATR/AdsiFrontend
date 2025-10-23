@@ -88,7 +88,11 @@ export class EditarClienteComponent {
         this.router.navigate(['/parametros/cliente/crear-cliente']);
       },
       error: (err: any) => {
-        alert("Ha ocurrido un error al actualizar");
+          if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });

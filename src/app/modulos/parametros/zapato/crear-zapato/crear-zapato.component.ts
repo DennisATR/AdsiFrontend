@@ -18,19 +18,26 @@ export class CrearZapatoComponent implements OnInit {
   @ViewChild(ListarZapatoComponent) listarZapatoComponent!: ListarZapatoComponent;
   @ViewChild(MultiSelectDirective) colorDirective!: MultiSelectDirective;
 
+  // Formularios
   fGroup: FormGroup = new FormGroup({});
+  fGroupSerie: FormGroup = new FormGroup({});
+
+  // Control de pestañas
+  tabActiva: 'unidad' | 'serie' = 'unidad';
+
   zapatos: ZapatoModel[] = [];
   zapatosFiltrados: ZapatoModel[] = [];
   proveedores: ProveedorModel[] = [];
   proveedoresNombres: string[] = [];
-  colores = ConfiguracionListas.colores
+  colores = ConfiguracionListas.colores;
   searchQuery: string = '';
   pag = 1;
   total = 0;
   totalItems = 0;
   registrosPorPagina = ConfiguracionPaginacion.registrosPorPagina;
   codigoBarraHabilitado: boolean = false;
-  categoriasComunes = ConfiguracionListas.categoriasZapatos
+  prefijoCodigoBarraHabilitado: boolean = false;
+  categoriasComunes = ConfiguracionListas.categoriasZapatos;
 
   constructor(
     private fb: FormBuilder,
@@ -40,27 +47,79 @@ export class CrearZapatoComponent implements OnInit {
 
   ngOnInit() {
     this.ConstruirFormulario();
+    this.ConstruirFormularioSerie();
     this.obtenerProveedores();
     this.fGroup.get('CodigoBarra')?.disable();
+    this.fGroupSerie.get('Prefijo')?.disable();
   }
 
   get ObtenerFormGroup() {
     return this.fGroup.controls;
   }
 
+  get ObtenerFormGroupSerie() {
+    return this.fGroupSerie.controls;
+  }
+
+  cambiarTab(tab: 'unidad' | 'serie') {
+  this.tabActiva = tab;
+  
+  // Sincronizar el estado de los checkboxes y campos después del cambio de vista
+  setTimeout(() => {
+    if (tab === 'unidad') {
+      const checkboxCodigoBarra = document.querySelector('#checkboxCodigoBarra') as HTMLInputElement;
+      if (checkboxCodigoBarra) {
+        checkboxCodigoBarra.checked = this.codigoBarraHabilitado;
+      }
+      // Asegurar el estado del campo
+      if (this.codigoBarraHabilitado) {
+        this.fGroup.get('CodigoBarra')?.enable();
+      } else {
+        this.fGroup.get('CodigoBarra')?.disable();
+      }
+    } else if (tab === 'serie') {
+      const checkboxPrefijo = document.querySelector('#checkboxPrefijo') as HTMLInputElement;
+      if (checkboxPrefijo) {
+        checkboxPrefijo.checked = this.prefijoCodigoBarraHabilitado;
+      }
+      // Asegurar el estado del campo
+      if (this.prefijoCodigoBarraHabilitado) {
+        this.fGroupSerie.get('Prefijo')?.enable();
+      } else {
+        this.fGroupSerie.get('Prefijo')?.disable();
+      }
+    }
+  }, 0);
+}
+
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
-      CodigoBarra: ['', Validators.required],
+      CodigoBarra: [''],
       Descripcion: ['', Validators.required],
       Categoria: ['', Validators.required],
       Talla: ['', Validators.required],
       Color: ['', Validators.required],
-      Ganancia: ['', Validators.required],
       Referencia: ['', Validators.required],
       PrecioVentaMax: ['', Validators.required],
       PrecioVentaMin: ['', Validators.required],
       Cantidad: ['', Validators.required],
-      Fecha: ['', Validators.required],
+      proveedorId: ['', Validators.required],
+      ProveedorNombre: ['', Validators.required],
+    });
+  }
+
+  ConstruirFormularioSerie() {
+    this.fGroupSerie = this.fb.group({
+      Prefijo: [''],
+      Descripcion: ['', Validators.required],
+      Categoria: ['', Validators.required],
+      Color: ['', Validators.required],
+      Referencia: ['', Validators.required],
+      PrecioVentaMax: ['', Validators.required],
+      PrecioVentaMin: ['', Validators.required],
+      Cantidad: ['', Validators.required],
+      TallaInicial: ['', Validators.required],
+      TallaFinal: ['', Validators.required],
       proveedorId: ['', Validators.required],
       ProveedorNombre: ['', Validators.required],
     });
@@ -94,11 +153,62 @@ export class CrearZapatoComponent implements OnInit {
         }
       },
       error: (err) => {
-        alert('Error al registrar el zapato');
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
+      }
+    });
+  }
+
+  RegistrarZapatoSerie() {
+    if (this.fGroupSerie.invalid) {
+      Object.keys(this.fGroupSerie.controls).forEach(key => {
+        this.fGroupSerie.get(key)?.markAsTouched();
+      });
+      alert('Por favor completa todos los campos requeridos');
+      return;
+    }
+
+    let campos = this.ObtenerFormGroupSerie;
+    let datos = {
+      Prefijo: campos['Prefijo'].value,
+      Descripcion: campos['Descripcion'].value,
+      Categoria: campos['Categoria'].value,
+      Color: campos['Color'].value,
+      Ganancia: 0,
+      Referencia: campos['Referencia'].value,
+      PrecioVentaMax: campos['PrecioVentaMax'].value,
+      PrecioVentaMin: campos['PrecioVentaMin'].value,
+      Cantidad: this.parseCantidad(campos['Cantidad'].value),
+      TallaInicial: parseInt(campos['TallaInicial'].value),
+      TallaFinal: parseInt(campos['TallaFinal'].value),
+      Fecha: new Date().toISOString(),
+      proveedorId: parseInt(campos['proveedorId'].value),
+    };
+
+    console.log('Datos para serie:', datos);
+
+    this.servicioZapato.RegistrarZapatoSerie(datos).subscribe({
+      next: (respuesta: any) => {
+        alert('Serie de zapatos registrada correctamente');
+        this.limpiarFormularioSerie();
+        if (this.listarZapatoComponent) {
+          this.listarZapatoComponent.obtenerZapatos();
+        }
+      },
+      error: (err: any) => {
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });
   }
+
 
   obtenerProveedores() {
     this.servicioProveedor.ObtenerProveedores().subscribe({
@@ -123,6 +233,14 @@ export class CrearZapatoComponent implements OnInit {
     }
   }
 
+  onProveedorSeleccionadoSerie(nombreCompleto: string): void {
+    const match = nombreCompleto.match(/\(ID:\s*(\d+)\)/);
+    if (match) {
+      const proveedorId = match[1];
+      this.fGroupSerie.get('proveedorId')?.setValue(proveedorId);
+    }
+  }
+
   habilitarCodigoBarra(event: Event) {
     this.codigoBarraHabilitado = (event.target as HTMLInputElement).checked;
 
@@ -133,24 +251,44 @@ export class CrearZapatoComponent implements OnInit {
     }
   }
 
+  habilitarPrefijoCodigoBarra(event: Event) {
+    this.prefijoCodigoBarraHabilitado = (event.target as HTMLInputElement).checked;
+
+    if (this.prefijoCodigoBarraHabilitado) {
+      this.fGroupSerie.get('Prefijo')?.enable();
+    } else {
+      this.fGroupSerie.get('Prefijo')?.disable();
+    }
+  }
+
   limpiarFormulario(): void {
     this.fGroup.reset();
     this.fGroup.get('CodigoBarra')?.disable();
     this.codigoBarraHabilitado = false;
+    const checkboxCodigoBarra = document.querySelector('#checkboxCodigoBarra') as HTMLInputElement;
+    if (checkboxCodigoBarra) {
+      checkboxCodigoBarra.checked = false;
+    }
+  }
 
-    const checkbox = document.querySelector('input[type="checkbox"]') as HTMLInputElement;
-    if (checkbox) {
-      checkbox.checked = false;
+  limpiarFormularioSerie(): void {
+    this.fGroupSerie.reset();
+    this.fGroupSerie.get('Prefijo')?.disable();
+    this.prefijoCodigoBarraHabilitado = false;
+
+    const checkboxPrefijo = document.querySelector('#checkboxPrefijo') as HTMLInputElement;
+    if (checkboxPrefijo) {
+      checkboxPrefijo.checked = false;
     }
   }
 
   focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
     const fieldName = currentField.id || currentField.getAttribute('formControlName') || '';
+    const formGroup = this.tabActiva === 'unidad' ? this.fGroup : this.fGroupSerie;
 
-    if (this.fGroup.get(fieldName)?.valid) {
+    if (formGroup.get(fieldName)?.valid) {
       currentField.blur();
       if (nextField) {
-        // Verificar si el siguiente campo es el Color (multiselect)
         if (nextField.id === 'Color' && this.colorDirective) {
           this.colorDirective.focus();
         } else {
@@ -159,7 +297,7 @@ export class CrearZapatoComponent implements OnInit {
       }
     } else {
       currentField.focus();
-      this.fGroup.get(fieldName)?.markAsTouched();
+      formGroup.get(fieldName)?.markAsTouched();
     }
   }
 
@@ -173,12 +311,7 @@ export class CrearZapatoComponent implements OnInit {
         if (control && control.invalid) {
           const invalidField = document.getElementById(controlName);
           if (invalidField) {
-            // Si el campo inválido es Color, usar la directiva
-            if (controlName === 'Color' && this.colorDirective) {
-              this.colorDirective.focus();
-            } else {
-              invalidField.focus();
-            }
+            invalidField.focus();
           }
           break;
         }
@@ -186,4 +319,34 @@ export class CrearZapatoComponent implements OnInit {
     }
   }
 
+  parseCantidad(valor: any): number | number[] {
+    if (typeof valor === 'string') {
+      const partes = valor.split(',').map(v => v.trim()).filter(v => v !== '');
+
+      if (partes.length > 1) {
+        return partes.map(v => Number(v));
+      }
+      return Number(partes[0]);
+    }
+    return valor;
+  }
+
+
+  submitOrFocusNextSerie(currentField: HTMLElement) {
+    currentField.blur();
+    if (this.fGroupSerie.valid) {
+      this.RegistrarZapatoSerie();
+    } else {
+      for (const controlName in this.fGroupSerie.controls) {
+        const control = this.fGroupSerie.get(controlName);
+        if (control && control.invalid) {
+          const invalidField = document.getElementById(controlName + 'Serie');
+          if (invalidField) {
+            invalidField.focus();
+          }
+          break;
+        }
+      }
+    }
+  }
 }

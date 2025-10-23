@@ -18,12 +18,12 @@ export class EditarZapatoComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: string = "";
   fgValidador!: FormGroup;
-  
+
   proveedores: ProveedorModel[] = [];
   proveedoresNombres: string[] = [];
   referenciaValue: string = "";
   colores = ConfiguracionListas.colores
-  categorias = ConfiguracionListas.categoriasZapatos 
+  categorias = ConfiguracionListas.categoriasZapatos
 
   constructor(
     private fb: FormBuilder,
@@ -76,7 +76,7 @@ export class EditarZapatoComponent implements OnInit {
       next: (datos: ZapatoModel) => {
         // Buscar el nombre del proveedor para mostrar en el input
         const proveedorEncontrado = this.proveedores.find(p => p.id === datos.proveedorId);
-        const proveedorNombreCompleto = proveedorEncontrado 
+        const proveedorNombreCompleto = proveedorEncontrado
           ? `${proveedorEncontrado.Nombre} (ID: ${proveedorEncontrado.id})`
           : '';
 
@@ -136,7 +136,11 @@ export class EditarZapatoComponent implements OnInit {
         this.router.navigate(['/parametros/zapato/crear-zapato']);
       },
       error: (err: any) => {
-        alert("Ha ocurrido un error al actualizar");
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });

@@ -17,10 +17,20 @@ export class ZapatoService {
     return this.http.post(`${this.urlBase}zapato`, datos).pipe(
       catchError(error => {
         console.error('Error al registrar el zapato:', error);
-        return throwError(() => new Error('Hubo un error al registrar el zapato.'));
+        return throwError(() => error);
       })
     );
   }
+
+  RegistrarZapatoSerie(datos: any) {
+  return this.http.post(`${this.urlBase}zapato/crearSerie`, datos).pipe(
+    catchError(error => {
+      console.error('Error al registrar el zapato en serie:', error);
+      return throwError(() => error);
+    })
+  );
+}
+
 
   ObtenerZapatos(): Observable<ZapatoModel[]> {
     return this.http.get<ZapatoModel[]>(`${this.urlBase}zapato`);

@@ -6,7 +6,7 @@ export class ZapatoSerieModel{
     Referencia?: string;
     PrecioVentaMax?: number;
     PrecioVentaMin?: number;
-    Cantidad?: number;
+    Cantidad?: string;
     TallaInicial?: number;
     TallaFinal?: number;
     Fecha?: Date;

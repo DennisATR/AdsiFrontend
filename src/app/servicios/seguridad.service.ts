@@ -12,9 +12,9 @@ import { RolModel } from '../modelos/rol.model';
 })
 export class SeguridadService {
   urlBase: string = ConfiguracionRutasBackend.urlBackend;
-  constructor( private http: HttpClient ) {
+  constructor(private http: HttpClient) {
     this.validacionDeSesion();
-   }
+  }
 
   IdentificarUsuario(usuario: string, clave: string): Observable<UsuarioModel> {
     return this.http.post<UsuarioModel>(`${this.urlBase}identificar-usuario`, {
@@ -30,47 +30,47 @@ export class SeguridadService {
     });
   }
 
-    /**
-   * Almacena los datos del usuario
-   * @param datos datos del usuario
+  /**
+ * Almacena los datos del usuario
+ * @param datos datos del usuario
+ */
+  AlmacenarDatosUsuarioIdentificado(datos: UsuarioModel): boolean {
+    let cadena = JSON.stringify(datos);
+    let datosLS = localStorage.getItem("datos-usuario");
+    if (datosLS) {
+      return false;
+    } else {
+      localStorage.setItem("datos-usuario", cadena);
+      return true;
+    }
+  }
+
+  /**
+   * Obtiene los datos del usuario
    */
-    AlmacenarDatosUsuarioIdentificado(datos: UsuarioModel): boolean {
-      let cadena = JSON.stringify(datos);
-      let datosLS = localStorage.getItem("datos-usuario");
-      if (datosLS) {
-        return false;
-      } else {
-        localStorage.setItem("datos-usuario", cadena);
-        return true;
-      }
+  ObtenerDatosUsuarioIdentificado(): UsuarioModel | null {
+    let datosLS = localStorage.getItem("datos-usuario");
+    if (datosLS) {
+      let datos = JSON.parse(datosLS);
+      return datos;
+    } else {
+      return null;
     }
+  }
 
-    /**
-     * Obtiene los datos del usuario
-     */
-    ObtenerDatosUsuarioIdentificado(): UsuarioModel| null {
-      let datosLS = localStorage.getItem("datos-usuario");
-      if (datosLS) {
-        let datos = JSON.parse(datosLS);
-        return datos;
-      } else {
-        return null;
-      }
+  AlmacenarDatosUsuarioValidado(datos: UsuarioValidadoModel): boolean {
+    let datosLS = localStorage.getItem("datos-sesion");
+    if (datosLS != null) {
+      return false;
+    } else {
+      let datosString = JSON.stringify(datos);
+      localStorage.setItem("datos-sesion", datosString);
+      this.ActualizarComportamientoUsuario(datos);
+      return true;
     }
+  }
 
-    AlmacenarDatosUsuarioValidado(datos: UsuarioValidadoModel): boolean {
-      let datosLS = localStorage.getItem("datos-sesion");
-      if (datosLS != null) {
-        return false;
-      } else {
-        let datosString = JSON.stringify(datos);
-        localStorage.setItem("datos-sesion", datosString);
-        this.ActualizarComportamientoUsuario(datos);
-        return true;
-      }
-    }
-
-      /** Administración de la sesión de usuario */
+  /** Administración de la sesión de usuario */
 
   datosUsuarioValidado = new BehaviorSubject<UsuarioValidadoModel>(new UsuarioValidadoModel());
 
@@ -104,34 +104,27 @@ export class SeguridadService {
     localStorage.removeItem("menu-lateral");
     this.ActualizarComportamientoUsuario(new UsuarioValidadoModel());
   }
-  
+
   RegistrarUsuario(datos: any): Observable<UsuarioModel> {
     console.log(datos);
-    
+
     return this.http.post<UsuarioModel>(`${this.urlBase}empleado`, {
-        Nombre: datos.Nombre,
-        Telefono: datos.Telefono,
-        FechaReg: new Date().toISOString(),
-        Apellido: datos.Apellido,
-        Clave: datos.Clave,
-        Correo: datos.Correo,
-        rolId: datos.rolId
-      })
+      Nombre: datos.Nombre,
+      Telefono: datos.Telefono,
+      FechaReg: new Date().toISOString(),
+      Apellido: datos.Apellido,
+      Clave: datos.Clave,
+      Correo: datos.Correo,
+      rolId: datos.rolId
+    })
       .pipe(
         catchError(error => {
-          // Mostrar detalles del error en consola
-          console.error('Error al registrar usuario:', error);
-          
-          // Mostrar el error específico desde la respuesta del servidor
-          if (error.error) {
-            console.error('Detalles del error:', error.error);
-          }
-          
-          return throwError(() => new Error('Hubo un error al registrar el usuario.'));
+          console.error('Error al registrar al usuario:', error);
+          return throwError(() => error);
         })
       );
   }
-  
+
   CambiarClave(datos: any): Observable<cambiarClavemodel> {
     return this.http.patch<cambiarClavemodel>(
       `${this.urlBase}cambiar-clave`,
@@ -144,17 +137,17 @@ export class SeguridadService {
     return this.http.get<UsuarioModel[]>(`${this.urlBase}empleado`);
   }
 
-  BuscarUsuario(id: number): Observable<UsuarioModel>{
+  BuscarUsuario(id: number): Observable<UsuarioModel> {
     return this.http.get<UsuarioModel>(`${this.urlBase}empleado/${id}`);
   }
 
-  EditarUsuario(id: number, datos: any): Observable<any>{
+  EditarUsuario(id: number, datos: any): Observable<any> {
     console.log(datos);
     try {
       return this.http.put<any>(`${this.urlBase}empleado/${id}`, datos);
     } catch (error) {
       console.error('Error al editar el usuario:', error);
-      throw new Error('Hubo un error al editar el usuario.');
+      return throwError(() => error);
     }
   }
 

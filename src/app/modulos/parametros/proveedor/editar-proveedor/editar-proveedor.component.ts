@@ -15,7 +15,7 @@ export class EditarProveedorComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
   fgValidador!: FormGroup;
-  ciudadesComunes = ConfiguracionListas.ciudadesColombia 
+  ciudadesComunes = ConfiguracionListas.ciudadesColombia
 
   constructor(
     private fb: FormBuilder,
@@ -82,7 +82,11 @@ export class EditarProveedorComponent implements OnInit {
         this.router.navigate(['/parametros/proveedor/crear-proveedor']);
       },
       error: (err: any) => {
-        alert("Ha ocurrido un error al actualizar");
+        if (err.error && err.error.error && err.error.error.message) {
+          alert(err.error.error.message);
+        } else {
+          alert('Ocurrió un error inesperado.');
+        }
         console.error('Error:', err);
       }
     });
