@@ -58,5 +58,8 @@ export namespace ConfiguracionListas {
         'Blanco hueso', 'Gris claro', 'Gris oscuro', 'Taupe', 'Perla'
     ];
 
-
+    export const empresasTransporte: string[] = [
+        'Servientrega', 'Coordinadora', 'Interrapidisimo',
+        'Envia', 'TCC', 'Deprisa'
+    ];
 }

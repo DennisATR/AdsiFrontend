@@ -7,6 +7,7 @@
     <ul class="right hide-on-med-and-down">
       <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
       <li><a *ngIf="sesionActiva" routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
+      <li><a *ngIf="sesionActiva" routerLink="/parametros/entrega/crear-entrega">Entregas</a></li>
       <li><a *ngIf="sesionActiva" routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
       <li><a *ngIf="sesionActiva" routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
       <li><a *ngIf="sesionActiva" routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>

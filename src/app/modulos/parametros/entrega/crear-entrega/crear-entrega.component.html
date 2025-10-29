@@ -1,0 +1,91 @@
+<div class="card-container">
+    <div class="title">
+        <h5>Gestión de Entregas</h5>
+    </div>
+    <form [formGroup]="fGroup" class="col s12">
+        <!-- Sección de Información de la Entrega -->
+        <div class="form-section">
+            <div class="row">
+                <div class="input col s7">
+                    <input formControlName="Remitente" id="Remitente" #remitente
+                        (keydown.enter)="focusNext(remitente, empresaTrans)" type="text" class="validate" />
+                    <label for="Remitente">Remitente</label>
+                    <div *ngIf="ObtenerFormGroup['Remitente'].invalid && ObtenerFormGroup['Remitente'].touched"
+                        class="error-message">
+                        <small>El remitente es obligatorio.</small>
+                    </div>
+                </div>
+
+                <div class="input col s5">
+                    <input formControlName="EmpresaTrans" appSearchSelect [opciones]="empresasComunes"
+                        [permitirPersonalizado]="true" placeholder="Selecciona una empresa..." id="EmpresaTrans"
+                        #empresaTrans (keydown.enter)="focusNext(empresaTrans, numCajas)" type="text" class="validate" />
+                    <label for="EmpresaTrans">Empresa Transportadora</label>
+                    <div *ngIf="ObtenerFormGroup['EmpresaTrans'].invalid && ObtenerFormGroup['EmpresaTrans'].touched"
+                        class="error-message">
+                        <small>La empresa transportadora es obligatoria.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Cantidad y Cobro -->
+        <div class="form-section">
+            <div class="row">
+                <div class="input col s4">
+                    <input formControlName="NumCajas" id="NumCajas" #numCajas
+                        (keydown.enter)="focusNext(numCajas, cobro)" type="number" min="1" class="validate" />
+                    <label for="NumCajas">Número de Cajas</label>
+                    <div *ngIf="ObtenerFormGroup['NumCajas'].invalid && ObtenerFormGroup['NumCajas'].touched"
+                        class="error-message">
+                        <small *ngIf="ObtenerFormGroup['NumCajas'].errors?.['required']">El número de cajas es obligatorio.</small>
+                        <small *ngIf="ObtenerFormGroup['NumCajas'].errors?.['min']">Debe ser al menos 1 caja.</small>
+                    </div>
+                </div>
+
+                <div class="input col s4">
+                    <input formControlName="Cobro" appFormatoMiles id="Cobro" #cobro
+                        (keydown.enter)="focusNext(cobro, fecha)" type="text" class="validate" />
+                    <label for="Cobro">Cobro</label>
+                    <div *ngIf="ObtenerFormGroup['Cobro'].invalid && ObtenerFormGroup['Cobro'].touched"
+                        class="error-message">
+                        <small *ngIf="ObtenerFormGroup['Cobro'].errors?.['required']">El cobro es obligatorio.</small>
+                        <small *ngIf="ObtenerFormGroup['Cobro'].errors?.['min']">El cobro debe ser mayor o igual a 0.</small>
+                    </div>
+                </div>
+
+                <div class="input col s4">
+                    <input formControlName="Fecha" id="Fecha" #fecha (keydown.enter)="focusNext(fecha, observacion)"
+                        type="date" class="validate" />
+                    <label for="Fecha">Fecha</label>
+                    <div *ngIf="ObtenerFormGroup['Fecha'].invalid && ObtenerFormGroup['Fecha'].touched"
+                        class="error-message">
+                        <small>La fecha es obligatoria.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Observación -->
+        <div class="form-section">
+            <div class="row">
+                <div class="input col s12">
+                    <input formControlName="Observacion" id="Observacion" #observacion
+                        (keydown.enter)="submitOrFocusNext(observacion)" type="text" class="validate" />
+                    <label for="Observacion">Observación (Opcional)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row button-row">
+            <div class="col s12 button-container">
+                <button class="btn-custom waves-effect waves-light" type="button" (click)="RegistrarEntrega()">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tabla de Entregas -->
+    <app-listar-entrega></app-listar-entrega>
+</div>

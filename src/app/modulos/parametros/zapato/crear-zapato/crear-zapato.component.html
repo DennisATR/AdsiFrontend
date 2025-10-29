@@ -142,7 +142,7 @@
       <div class="row button-row">
         <div class="col s12 button-container">
           <button class="btn-custom waves-effect waves-light" type="button" (click)="RegistrarZapato()">
-            Guardar
+            Guardar Unidad
           </button>
         </div>
       </div>
@@ -273,7 +273,7 @@
           <div class="input col s4">
             <input formControlName="Cantidad" id="Cantidad" #cantidadSerie
               (keydown.enter)="submitOrFocusNextSerie(cantidadSerie)" type="text" class="validate" />
-            <label for="Cantidad">Cantidad</label>
+            <label for="Cantidad">Cantidad por Talla</label>
             <div *ngIf="ObtenerFormGroupSerie['Cantidad'].invalid && ObtenerFormGroupSerie['Cantidad'].touched"
               class="error-message">
               <small>La cantidad es obligatoria.</small>

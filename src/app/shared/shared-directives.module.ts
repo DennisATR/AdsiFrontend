@@ -3,14 +3,11 @@ import { CommonModule } from '@angular/common';
 import { SearchSelectDirective } from '../directivas/search-select.directive';
 import { FormatoMilesDirective } from '../directivas/formato-miles.directive';
 import { MultiSelectDirective } from '../directivas/multi-select.directive';
-import { FormNavigationDirective } from '../directivas/form-navigation.directive';
-
 @NgModule({
   declarations: [
     SearchSelectDirective,
     FormatoMilesDirective,
     MultiSelectDirective,
-    FormNavigationDirective
   ],
   imports: [
     CommonModule
@@ -18,8 +15,7 @@ import { FormNavigationDirective } from '../directivas/form-navigation.directive
   exports: [
     SearchSelectDirective,
     FormatoMilesDirective,
-    MultiSelectDirective,
-    FormNavigationDirective
+    MultiSelectDirective
   ]
 })
 export class SharedDirectivesModule { }

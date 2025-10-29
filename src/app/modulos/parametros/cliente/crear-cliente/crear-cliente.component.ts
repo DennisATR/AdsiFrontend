@@ -4,7 +4,7 @@ import { ClienteModel } from '../../../../modelos/cliente.model';
 import { ConfiguracionPaginacion } from '../../../../config/configuracion.paginacion';
 import { ListarClienteComponent } from '../listar-cliente/listar-cliente.component';
 import { ClienteService } from '../../../../servicios/parametros/cliente.service';
-import { ConfiguracionListas} from '../../../../config/configuracion.listas';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
 
 @Component({
   selector: 'app-crear-cliente',
@@ -28,7 +28,7 @@ export class CrearClienteComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private servicioCliente: ClienteService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.ConstruirFormulario();
@@ -48,7 +48,7 @@ export class CrearClienteComponent implements OnInit {
       Correo: ['', [Validators.email]],
       Telefono: ['', [Validators.minLength(7), Validators.maxLength(10)]],
       FechaNac: [''],
-      Identificacion:[''] 
+      Identificacion: ['']
     });
   }
 
@@ -57,14 +57,14 @@ export class CrearClienteComponent implements OnInit {
     let datos = {
       Nombre: campos["Nombre"].value,
       Apellido: campos["Apellido"].value,
-      Identificacion: campos["Identificacion"].value || "", 
+      Identificacion: campos["Identificacion"].value || "",
       Ciudad: campos["Ciudad"].value,
       Barrio: campos["Barrio"].value || "",
       Correo: campos["Correo"].value || "",
       Telefono: campos["Telefono"].value || "",
       FechaNac: new Date(campos["FechaNac"].value).toISOString(),
     };
-    
+
     this.servicioCliente.RegistrarCliente(datos).subscribe({
       next: (respuesta: ClienteModel) => {
         alert("Cliente registrado correctamente");
@@ -83,14 +83,14 @@ export class CrearClienteComponent implements OnInit {
       }
     });
   }
-  
+
   limpiarFormulario(): void {
     this.fGroup.reset();
   }
 
   focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
     const fieldName = currentField.id || currentField.getAttribute('formControlName') || '';
-    
+
     if (this.fGroup.get(fieldName)?.valid) {
       currentField.blur();
       if (nextField) {

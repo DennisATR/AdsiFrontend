@@ -126,7 +126,6 @@ export class EditarZapatoComponent implements OnInit {
       Cantidad: this.fgValidador.controls['cantidad'].value,
       proveedorId: parseInt(this.fgValidador.controls['proveedorId'].value),
       Referencia: this.fgValidador.controls['referencia'].value,
-      Ganancia: 0,
       Fecha: new Date(),
     };
 

@@ -21,7 +21,10 @@ import { ListarGastoComponent } from './gasto/listar-gasto/listar-gasto.componen
 import { EliminarGastoComponent } from './gasto/eliminar-gasto/eliminar-gasto.component';
 import { EditarGastoComponent } from './gasto/editar-gasto/editar-gasto.component';
 import { SharedDirectivesModule } from '../../shared/shared-directives.module';
-import { MultiSelectDirective } from '../../directivas/multi-select.directive';
+import { EliminarEntregaComponent } from './entrega/eliminar-entrega/eliminar-entrega.component';
+import { CrearEntregaComponent } from './entrega/crear-entrega/crear-entrega.component';
+import { EditarEntregaComponent } from './entrega/editar-entrega/editar-entrega.component';
+import { ListarEntregaComponent } from './entrega/listar-entrega/listar-entrega.component';
 
 
 
@@ -42,7 +45,11 @@ import { MultiSelectDirective } from '../../directivas/multi-select.directive';
     CrearGastoComponent,
     ListarGastoComponent,
     EliminarGastoComponent,
-    EditarGastoComponent
+    EditarGastoComponent,
+    CrearEntregaComponent,
+    ListarEntregaComponent,
+    EditarEntregaComponent,
+    EliminarEntregaComponent
   ],
   imports: [
     CommonModule,

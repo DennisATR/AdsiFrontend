@@ -17,6 +17,10 @@ import { CrearGastoComponent } from './gasto/crear-gasto/crear-gasto.component';
 import { ListarGastoComponent } from './gasto/listar-gasto/listar-gasto.component';
 import { EditarGastoComponent } from './gasto/editar-gasto/editar-gasto.component';
 import { EliminarGastoComponent } from './gasto/eliminar-gasto/eliminar-gasto.component';
+import { CrearEntregaComponent } from './entrega/crear-entrega/crear-entrega.component';
+import { ListarEntregaComponent } from './entrega/listar-entrega/listar-entrega.component';
+import { EliminarEntregaComponent } from './entrega/eliminar-entrega/eliminar-entrega.component';
+import { EditarEntregaComponent } from './entrega/editar-entrega/editar-entrega.component';
 
 const routes: Routes = [
   {
@@ -100,6 +104,26 @@ const routes: Routes = [
   {
     path: 'gasto/editar-gasto/:id',
     component: EditarGastoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'entrega/crear-entrega',
+    component: CrearEntregaComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'entrega/listar-entrega',
+    component: ListarEntregaComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'entrega/editar-entrega/:id',
+    component: EditarEntregaComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'entrega/eliminar-entrega/:id',
+    component: EliminarEntregaComponent,
     canActivate: [ValidarSesionActivaGuard]
   }
 ];

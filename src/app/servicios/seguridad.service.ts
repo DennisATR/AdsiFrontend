@@ -108,7 +108,7 @@ export class SeguridadService {
   RegistrarUsuario(datos: any): Observable<UsuarioModel> {
     console.log(datos);
 
-    return this.http.post<UsuarioModel>(`${this.urlBase}empleado`, {
+    return this.http.post<UsuarioModel>(`${this.urlBase}usuario`, {
       Nombre: datos.Nombre,
       Telefono: datos.Telefono,
       FechaReg: new Date().toISOString(),
@@ -134,17 +134,17 @@ export class SeguridadService {
 
   // Método para obtener todos los usuarios
   obtenerUsuarios(): Observable<UsuarioModel[]> {
-    return this.http.get<UsuarioModel[]>(`${this.urlBase}empleado`);
+    return this.http.get<UsuarioModel[]>(`${this.urlBase}usuario`);
   }
 
   BuscarUsuario(id: number): Observable<UsuarioModel> {
-    return this.http.get<UsuarioModel>(`${this.urlBase}empleado/${id}`);
+    return this.http.get<UsuarioModel>(`${this.urlBase}usuario/${id}`);
   }
 
   EditarUsuario(id: number, datos: any): Observable<any> {
     console.log(datos);
     try {
-      return this.http.put<any>(`${this.urlBase}empleado/${id}`, datos);
+      return this.http.put<any>(`${this.urlBase}usuario/${id}`, datos);
     } catch (error) {
       console.error('Error al editar el usuario:', error);
       return throwError(() => error);
@@ -152,7 +152,7 @@ export class SeguridadService {
   }
 
   EliminarUsuario(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.urlBase}empleado/${id}`);
+    return this.http.delete<any>(`${this.urlBase}usuario/${id}`);
   }
 
   //  Metodo para obtener todos los roles

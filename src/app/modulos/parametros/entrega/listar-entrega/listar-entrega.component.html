@@ -1,0 +1,62 @@
+<div class="table-container">
+  <div class="table-header">
+    <h5>Lista de Entregas</h5>
+  </div>
+  <div class="search-bar">
+    <input type="text"
+           placeholder="Buscar entrega..."
+           [(ngModel)]="searchQuery"
+           (input)="filtrarEntrega()"
+           class="validate" />
+  </div>
+
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Remitente</th>
+        <th>Empresa Transportadora</th>
+        <th>Número de Cajas</th>
+        <th>Cobro</th>
+        <th>Fecha</th>
+        <th>Observación</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entrega of entregasFiltradas | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems }">
+        <td>{{ entrega.id }}</td>
+        <td>{{ entrega.Remitente || 'N/A' }}</td>
+        <td>{{ entrega.EmpresaTrans || 'N/A' }}</td>
+        <td>{{ entrega.NumCajas || 0 }}</td>
+        <td>{{ entrega.Cobro || 0 }}</td>
+        <td>{{ formatearFecha(entrega.Fecha) }}</td>
+        <td>{{ entrega.Observacion || 'N/A' }}</td>
+        <td class="actions-cell">
+          <div class="action-buttons">
+            <a [routerLink]="['/parametros/entrega/editar-entrega', entrega.id]" 
+               class="btn-action btn-edit" 
+               title="Editar entrega">
+              ✏️
+            </a>
+            <a [routerLink]="['/parametros/entrega/eliminar-entrega', entrega.id]" 
+               class="btn-action btn-delete" 
+               title="Eliminar entrega">
+              ✕
+            </a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Control de paginación -->
+  <pagination-controls
+    (pageChange)="pag = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+    screenReaderPaginationLabel="Navegación"
+    screenReaderPageLabel="Página"
+    screenReaderCurrentLabel="Página Actual">
+  </pagination-controls>
+</div>
