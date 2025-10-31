@@ -1,1 +1,49 @@
-<p>eliminar-entrega works!</p>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <legend>Eliminar Entrega</legend>
+    </div>
+    
+    <div class="card-content">
+      <div class="confirmation-message">
+        <strong>¿Confirma la eliminación de esta entrega?</strong>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Remitente</div>
+          <div class="info-value">{{ remitente }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Empresa de Transporte</div>
+          <div class="info-value">{{ empresaTrans }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Número de Cajas</div>
+          <div class="info-value">{{ numCajas }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Cobro</div>
+          <div class="info-value">{{ cobro }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Fecha</div>
+          <div class="info-value">{{ fecha }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Observación</div>
+          <div class="info-value">{{ observacion }}</div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <a routerLink="/parametros/entrega/crear-entrega" class="btn-cancel">
+          Cancelar
+        </a>
+        <button (click)="EliminarRegistro()" class="btn-confirm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

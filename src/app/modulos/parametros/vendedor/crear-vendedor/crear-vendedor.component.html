@@ -1,0 +1,63 @@
+<div class="card-container">
+  <div class="title">
+    <h5>Gestión de Vendedores</h5>
+  </div>
+  <form [formGroup]="fGroup" class="col s12">
+    <!-- Sección de Información del Vendedor -->
+    <div class="form-section">
+      <div class="row">
+        <div class="input col s6">
+          <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, apellido)" type="text"
+            class="validate" />
+          <label for="Nombre">Nombre</label>
+          <div *ngIf="ObtenerFormGroup['Nombre'].invalid && ObtenerFormGroup['Nombre'].touched" class="error-message">
+            <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
+          </div>
+        </div>
+        <div class="input col s6">
+          <input formControlName="Apellido" id="Apellido" #apellido (keydown.enter)="focusNext(apellido, correo)"
+            type="text" class="validate" />
+          <label for="Apellido">Apellido</label>
+          <div *ngIf="ObtenerFormGroup['Apellido'].invalid && ObtenerFormGroup['Apellido'].touched"
+            class="error-message">
+            <small>El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Contacto -->
+    <div class="form-section">
+      <div class="row">
+        <div class="input col s6">
+          <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, telefono)"
+            type="email" class="validate" />
+          <label for="Correo">Correo Electrónico</label>
+          <div *ngIf="ObtenerFormGroup['Correo'].invalid && ObtenerFormGroup['Correo'].touched" class="error-message">
+            <small>El correo es obligatorio y debe tener un formato válido.</small>
+          </div>
+        </div>
+        <div class="input col s6">
+          <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="submitOrFocusNext(telefono)"
+            type="text" class="validate" />
+          <label for="Telefono">Teléfono Celular</label>
+          <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched"
+            class="error-message">
+            <small>El teléfono debe tener al menos 10 caracteres.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row button-row">
+      <div class="col s12 button-container">
+        <button class="btn-custom waves-effect waves-light" type="button" (click)="Registrarse()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Tabla de Vendedores -->
+  <app-listar-vendedor></app-listar-vendedor>
+</div>

@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <legend>Eliminar Vendedor</legend>
+    </div>
+    
+    <div class="card-content">
+      <div class="confirmation-message">
+        <strong>¿Confirma la eliminación de este vendedor?</strong>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Nombre</div>
+          <div class="info-value">{{ nombre }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Apellido</div>
+          <div class="info-value">{{ apellido }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Correo</div>
+          <div class="info-value">{{ correo }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Teléfono</div>
+          <div class="info-value">{{ telefono }}</div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <a routerLink="/parametros/vendedor/crear-vendedor" class="btn-cancel">
+          Cancelar
+        </a>
+        <button (click)="EliminarRegistro()" class="btn-confirm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -21,6 +21,10 @@ import { CrearEntregaComponent } from './entrega/crear-entrega/crear-entrega.com
 import { ListarEntregaComponent } from './entrega/listar-entrega/listar-entrega.component';
 import { EliminarEntregaComponent } from './entrega/eliminar-entrega/eliminar-entrega.component';
 import { EditarEntregaComponent } from './entrega/editar-entrega/editar-entrega.component';
+import { ListarVendedorComponent } from './vendedor/listar-vendedor/listar-vendedor.component';
+import { CrearVendedorComponent } from './vendedor/crear-vendedor/crear-vendedor.component';
+import { EliminarVendedorComponent } from './vendedor/eliminar-vendedor/eliminar-vendedor.component';
+import { EditarVendedorComponent } from './vendedor/editar-vendedor/editar-vendedor.component';
 
 const routes: Routes = [
   {
@@ -125,7 +129,28 @@ const routes: Routes = [
     path: 'entrega/eliminar-entrega/:id',
     component: EliminarEntregaComponent,
     canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'vendedor/listar-vendedor',
+    component: ListarVendedorComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'vendedor/editar-vendedor/:id',
+    component: EditarVendedorComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'vendedor/eliminar-vendedor/:id',
+    component: EliminarVendedorComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'vendedor/crear-vendedor',
+    component: CrearVendedorComponent,
+    canActivate: [ValidarSesionActivaGuard]
   }
+  
 ];
 
 @NgModule({

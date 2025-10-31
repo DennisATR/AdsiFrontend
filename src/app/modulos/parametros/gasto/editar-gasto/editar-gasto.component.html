@@ -9,7 +9,7 @@
                 <div class="form-grid">
                     <!-- Concepto -->
                     <div class="input">
-                        <input type="text" id="concepto" formControlName="concepto" class="validate"
+                        <input type="text" id="concepto" appSearchSelect [opciones]="conceptos" formControlName="concepto" class="validate"
                             [class.error]="concepto?.invalid && concepto?.touched">
                         <label for="concepto">Concepto</label>
                         <div *ngIf="concepto?.invalid && concepto?.touched" class="error-message">

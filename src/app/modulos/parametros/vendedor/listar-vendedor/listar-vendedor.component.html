@@ -1,0 +1,60 @@
+<div class="table-container">
+  <div class="table-header">
+    <h5>Lista de Vendedores</h5>
+  </div>
+  <div class="search-bar">
+    <input type="text" 
+           placeholder="Buscar vendedor..." 
+           [(ngModel)]="searchQuery" 
+           (input)="filtrarVendedores()" 
+           class="validate" />
+  </div>
+  
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Correo</th>
+        <th>Teléfono</th>
+        <th>Fecha de Registro</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vendedor of vendedoresFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems }">
+        <td>{{ vendedor.id }}</td>
+        <td>{{ vendedor.Nombre }}</td>
+        <td>{{ vendedor.Apellido }}</td>
+        <td>{{ vendedor.Correo }}</td>
+        <td>{{ vendedor.Telefono }}</td>
+        <td>{{ vendedor.FechaReg | date: 'dd/MM/yyyy hh:mm a' }}</td>
+        <td class="actions-cell">
+          <div class="action-buttons">
+            <a [routerLink]="['/parametros/vendedor/editar-vendedor', vendedor.id]" 
+               class="btn-action btn-edit" 
+               title="Editar vendedor">
+              ✏️
+            </a>
+            <a [routerLink]="['/parametros/vendedor/eliminar-vendedor', vendedor.id]" 
+               class="btn-action btn-delete" 
+               title="Eliminar vendedor">
+              ✕
+            </a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <!-- Control de paginación -->
+  <pagination-controls
+    (pageChange)="pag = $event"
+    previousLabel="Anterior"
+    nextLabel="Siguiente"
+    screenReaderPaginationLabel="Navegación"
+    screenReaderPageLabel="Página"
+    screenReaderCurrentLabel="Página Actual">
+  </pagination-controls>
+</div>

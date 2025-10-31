@@ -25,6 +25,10 @@ import { EliminarEntregaComponent } from './entrega/eliminar-entrega/eliminar-en
 import { CrearEntregaComponent } from './entrega/crear-entrega/crear-entrega.component';
 import { EditarEntregaComponent } from './entrega/editar-entrega/editar-entrega.component';
 import { ListarEntregaComponent } from './entrega/listar-entrega/listar-entrega.component';
+import { CrearVendedorComponent } from './vendedor/crear-vendedor/crear-vendedor.component';
+import { EditarVendedorComponent } from './vendedor/editar-vendedor/editar-vendedor.component';
+import { EliminarVendedorComponent } from './vendedor/eliminar-vendedor/eliminar-vendedor.component';
+import { ListarVendedorComponent } from './vendedor/listar-vendedor/listar-vendedor.component';
 
 
 
@@ -49,7 +53,11 @@ import { ListarEntregaComponent } from './entrega/listar-entrega/listar-entrega.
     CrearEntregaComponent,
     ListarEntregaComponent,
     EditarEntregaComponent,
-    EliminarEntregaComponent
+    EliminarEntregaComponent,
+    CrearVendedorComponent,
+    ListarVendedorComponent,
+    EditarVendedorComponent,
+    EliminarVendedorComponent
   ],
   imports: [
     CommonModule,

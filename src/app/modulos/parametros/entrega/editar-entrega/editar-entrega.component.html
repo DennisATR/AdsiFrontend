@@ -1,1 +1,82 @@
-<p>editar-entrega works!</p>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <legend>Editar Entrega</legend>
+        </div>
+
+        <div class="card-content">
+            <form [formGroup]="fgValidador" (ngSubmit)="ActualizarRegistro()">
+                <div class="form-grid">
+                    <!-- Remitente -->
+                    <div class="input">
+                        <input type="text" id="remitente" formControlName="remitente" class="validate"
+                            [class.error]="remitente?.invalid && remitente?.touched">
+                        <label for="remitente">Remitente</label>
+                        <div *ngIf="remitente?.invalid && remitente?.touched" class="error-message">
+                            <small *ngIf="remitente?.errors?.['required']">El remitente es requerido</small>
+                            <small *ngIf="remitente?.errors?.['minlength']">El remitente debe tener al menos 2 caracteres</small>
+                        </div>
+                    </div>
+
+                    <!-- Empresa de Transporte -->
+                    <div class="input">
+                        <input type="text" id="empresaTrans" formControlName="empresaTrans" appSearchSelect [opciones]="empresasdetransporte" class="validate"
+                            [class.error]="empresaTrans?.invalid && empresaTrans?.touched">
+                        <label for="empresaTrans">Empresa de Transporte</label>
+                        <div *ngIf="empresaTrans?.invalid && empresaTrans?.touched" class="error-message">
+                            <small *ngIf="empresaTrans?.errors?.['required']">La empresa de transporte es requerida</small>
+                            <small *ngIf="empresaTrans?.errors?.['minlength']">La empresa debe tener al menos 2 caracteres</small>
+                        </div>
+                    </div>
+
+                    <!-- Número de Cajas -->
+                    <div class="input">
+                        <input type="number" id="numCajas" formControlName="numCajas" class="validate"
+                            [class.error]="numCajas?.invalid && numCajas?.touched">
+                        <label for="numCajas">Número de Cajas</label>
+                        <div *ngIf="numCajas?.invalid && numCajas?.touched" class="error-message">
+                            <small *ngIf="numCajas?.errors?.['required']">El número de cajas es requerido</small>
+                            <small *ngIf="numCajas?.errors?.['min']">El número de cajas debe ser al menos 1</small>
+                        </div>
+                    </div>
+
+                    <!-- Cobro -->
+                    <div class="input">
+                        <input type="text" id="cobro" appFormatoMiles formControlName="cobro" class="validate"
+                            [class.error]="cobro?.invalid && cobro?.touched">
+                        <label for="cobro">Cobro</label>
+                        <div *ngIf="cobro?.invalid && cobro?.touched" class="error-message">
+                            <small *ngIf="cobro?.errors?.['required']">El cobro es requerido</small>
+                            <small *ngIf="cobro?.errors?.['min']">El cobro debe ser mayor o igual a 0</small>
+                        </div>
+                    </div>
+
+                    <!-- Fecha -->
+                    <div class="input">
+                        <input type="date" id="fecha" formControlName="fecha" class="validate"
+                            [class.error]="fecha?.invalid && fecha?.touched">
+                        <label for="fecha">Fecha</label>
+                        <div *ngIf="fecha?.invalid && fecha?.touched" class="error-message">
+                            <small *ngIf="fecha?.errors?.['required']">La fecha es requerida</small>
+                        </div>
+                    </div>
+
+                    <!-- Observación -->
+                    <div class="input">
+                        <input type="text" id="observacion" formControlName="observacion" class="validate">
+                        <label for="observacion">Observación (Opcional)</label>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <a routerLink="/parametros/entrega/crear-entrega" class="btn-cancel">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn-confirm" [disabled]="fgValidador.invalid">
+                        Actualizar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

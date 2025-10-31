@@ -1,0 +1,8 @@
+export class VendedorModel{
+    id?: number;
+    Nombre?: string;
+    Apellido?: string;
+    Telefono?: string;
+    FechaReg?: Date;
+    Correo?: string;
+}

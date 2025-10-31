@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GastoService } from '../../../../servicios/parametros/gasto.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GastoModel } from '../../../../modelos/gasto.model';
+import { ConfiguracionListas } from '../../../../config/configuracion.listas';
 
 @Component({
   selector: 'app-editar-gasto',
@@ -12,6 +13,7 @@ import { GastoModel } from '../../../../modelos/gasto.model';
 })
 export class EditarGastoComponent {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
+  conceptos: string[] = ConfiguracionListas.conceptosGasto;
   recordId: number = 0;
   fgValidador!: FormGroup;
 
