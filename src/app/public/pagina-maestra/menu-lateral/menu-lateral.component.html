@@ -1,3 +1,9 @@
+<!-- Botón del menú lateral -->
+<a href="#" data-target="slide-out" class="sidenav-trigger" style="margin-left: 10px; display: inline-block;">
+  <i class="material-icons white-text">menu</i>
+</a>
+
+<!-- Contenido del menú lateral -->
 <ul id="slide-out" class="sidenav">
   <li>
     <div class="user-view">
@@ -12,18 +18,6 @@
       </a>
     </div>
   </li>
-  <li>
-    <a href="#change-password">
-      <li><a routerLink="/seguridad/cambio-clave">Cambiar Clave</a></li>
-
-    </a>
-  </li>
-  <li>
-    <a href="#logout">
-      <li><a routerLink="/seguridad/cerrar-sesion">Cerrar Sesion</a></li>
-    </a>
-  </li>
+  <li><a routerLink="/seguridad/cambio-clave"><i class="material-icons">lock</i>Cambiar Clave</a></li>
+  <li><a routerLink="/seguridad/cerrar-sesion"><i class="material-icons">exit_to_app</i>Cerrar Sesión</a></li>
 </ul>
-<a href="#" data-target="slide-out" class="sidenav-trigger">
-  <i class="material-icons">menu</i>
-</a>

@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import("./modulos/seguridad/seguridad.module").then(m => m.SeguridadModule)
       },
     {
+        path: 'ventas',
+        loadChildren: () => import("./modulos/ventas/ventas.module").then(m => m.VentasModule)
+    },
+    {
         path: '**',
         component: RutaNoEncontradaComponent
     }

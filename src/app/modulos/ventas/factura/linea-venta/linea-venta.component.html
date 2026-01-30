@@ -1,0 +1,61 @@
+<div class="contenido-productos">
+  <!-- Tabla de Productos -->
+  <div class="tabla-productos-container" *ngIf="lineasVenta.length > 0; else sinProductos">
+    <table class="tabla-productos">
+      <thead>
+        <tr>
+          <th class="col-zapato">ID Zapato</th>
+          <th class="col-cantidad">Cantidad</th>
+          <th class="col-precio">Precio Unit.</th>
+          <th class="col-subtotal">Subtotal</th>
+          <th class="col-acciones">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let linea of lineasVenta; let i = index" class="fila-producto">
+          <td class="col-zapato">{{ linea.zapatoId }}</td>
+          <td class="col-cantidad">
+            <input type="number" [(ngModel)]="linea.Cantidad" (change)="actualizarCantidad(i, linea.Cantidad ?? 0)"
+              min="1" class="input-tabla" />
+          </td>
+          <td class="col-precio">
+            <input type="number" [(ngModel)]="linea.Precio" (change)="actualizarPrecio(i, linea.Precio ?? 0)" min="0"
+              step="0.01" class="input-tabla" />
+          </td>
+          <td class="col-subtotal">
+            {{ calcularSubtotal(i) | currency:'COP':'symbol-narrow':'1.0-0' }}
+          </td>
+          <td class="col-acciones">
+            <button type="button" class="btn-eliminar" (click)="eliminarLinea(i)" title="Eliminar producto">
+              ✕
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Placeholder sin productos -->
+  <ng-template #sinProductos>
+    <div class="productos-placeholder">
+      <div class="placeholder-icon">📦</div>
+      <p>No hay productos agregados</p>
+      <small>Agregue productos para continuar con la venta</small>
+    </div>
+  </ng-template>
+
+  <!-- Resumen Total -->
+  <div class="resumen-total">
+    <span class="resumen-label">Total:</span>
+    <span class="resumen-valor">{{ obtenerTotal() | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+  </div>
+
+  <!-- Botón Finalizar -->
+  <div class="button-row">
+    <div class="button-container">
+      <button class="btn-finalizar-venta" type="button" (click)="finalizarVenta()">
+        Finalizar Venta
+      </button>
+    </div>
+  </div>
+</div>

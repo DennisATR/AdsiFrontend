@@ -1,30 +1,25 @@
 <nav class="blue">
   <div class="nav-wrapper">
-    <a routerLink="/inicio" class="brand-logo">ADSI</a>
-    <a href="#" data-target="mobile-demo" class="sidenav-trigger">
-      <i class="material-icons">menu</i>
+    <!-- Incluir el componente del menú lateral aquí -->
+    <app-menu-lateral *ngIf="sesionActiva"></app-menu-lateral>
+    
+    <a routerLink="/inicio" class="brand-logo left" style="margin-left: 3rem;">
+      ADSI
     </a>
+
     <ul class="right hide-on-med-and-down">
       <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/parametros/entrega/crear-entrega">Entregas</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/parametros/vendedor/crear-vendedor">Vendedores</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
-      <li><a *ngIf="sesionActiva" routerLink="/seguridad/cerrar-sesion">Cerrar Sesión</a></li>
+      <ng-container *ngIf="sesionActiva">
+        <li><a routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
+        <li><a routerLink="/parametros/entrega/crear-entrega">Entregas</a></li>
+        <li><a routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
+        <li><a routerLink="/parametros/vendedor/crear-vendedor">Vendedores</a></li>
+        <li><a routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
+        <li><a routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
+        <li><a routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
+        <li><a routerLink="/ventas/factura/crear-factura">Facturas</a></li>
+        <li><a routerLink="/seguridad/cerrar-sesion">Cerrar Sesión</a></li>
+      </ng-container>
     </ul>
   </div>
 </nav>
-
-<!-- Menú lateral para móviles -->
-<ul class="sidenav" id="mobile-demo">
-  <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
-  <li><a *ngIf="sesionActiva" routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
-  <li><a *ngIf="sesionActiva" routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
-  <li><a *ngIf="sesionActiva" routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
-  <li><a *ngIf="sesionActiva" routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
-  <li><a *ngIf="sesionActiva" routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
-  <li><a *ngIf="sesionActiva" routerLink="/seguridad/cerrar-sesion">Cerrar Sesión</a></li>
-</ul>

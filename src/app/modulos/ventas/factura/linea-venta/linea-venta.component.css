@@ -1,0 +1,337 @@
+/* ==================== CONTENEDOR PRODUCTOS ==================== */
+.contenido-productos {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 500px;
+}
+
+/* ==================== TABLA DE PRODUCTOS ==================== */
+.tabla-productos-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.tabla-productos {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.tabla-productos thead {
+  background: linear-gradient(135deg, #e8eaed 0%, #f3f4f6 100%);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tabla-productos th {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.tabla-productos tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.2s ease;
+}
+
+.tabla-productos tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.tabla-productos tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabla-productos td {
+  padding: 0.875rem;
+  font-size: 0.875rem;
+  color: #334155;
+}
+
+/* ==================== COLUMNAS ==================== */
+.col-zapato {
+  width: 15%;
+  min-width: 100px;
+}
+
+.col-cantidad {
+  width: 15%;
+  min-width: 100px;
+}
+
+.col-precio {
+  width: 20%;
+  min-width: 120px;
+}
+
+.col-subtotal {
+  width: 20%;
+  min-width: 120px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.col-acciones {
+  width: 10%;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ==================== INPUTS EN TABLA ==================== */
+.input-tabla {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.input-tabla:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.input-tabla:hover:not(:disabled) {
+  border-color: #9ca3af;
+}
+
+/* ==================== BOTÓN ELIMINAR ==================== */
+.btn-eliminar {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.btn-eliminar:hover {
+  background-color: #fca5a5;
+  color: white;
+  border-color: #f87171;
+  transform: scale(1.05);
+}
+
+.btn-eliminar:active {
+  transform: scale(0.98);
+}
+
+/* ==================== PLACEHOLDER ==================== */
+.productos-placeholder {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: #94a3b8;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+.productos-placeholder p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.productos-placeholder small {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+/* ==================== RESUMEN TOTAL ==================== */
+.resumen-total {
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.resumen-label {
+  color: #475569;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.resumen-valor {
+  color: #3b82f6;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* ==================== BOTONES ==================== */
+.button-row {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-finalizar-venta {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  width: 100%;
+}
+
+.btn-finalizar-venta:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-finalizar-venta:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+}
+
+.btn-finalizar-venta:disabled {
+  background: linear-gradient(135deg, #cbd5e1 0%, #a1a5b0 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .contenido-productos {
+    min-height: 400px;
+  }
+
+  .tabla-productos th,
+  .tabla-productos td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .col-zapato {
+    width: 20%;
+    min-width: 70px;
+  }
+
+  .col-cantidad {
+    width: 18%;
+    min-width: 60px;
+  }
+
+  .col-precio {
+    width: 22%;
+    min-width: 80px;
+  }
+
+  .col-subtotal {
+    width: 20%;
+    min-width: 80px;
+  }
+
+  .col-acciones {
+    width: 12%;
+    min-width: 50px;
+  }
+
+  .input-tabla {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .btn-eliminar {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .resumen-valor {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabla-productos {
+    font-size: 0.7rem;
+  }
+
+  .tabla-productos th,
+  .tabla-productos td {
+    padding: 0.25rem;
+  }
+
+  .col-zapato {
+    width: 15%;
+  }
+
+  .col-cantidad {
+    width: 15%;
+  }
+
+  .col-precio {
+    width: 25%;
+  }
+
+  .col-subtotal {
+    width: 25%;
+  }
+
+  .col-acciones {
+    width: 10%;
+  }
+
+  .productos-placeholder {
+    min-height: 200px;
+    padding: 1rem;
+  }
+
+  .placeholder-icon {
+    font-size: 2rem;
+  }
+
+  .resumen-label {
+    font-size: 1rem;
+  }
+
+  .resumen-valor {
+    font-size: 1.1rem;
+  }
+}

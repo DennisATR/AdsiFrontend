@@ -1,0 +1,190 @@
+<div class="card-container">
+    <form [formGroup]="fGroup">
+        <!-- LAYOUT: Información del Producto (Izquierda) y Lista de Productos (Derecha) -->
+        <div class="grid-productos-layout">
+
+            <!-- SECCIÓN IZQUIERDA: Información del Producto -->
+            <div class="form-section">
+                <div class="form-section-header">
+                    <div class="header-contenido">
+                        <h5>Post</h5>
+                        <div class="fecha-display-inline">
+                            <span class="fecha-valor">Fecha: {{fGroup.get('Fecha')?.value | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-content">
+                    <!-- Cliente y Vendedor en una fila -->
+                    <div class="grid-dos-columnas">
+                        <div class="input">
+                            <label for="ClienteNombre">Cliente</label>
+                            <input formControlName="ClienteNombre" id="ClienteNombre" #clienteId appSearchSelect
+                                [opciones]="clientesNombres" [permitirPersonalizado]="false"
+                                (opcionSeleccionada)="onClienteSeleccionado($event)"
+                                (keydown.enter)="focusNext(clienteId, vendedorId)" placeholder="Buscar un cliente..."
+                                type="text" class="validate" />
+                            <div *ngIf="ObtenerFormGroup['clienteId'].invalid && ObtenerFormGroup['clienteId'].touched"
+                                class="error-message">
+                                <small>Debe seleccionar un cliente.</small>
+                            </div>
+                        </div>
+
+                        <div class="input">
+                            <label for="VendedorNombre">Vendedor</label>
+                            <input formControlName="VendedorNombre" id="VendedorNombre" #vendedorId appSearchSelect
+                                [opciones]="vendedoresNombres" [permitirPersonalizado]="false"
+                                (opcionSeleccionada)="onVendedorSeleccionado($event)"
+                                (keydown.enter)="focusNext(vendedorId, zapatoId)" placeholder="Buscar un vendedor..."
+                                type="text" class="validate" />
+                            <div *ngIf="ObtenerFormGroup['vendedorId'].invalid && ObtenerFormGroup['vendedorId'].touched"
+                                class="error-message">
+                                <small>Debe seleccionar un vendedor.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ID del Zapato -->
+                    <div class="input">
+                        <label for="zapatoId">ID del Zapato</label>
+                        <input formControlName="zapatoId" id="zapatoId" #zapatoId placeholder="Ingrese ID del zapato..."
+                            type="text" class="validate" (keydown.enter)="obtenerZapato()" />
+                    </div>
+
+                    <!-- Descripción, Talla y Color -->
+                    <div class="grid-tres-columnas">
+                        <div class="input">
+                            <label for="Descripcion">Descripción</label>
+                            <input formControlName="Descripcion" id="Descripcion" type="text" class="validate"
+                                readonly />
+                        </div>
+                        <div class="input">
+                            <label for="Talla">Talla</label>
+                            <input formControlName="Talla" id="Talla" type="text" class="validate" readonly />
+                        </div>
+                        <div class="input">
+                            <label for="Color">Color</label>
+                            <input formControlName="Color" id="Color" type="text" class="validate" readonly />
+                        </div>
+                    </div>
+
+                    <!-- Precio y Cantidad -->
+                    <div class="grid-dos-columnas">
+                        <div class="input">
+                            <label for="PrecioVenta">Precio de Venta</label>
+                            <input formControlName="PrecioVenta" id="PrecioVenta" appFormatoMiles type="text"
+                                class="validate" #precioVenta (keydown.enter)="focusNext(precioVenta, cantidadVenta)" />
+                            <div class="precio-rango">
+                                <small>Rango: {{fGroup.get('PrecioVentaMin')?.value |
+                                    currency:'COP':'symbol-narrow':'1.0-0'}} -
+                                    {{fGroup.get('PrecioVentaMax')?.value |
+                                    currency:'COP':'symbol-narrow':'1.0-0'}}</small>
+                            </div>
+                        </div>
+
+                        <div class="input">
+                            <label for="CantidadVenta">Cantidad</label>
+                            <input formControlName="CantidadVenta" id="CantidadVenta" type="number" class="validate"
+                                #cantidadVenta (keydown.enter)="agregarProducto()" />
+                            <div class="cantidad-disponible">
+                                <small>Disponible: {{fGroup.get('CantidadDisponible')?.value || 0}}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones Agregar y Cancelar -->
+                    <div class="button-row">
+                        <div class="button-container">
+                            <button class="btn-agregar-producto" type="button" (click)="agregarProducto()">
+                                Agregar Producto
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="button-row-cancelar">
+                        <div class="button-container">
+                            <button class="btn-cancelar" type="button" (click)="cancelarFactura()">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DERECHA: Línea de Ventas -->
+            <div class="form-section">
+                <app-linea-venta [lineasVenta]="lineasVenta" (lineasVentaChange)="onActualizarLineas($event)"
+                    (totalChange)="onActualizarTotal($event)" (finalizarVentaEvent)="abrirModalFinalizar()">
+                </app-linea-venta>
+            </div>
+        </div>
+        <div class="modal-overlay" *ngIf="mostrarModalFinalizar" (click)="cerrarModal()">
+            <div class="modal-container" (click)="$event.stopPropagation()">
+                <div class="modal-header">
+                    <h3>Finalizar Venta</h3>
+                    <button class="modal-close" type="button" (click)="cerrarModal()">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Método de Pago -->
+                    <div class="input">
+                        <label for="MetodoPagoNombre">Método de Pago</label>
+                        <input formControlName="MetodoPagoNombre" id="MetodoPagoNombre" appSearchSelect
+                            [opciones]="metodosPagoNombres" [permitirPersonalizado]="false"
+                            (opcionSeleccionada)="onMetodoPagoSeleccionado($event)"
+                            placeholder="Seleccionar método de pago..." type="text" class="validate" />
+                        <div *ngIf="ObtenerFormGroup['metodoPagoId'].invalid && ObtenerFormGroup['metodoPagoId'].touched"
+                            class="error-message">
+                            <small>Debe seleccionar un método de pago.</small>
+                        </div>
+                    </div>
+
+                    <!-- Abono -->
+                    <div class="input">
+                        <label for="Abono">Abono</label>
+                        <input formControlName="Abono" id="Abono" appFormatoMiles type="text" class="validate"
+                            placeholder="$0" />
+                        <div class="abono-info">
+                            <small>Total de la venta: {{ totalVenta | currency:'COP':'symbol-narrow':'1.0-0' }}</small>
+                        </div>
+                    </div>
+
+                    <!-- Nota -->
+                    <div class="input">
+                        <label for="Nota">Nota (Opcional)</label>
+                        <textarea formControlName="Nota" id="Nota" placeholder="Agregar una nota sobre esta venta..."
+                            rows="3"></textarea>
+                    </div>
+
+                    <!-- Resumen -->
+                    <div class="modal-resumen">
+                        <div class="resumen-item">
+                            <span class="resumen-label">Total:</span>
+                            <span class="resumen-valor">{{ totalVenta | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+                        </div>
+                        <div class="resumen-item">
+                            <span class="resumen-label">Abono:</span>
+                            <span class="resumen-valor">{{ fGroup.get('Abono')?.value |
+                                currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+                        </div>
+                        <div class="resumen-item saldo">
+                            <span class="resumen-label">Saldo Pendiente:</span>
+                            <span class="resumen-valor">{{ calcularSaldoPendiente() |
+                                currency:'COP':'symbol-narrow':'1.0-0'
+                                }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-modal-cancelar" type="button" (click)="cerrarModal()">
+                        Cancelar
+                    </button>
+                    <button class="btn-modal-confirmar" type="button" (click)="confirmarVenta()">
+                        Confirmar Venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

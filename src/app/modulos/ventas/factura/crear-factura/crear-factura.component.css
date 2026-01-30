@@ -1,0 +1,645 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.card-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ==================== SECCIONES DEL FORMULARIO ==================== */
+.form-section {
+  margin-bottom: 1rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.form-section-content {
+  padding: 1.5rem;
+  background-color: white;
+}
+
+/* ==================== BÚSQUEDA ==================== */
+.search-select-option {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+/* ==================== HEADER DE SECCIÓN ==================== */
+.form-section-header {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  padding: 0.75rem 1.5rem;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.header-contenido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+}
+
+.form-section-header h5 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* ==================== FECHA DISPLAY ==================== */
+.fecha-display-inline {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.fecha-display-inline .fecha-valor {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ==================== LAYOUT PRINCIPAL ==================== */
+.grid-productos-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ==================== GRIDS DE CONTENIDO ==================== */
+.grid-dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.grid-tres-columnas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* ==================== INPUTS ==================== */
+.input {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input input[type="text"],
+.input input[type="number"],
+.input input[type="email"],
+.input input[type="password"],
+.input input[type="date"],
+.input textarea,
+.input select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.input textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.input input[readonly] {
+  background-color: #f1f5f9;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.input input[type="text"]:focus,
+.input input[type="number"]:focus,
+.input input[type="email"]:focus,
+.input input[type="password"]:focus,
+.input input[type="date"]:focus,
+.input textarea:focus,
+.input select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: #fefefe;
+}
+
+.input input[type="text"]:hover:not([readonly]),
+.input input[type="number"]:hover:not([readonly]),
+.input input[type="email"]:hover:not([readonly]),
+.input input[type="password"]:hover:not([readonly]),
+.input input[type="date"]:hover:not([readonly]),
+.input textarea:hover,
+.input select:hover {
+  border-color: #9ca3af;
+}
+
+.input label {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  font-size: 0.8rem;
+  color: #374151;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: white;
+  padding: 0 4px;
+  z-index: 1;
+}
+
+/* ==================== INFORMACIÓN ADICIONAL ==================== */
+.precio-rango,
+.cantidad-disponible {
+  margin-top: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.precio-rango small,
+.cantidad-disponible small {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ==================== BOTONES ==================== */
+.button-row {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.button-row-cancelar {
+  margin-top: 0.5rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-agregar-producto {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  width: 100%;
+}
+
+.btn-agregar-producto:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-agregar-producto:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+}
+
+/* ==================== BOTÓN FINALIZAR ==================== */
+.btn-finalizar-venta {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  flex: 1;
+}
+
+.btn-finalizar-venta:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-finalizar-venta:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* ==================== BOTÓN CANCELAR ==================== */
+.btn-cancelar {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  flex: 1;
+}
+
+.btn-cancelar:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-cancelar:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+}
+
+/* ==================== VALIDACIÓN ==================== */
+.input input.ng-invalid.ng-touched,
+.input textarea.ng-invalid.ng-touched,
+.input select.ng-invalid.ng-touched {
+  border-color: #dc2626;
+}
+
+.input input.ng-invalid.ng-touched:focus,
+.input textarea.ng-invalid.ng-touched:focus,
+.input select.ng-invalid.ng-touched:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.input input.ng-valid.ng-touched,
+.input textarea.ng-valid.ng-touched,
+.input select.ng-valid.ng-touched {
+  border-color: #10b981;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* ==================== MODAL OVERLAY ==================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* Aumentado para asegurar que esté encima */
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==================== MODAL CONTAINER ==================== */
+.modal-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==================== MODAL HEADER ==================== */
+.modal-header {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+/* ==================== MODAL BODY ==================== */
+.modal-body {
+  padding: 1.5rem;
+  max-height: calc(90vh - 200px);
+  overflow-y: auto;
+}
+
+/* ==================== ABONO INFO ==================== */
+.abono-info {
+  margin-top: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.abono-info small {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ==================== MODAL RESUMEN ==================== */
+.modal-resumen {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 2px solid #cbd5e1;
+  margin-top: 1.5rem;
+}
+
+.modal-resumen .resumen-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.modal-resumen .resumen-item.saldo {
+  border-top: 2px solid #cbd5e1;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.modal-resumen .resumen-label {
+  color: #475569;
+  font-weight: 500;
+}
+
+.modal-resumen .resumen-valor {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.modal-resumen .resumen-item.saldo .resumen-valor {
+  color: #3b82f6;
+  font-size: 1.35rem;
+}
+
+/* ==================== MODAL FOOTER ==================== */
+.modal-footer {
+  padding: 1.25rem 1.5rem;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+/* ==================== BOTONES DEL MODAL ==================== */
+.btn-modal-cancelar {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(100, 116, 139, 0.3);
+  min-width: 120px;
+}
+
+.btn-modal-cancelar:hover {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(100, 116, 139, 0.4);
+}
+
+.btn-modal-confirmar {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  min-width: 120px;
+}
+
+.btn-modal-confirmar:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-modal-cancelar:active,
+.btn-modal-confirmar:active {
+  transform: translateY(0);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1200px) {
+  .grid-productos-layout {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid-productos-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    padding: 0.75rem;
+  }
+
+  .grid-dos-columnas,
+  .grid-tres-columnas {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .header-contenido {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .fecha-display-inline {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn-finalizar-venta,
+  .btn-cancelar {
+    width: 100%;
+  }
+
+  .modal-container {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+    max-height: calc(95vh - 180px);
+  }
+
+  .modal-footer {
+    padding: 1rem;
+    flex-direction: column;
+  }
+
+  .btn-modal-cancelar,
+  .btn-modal-confirmar {
+    width: 100%;
+  }
+
+  .modal-resumen {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-section-content {
+    padding: 1rem;
+  }
+
+  .form-section-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .input {
+    margin-bottom: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .modal-close {
+    font-size: 1.75rem;
+    width: 28px;
+    height: 28px;
+  }
+
+  .modal-resumen .resumen-item {
+    font-size: 0.85rem;
+  }
+
+  .modal-resumen .resumen-valor {
+    font-size: 1rem;
+  }
+
+  .modal-resumen .resumen-item.saldo .resumen-valor {
+    font-size: 1.2rem;
+  }
+}
