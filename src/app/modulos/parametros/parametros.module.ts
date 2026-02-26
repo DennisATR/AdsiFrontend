@@ -29,6 +29,7 @@ import { CrearVendedorComponent } from './vendedor/crear-vendedor/crear-vendedor
 import { EditarVendedorComponent } from './vendedor/editar-vendedor/editar-vendedor.component';
 import { EliminarVendedorComponent } from './vendedor/eliminar-vendedor/eliminar-vendedor.component';
 import { ListarVendedorComponent } from './vendedor/listar-vendedor/listar-vendedor.component';
+import { InformacionComponent } from './informacion/informacion.component';
 
 
 
@@ -57,7 +58,8 @@ import { ListarVendedorComponent } from './vendedor/listar-vendedor/listar-vende
     CrearVendedorComponent,
     ListarVendedorComponent,
     EditarVendedorComponent,
-    EliminarVendedorComponent
+    EliminarVendedorComponent,
+    InformacionComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,404 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* ─── Layout de dos columnas ───────────────────────────────────────────────── */
+
+.page-layout {
+  display: flex;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  align-items: flex-start;
+}
+
+/* ─── Panel derecho: Almacenes ───────────────────────────────────────────── */
+
+.almacen-panel {
+  width: 580px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+}
+
+.panel-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.panel-icon {
+  font-size: 1.1rem;
+}
+
+/* Mini formulario almacén */
+.almacen-form {
+  padding: 2rem 1.25rem 1.5rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.field-group {
+  margin-bottom: 0.875rem;
+}
+
+.field-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field-group input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.2s;
+  color: #334155;
+}
+
+.field-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.field-group input.ng-invalid.ng-touched {
+  border-color: #dc2626;
+}
+
+.field-group small {
+  display: block;
+  font-size: 0.7rem;
+  color: #dc2626;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.almacen-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.btn-almacen-save {
+  flex: 1;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-almacen-save:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+}
+
+.btn-almacen-cancel {
+  padding: 0.5rem 0.75rem;
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-almacen-cancel:hover {
+  background: #e2e8f0;
+}
+
+/* Lista de almacenes */
+.almacen-list {
+  padding: 0.75rem 0;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.list-empty {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  padding: 1.5rem 1rem;
+  font-style: italic;
+}
+
+.almacen-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.25rem;
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.almacen-item:hover {
+  background: #f0f9ff;
+  border-left-color: #3b82f6;
+}
+
+.almacen-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.almacen-prefijo {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.almacen-nombre {
+  font-size: 0.875rem;
+  color: #334155;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.almacen-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.almacen-item:hover .almacen-actions {
+  opacity: 1;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+  line-height: 1;
+}
+
+.btn-edit:hover  { background: #dbeafe; }
+.btn-delete:hover { background: #fee2e2; }
+
+/* ─── Columna derecha: Información ─────────────────────────────────────────── */
+
+.card-container {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin: -1.5rem -1.5rem 2.5rem -1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  padding: 1rem 0;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-radius: 8px 8px 0 0;
+}
+
+.form-section {
+  margin-bottom: 1.5rem;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}
+
+.form-section:last-of-type {
+  margin-bottom: 1rem;
+}
+
+.input {
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding-right: 10px;
+}
+
+.input input[type="text"],
+.input input[type="number"],
+.input input[type="email"],
+.input input[type="password"],
+.input input[type="date"] {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.input input[type="text"]:focus,
+.input input[type="number"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  background-color: #fefefe;
+}
+
+.input input[type="text"]:hover,
+.input input[type="number"]:hover {
+  border-color: #9ca3af;
+}
+
+.input label {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+  background: white;
+  padding: 0 4px;
+  z-index: 1;
+}
+
+.input input.ng-invalid.ng-touched { border-color: #dc2626; }
+.input input.ng-invalid.ng-touched:focus { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+.input input.ng-valid.ng-touched { border-color: #10b981; }
+
+.error-message {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+small {
+  font-size: 0.75rem;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.button-row {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-custom {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+}
+
+.btn-custom:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+}
+
+.btn-custom:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 10px rgba(59,130,246,0.3);
+}
+
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .page-layout {
+    flex-direction: column;
+  }
+
+  .almacen-panel {
+    width: 100%;
+  }
+
+  .almacen-list {
+    max-height: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-layout {
+    padding: 0 0.5rem;
+    margin: 0.5rem auto;
+  }
+
+  .card-container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+    margin: -1rem -1rem 1.5rem -1rem;
+    padding: 0.75rem 0;
+  }
+}

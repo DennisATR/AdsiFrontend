@@ -1,0 +1,142 @@
+<div class="page-layout">
+  <!-- COLUMNA IZQUIERDA: Información del negocio -->
+  <main class="card-container">
+    <div class="title">
+      <h5>Información del Negocio</h5>
+    </div>
+
+    <form [formGroup]="fGroup" class="col s12">
+      <!-- Fila 1: Nombre y NIT -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s7">
+            <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, nit)" type="text"
+              class="validate" />
+            <label for="Nombre">Nombre del Local</label>
+            <div *ngIf="ObtenerFormGroup['Nombre'].invalid && ObtenerFormGroup['Nombre'].touched" class="error-message">
+              <small>El nombre es obligatorio.</small>
+            </div>
+          </div>
+          <div class="input col s5">
+            <input formControlName="NIT" id="NIT" #nit (keydown.enter)="focusNext(nit, direccion)" type="text"
+              class="validate" />
+            <label for="NIT">NIT</label>
+            <div *ngIf="ObtenerFormGroup['NIT'].invalid && ObtenerFormGroup['NIT'].touched" class="error-message">
+              <small>El NIT es obligatorio.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 2: Dirección, Teléfono e IVA -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s5">
+            <input formControlName="Direccion" id="Direccion" #direccion
+              (keydown.enter)="focusNext(direccion, telefono)" type="text" class="validate" />
+            <label for="Direccion">Dirección</label>
+            <div *ngIf="ObtenerFormGroup['Direccion'].invalid && ObtenerFormGroup['Direccion'].touched"
+              class="error-message">
+              <small>La dirección es obligatoria.</small>
+            </div>
+          </div>
+          <div class="input col s4">
+            <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="focusNext(telefono, iva)"
+              type="text" class="validate" />
+            <label for="Telefono">Teléfono</label>
+            <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched"
+              class="error-message">
+              <small>El teléfono es obligatorio.</small>
+            </div>
+          </div>
+          <div class="input col s3">
+            <input formControlName="Iva" id="Iva" #iva (keydown.enter)="focusNext(iva, mensaje)" type="number"
+              class="validate" min="0" max="100" />
+            <label for="Iva">IVA (%)</label>
+            <div *ngIf="ObtenerFormGroup['Iva'].invalid && ObtenerFormGroup['Iva'].touched" class="error-message">
+              <small *ngIf="ObtenerFormGroup['Iva'].errors?.['required']">El IVA es obligatorio.</small>
+              <small *ngIf="ObtenerFormGroup['Iva'].errors?.['min']">El IVA no puede ser negativo.</small>
+              <small *ngIf="ObtenerFormGroup['Iva'].errors?.['max']">El IVA no puede superar el 100%.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 3: Mensaje -->
+      <div class="form-section">
+        <div class="row">
+          <div class="input col s12">
+            <input formControlName="Mensaje" id="Mensaje" #mensaje (keydown.enter)="submitOrFocusNext(mensaje)"
+              type="text" class="validate" />
+            <label for="Mensaje">Mensaje en facturas (Opcional)</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón -->
+      <div class="row button-row">
+        <div class="col s12 button-container">
+          <button class="btn-custom waves-effect waves-light" type="button" (click)="GuardarInformacion()">
+            {{ esActualizacion ? 'Actualizar' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <!-- COLUMNA DERECHA: Almacenes -->
+  <aside class="almacen-panel">
+    <div class="panel-header">
+      <span class="panel-icon">🏪</span>
+      <h3>Almacenes</h3>
+    </div>
+
+    <!-- Mini formulario -->
+    <form [formGroup]="fAlmacen" class="almacen-form" (ngSubmit)="GuardarAlmacen()">
+
+      <div class="row">
+        <!-- Nombre -->
+        <div class="input col s6">
+          <label for="AlmacenNombre">Nombre</label>
+          <input id="AlmacenNombre" type="text" formControlName="Nombre" #almacenNombre
+            (keydown.enter)="focusNextAlmacen($event, almacenNombre, almacenPrefijo)" placeholder="Ej: Principal" class="validate" />
+          <small *ngIf="fAlmacen.get('Nombre')?.invalid && fAlmacen.get('Nombre')?.touched">
+            El nombre es obligatorio.
+          </small>
+        </div>
+        <div class="input col s6">
+          <label for="AlmacenPrefijo">Prefijo</label>
+          <input id="AlmacenPrefijo" type="text" formControlName="Prefijo" #almacenPrefijo placeholder="Ej: ALM"
+            maxlength="5" class="validate" (keydown.enter)="focusNextAlmacen($event, almacenPrefijo)" />
+          <small *ngIf="fAlmacen.get('Prefijo')?.invalid && fAlmacen.get('Prefijo')?.touched">
+            El prefijo es obligatorio.
+          </small>
+        </div>
+      </div>
+      <div class="almacen-form-actions">
+        <button type="submit" class="btn-almacen-save">
+          {{ almacenEditandoId ? 'Actualizar' : 'Agregar' }}
+        </button>
+        <button type="button" class="btn-almacen-cancel" *ngIf="almacenEditandoId" (click)="CancelarEdicionAlmacen()">
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <!-- Lista de almacenes -->
+    <div class="almacen-list">
+      <p class="list-empty" *ngIf="almacenes.length === 0">No hay almacenes registrados.</p>
+      <div class="almacen-item" *ngFor="let almacen of almacenes">
+        <div class="almacen-info">
+          <span class="almacen-prefijo">{{ almacen.Prefijo }}</span>
+          <span class="almacen-nombre">{{ almacen.Nombre }}</span>
+        </div>
+        <div class="almacen-actions">
+          <button class="btn-icon btn-edit" title="Editar" (click)="EditarAlmacen(almacen)">✏️</button>
+          <button class="btn-icon btn-delete" title="Eliminar" (click)="EliminarAlmacen(almacen.id!)">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+</div>

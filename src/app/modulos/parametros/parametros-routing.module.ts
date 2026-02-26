@@ -25,6 +25,7 @@ import { ListarVendedorComponent } from './vendedor/listar-vendedor/listar-vende
 import { CrearVendedorComponent } from './vendedor/crear-vendedor/crear-vendedor.component';
 import { EliminarVendedorComponent } from './vendedor/eliminar-vendedor/eliminar-vendedor.component';
 import { EditarVendedorComponent } from './vendedor/editar-vendedor/editar-vendedor.component';
+import { InformacionComponent } from './informacion/informacion.component';
 
 const routes: Routes = [
   {
@@ -148,6 +149,11 @@ const routes: Routes = [
   {
     path: 'vendedor/crear-vendedor',
     component: CrearVendedorComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'informacion',
+    component: InformacionComponent,
     canActivate: [ValidarSesionActivaGuard]
   }
   
