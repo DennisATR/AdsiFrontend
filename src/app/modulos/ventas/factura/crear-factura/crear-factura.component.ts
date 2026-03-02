@@ -14,6 +14,8 @@ import { ZapatoModel } from '../../../../modelos/zapato.model';
 import { VentaModel } from '../../../../modelos/venta.model';
 import { LineaVentaComponent } from '../linea-venta/linea-venta.component';
 import { VentaService } from '../../../../servicios/ventas/venta.service';
+import { InformacionService } from '../../../../servicios/parametros/informacion.service';
+import { AlmacenModel } from '../../../../modelos/almacen.model';
 
 @Component({
   selector: 'app-crear-factura',
@@ -33,6 +35,7 @@ export class CrearFacturaComponent implements OnInit {
   vendedoresNombres: string[] = [];
   metodosPago: MetodoPagoModel[] = [];
   metodosPagoNombres: string[] = [];
+  almacenes: AlmacenModel[] = [];
   mostrarModalFinalizar: boolean = false;
   totalVenta: number = 0;
 
@@ -43,7 +46,8 @@ export class CrearFacturaComponent implements OnInit {
     private servicioVendedor: VendedorService,
     private servicioVenta: VentaService,
     private servicioMetodoPago: MetodoPagoService,
-    private servicioZapato: ZapatoService
+    private servicioZapato: ZapatoService,
+    private servicioInformacion: InformacionService
   ) { }
 
   ngOnInit() {
@@ -52,6 +56,7 @@ export class CrearFacturaComponent implements OnInit {
     this.obtenerClientes();
     this.obtenerVendedores();
     this.obtenerMetodosPago();
+    this.obtenerAlmacenes();
   }
 
   get ObtenerFormGroup() {
@@ -120,11 +125,17 @@ export class CrearFacturaComponent implements OnInit {
       return;
     }
 
+    const almacenId = this.obtenerAlmacenIdDesdePrefijo(zapatoId);
+    if (!almacenId) {
+      alert('No se encontró un almacén para el prefijo del zapato. Verifique el ID y la configuración de almacenes.');
+      return;
+    }
+
     const nuevaVenta: VentaModel = {
       zapatoId: zapatoId,
       Cantidad: parseInt(cantidad),
       Precio: precio,
-      Almacen: ''
+      almacenId: almacenId
     };
 
     // Agregar al array local
@@ -219,6 +230,42 @@ export class CrearFacturaComponent implements OnInit {
         console.error('Error:', err);
       }
     });
+  }
+
+  obtenerAlmacenes() {
+    this.servicioInformacion.ObtenerAlmacenes().subscribe({
+      next: (respuesta: AlmacenModel[]) => {
+        this.almacenes = respuesta || [];
+        console.log('🏬 Almacenes cargados:', this.almacenes);
+      },
+      error: (err) => {
+        this.almacenes = [];
+        console.error('Error al obtener almacenes:', err);
+      }
+    });
+  }
+
+  obtenerAlmacenIdDesdePrefijo(zapatoId: string): number | null {
+    if (!zapatoId) {
+      return null;
+    }
+
+    if (!this.almacenes || this.almacenes.length === 0) {
+      console.warn('⚠️ No hay almacenes cargados al intentar buscar por prefijo.');
+      return null;
+    }
+
+    const prefijoZapato = zapatoId.toString().trim().substring(0, 3).toUpperCase();
+    if (!prefijoZapato || prefijoZapato.length < 3) {
+      return null;
+    }
+
+    const almacen = this.almacenes.find(a =>
+      (a.Prefijo || '').toString().trim().toUpperCase() === prefijoZapato
+    );
+    console.log(`🔍 Buscando almacén para prefijo "${prefijoZapato}":`, almacen);
+
+    return almacen?.id || null;
   }
 
   obtenerZapato() {
@@ -389,7 +436,7 @@ export class CrearFacturaComponent implements OnInit {
       metodoPagoId: parseInt(campos['metodoPagoId'].value),
       Abono: abono,
       Nota: campos['Nota'].value || '',
-      Total: this.totalFactura
+      Total: 0
     };
 
     console.log("📄 Datos de la factura a registrar:", datosFactura);
@@ -425,7 +472,7 @@ export class CrearFacturaComponent implements OnInit {
       const ventaData: VentaModel = {
         Cantidad: linea.Cantidad,
         Precio: linea.Precio,
-        Almacen: linea.Almacen || '',
+        almacenId: linea.almacenId,
         zapatoId: linea.zapatoId,
         facturaId: facturaId
       };

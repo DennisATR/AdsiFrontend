@@ -9,7 +9,7 @@
       <!-- Fila 1: Nombre y NIT -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s7">
+          <div class="input col s5">
             <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, nit)" type="text"
               class="validate" />
             <label for="Nombre">Nombre del Local</label>
@@ -17,7 +17,7 @@
               <small>El nombre es obligatorio.</small>
             </div>
           </div>
-          <div class="input col s5">
+          <div class="input col s4">
             <input formControlName="NIT" id="NIT" #nit (keydown.enter)="focusNext(nit, direccion)" type="text"
               class="validate" />
             <label for="NIT">NIT</label>
@@ -25,6 +25,14 @@
               <small>El NIT es obligatorio.</small>
             </div>
           </div>
+          <div class="input col s3">
+            <label for="Prefijo">Prefijo</label>
+              <input formControlName="Prefijo" id="Prefijo" #prefijo (keydown.enter)="focusNext(prefijo, direccion)" type="text"
+                class="validate" />
+            <div *ngIf="ObtenerFormGroup['Prefijo'].invalid && ObtenerFormGroup['Prefijo'].touched" class="error-message">
+              <small>El prefijo es obligatorio.</small>
+          </div>
+        </div>
         </div>
       </div>
 
@@ -88,7 +96,7 @@
   <aside class="almacen-panel">
     <div class="panel-header">
       <span class="panel-icon">🏪</span>
-      <h3>Almacenes</h3>
+      <h3>Almacenes Asociados</h3>
     </div>
 
     <!-- Mini formulario -->

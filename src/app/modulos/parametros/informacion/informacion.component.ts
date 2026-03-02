@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InformacionModel } from '../../../modelos/informacion.model';
+import { InfolocalModel } from '../../../modelos/infolocal.model';
 import { AlmacenModel } from '../../../modelos/almacen.model';
 import { InformacionService } from '../../../servicios/parametros/informacion.service';
 
@@ -10,13 +11,15 @@ import { InformacionService } from '../../../servicios/parametros/informacion.se
   styleUrl: './informacion.component.css'
 })
 export class InformacionComponent implements OnInit {
-  // Formulario información
+
+  // ─── Formularios ───────────────────────────────────────────────────────────
   fGroup: FormGroup = new FormGroup({});
-  esActualizacion: boolean = false;
+  fAlmacen: FormGroup = new FormGroup({});
+
+  // ─── Estado ────────────────────────────────────────────────────────────────
+  esActualizacion = false;
   infoLocalId?: number;
 
-  // Formulario almacén
-  fAlmacen: FormGroup = new FormGroup({});
   almacenes: AlmacenModel[] = [];
   almacenEditandoId?: number;
 
@@ -25,48 +28,63 @@ export class InformacionComponent implements OnInit {
     private servicioInformacion: InformacionService
   ) {}
 
+  // ─── INIT ──────────────────────────────────────────────────────────────────
   ngOnInit() {
     this.ConstruirFormulario();
     this.ConstruirFormularioAlmacen();
-    this.CargarInformacion();
-    this.CargarAlmacenes();
+    this.RefrescarTodo();
   }
 
   get ObtenerFormGroup() {
     return this.fGroup.controls;
   }
 
-  // ─── Información del negocio ───────────────────────────────────────────────
+  // ─── SINCRONIZACIÓN GLOBAL (CLAVE) ─────────────────────────────────────────
+  private RefrescarTodo() {
+    this.servicioInformacion.ObtenerAlmacenes().subscribe({
+      next: almacenes => {
+        this.almacenes = almacenes ?? [];
+        this.CargarInformacion(); // ⚠️ depende de almacenes
+      },
+      error: err => console.error('Error cargando almacenes:', err)
+    });
+  }
 
+  // ─── FORMULARIO INFORMACIÓN ────────────────────────────────────────────────
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
-      Nombre:    ['', [Validators.required]],
-      Direccion: ['', [Validators.required]],
-      NIT:       ['', [Validators.required]],
+      Nombre:    ['', Validators.required],
+      Direccion: ['', Validators.required],
+      NIT:       ['', Validators.required],
       Iva:       ['', [Validators.required, Validators.min(0), Validators.max(100)]],
       Mensaje:   [''],
-      Telefono:  ['', [Validators.required]]
+      Telefono:  ['', Validators.required],
+      Prefijo:   ['', Validators.required]
     });
   }
 
   CargarInformacion() {
     this.servicioInformacion.ObtenerInformacion().subscribe({
-      next: (datos: InformacionModel[]) => {
-        if (datos && datos.length > 0) {
-          const info = datos[0];
-          this.esActualizacion = true;
-          this.infoLocalId = info.id;
-          this.fGroup.patchValue({
-            Nombre:    info.Nombre,
-            Direccion: info.Direccion,
-            NIT:       info.NIT,
-            Iva:       info.Iva,
-            Mensaje:   info.Mensaje,
-            Telefono:  info.Telefono
-          });
-        }
+      next: (datos: InfolocalModel[]) => {
+        if (!datos || datos.length === 0) return;
+
+        const info = datos[0];
+        this.esActualizacion = true;
+        this.infoLocalId = info.id;
+
+        const almacen = this.almacenes.find(a => a.id === info.almacenId);
+
+        this.fGroup.patchValue({
+          Nombre:    info.Nombre,
+          Direccion: info.Direccion,
+          NIT:       info.NIT,
+          Iva:       info.Iva,
+          Mensaje:   info.Mensaje,
+          Telefono:  info.Telefono,
+          Prefijo:   almacen?.Prefijo ?? ''
+        });
       },
-      error: (err: any) => console.error('Error al cargar información:', err)
+      error: err => console.error('Error cargando información:', err)
     });
   }
 
@@ -76,48 +94,37 @@ export class InformacionComponent implements OnInit {
       return;
     }
 
-    const campos = this.ObtenerFormGroup;
+    const c = this.ObtenerFormGroup;
     const datos: InformacionModel = {
-      Nombre:    campos['Nombre'].value,
-      Direccion: campos['Direccion'].value,
-      NIT:       campos['NIT'].value,
-      Iva:       parseFloat(campos['Iva'].value),
-      Mensaje:   campos['Mensaje'].value,
-      Telefono:  campos['Telefono'].value
+      Nombre:    c['Nombre'].value,
+      Direccion: c['Direccion'].value,
+      NIT:       c['NIT'].value,
+      Iva:       Number(c['Iva'].value),
+      Mensaje:   c['Mensaje'].value,
+      Telefono:  c['Telefono'].value,
+      Prefijo:   c['Prefijo'].value
     };
 
-    if (this.esActualizacion && this.infoLocalId) {
-      this.servicioInformacion.ActualizarInformacion(this.infoLocalId, datos).subscribe({
-        next: () => alert('Información actualizada correctamente'),
-        error: (err: any) => this.manejarError(err)
-      });
-    } else {
-      this.servicioInformacion.RegistrarInformacion(datos).subscribe({
-        next: (respuesta: InformacionModel) => {
-          alert('Información registrada correctamente');
-          this.esActualizacion = true;
-          this.infoLocalId = respuesta.id;
-        },
-        error: (err: any) => this.manejarError(err)
-      });
-    }
-  }
+    const accion = this.esActualizacion && this.infoLocalId
+      ? this.servicioInformacion.ActualizarInformacion(this.infoLocalId, datos)
+      : this.servicioInformacion.RegistrarInformacion(datos);
 
-  // ─── Almacenes ─────────────────────────────────────────────────────────────
-
-  ConstruirFormularioAlmacen() {
-    this.fAlmacen = this.fb.group({
-      Nombre:  ['', [Validators.required]],
-      Prefijo: ['', [Validators.required]]
+    accion.subscribe({
+      next: (resp: any) => {
+        alert('Información guardada correctamente');
+        this.esActualizacion = true;
+        this.infoLocalId = resp?.id ?? this.infoLocalId;
+        this.RefrescarTodo();
+      },
+      error: err => this.manejarError(err)
     });
   }
 
-  CargarAlmacenes() {
-    this.servicioInformacion.ObtenerAlmacenes().subscribe({
-      next: (datos: AlmacenModel[]) => {
-        this.almacenes = datos ?? [];
-      },
-      error: (err: any) => console.error('Error al cargar almacenes:', err)
+  // ─── FORMULARIO ALMACÉN ────────────────────────────────────────────────────
+  ConstruirFormularioAlmacen() {
+    this.fAlmacen = this.fb.group({
+      Nombre:  ['', Validators.required],
+      Prefijo: ['', Validators.required]
     });
   }
 
@@ -128,27 +135,29 @@ export class InformacionComponent implements OnInit {
     }
 
     const datos: AlmacenModel = {
-      Nombre:  this.fAlmacen.get('Nombre')?.value,
-      Prefijo: this.fAlmacen.get('Prefijo')?.value
+      Nombre:  this.fAlmacen.value.Nombre,
+      Prefijo: this.fAlmacen.value.Prefijo
     };
 
     if (this.almacenEditandoId) {
       this.servicioInformacion.EditarAlmacen(this.almacenEditandoId, datos).subscribe({
-        next: () => {
-          alert('Almacén actualizado correctamente');
+        next: (actualizado: AlmacenModel) => {
+          this.almacenes = this.almacenes.map(a =>
+            a.id === actualizado.id ? actualizado : a
+          );
           this.ResetFormularioAlmacen();
-          this.CargarAlmacenes();
+          this.RefrescarTodo();
         },
-        error: (err: any) => this.manejarError(err)
+        error: err => this.manejarError(err)
       });
     } else {
       this.servicioInformacion.RegistrarAlmacen(datos).subscribe({
-        next: () => {
-          alert('Almacén registrado correctamente');
+        next: (nuevo: AlmacenModel) => {
+          this.almacenes = [...this.almacenes, nuevo];
           this.ResetFormularioAlmacen();
-          this.CargarAlmacenes();
+          this.RefrescarTodo();
         },
-        error: (err: any) => this.manejarError(err)
+        error: err => this.manejarError(err)
       });
     }
   }
@@ -156,19 +165,20 @@ export class InformacionComponent implements OnInit {
   EditarAlmacen(almacen: AlmacenModel) {
     this.almacenEditandoId = almacen.id;
     this.fAlmacen.patchValue({
-      Nombre:  almacen.Nombre,
+      Nombre: almacen.Nombre,
       Prefijo: almacen.Prefijo
     });
   }
 
   EliminarAlmacen(id: number) {
     if (!confirm('¿Está seguro de eliminar este almacén?')) return;
+
     this.servicioInformacion.EliminarAlmacen(id).subscribe({
       next: () => {
-        alert('Almacén eliminado correctamente');
-        this.CargarAlmacenes();
+        this.almacenes = this.almacenes.filter(a => a.id !== id);
+        this.RefrescarTodo();
       },
-      error: (err: any) => this.manejarError(err)
+      error: err => this.manejarError(err)
     });
   }
 
@@ -181,56 +191,45 @@ export class InformacionComponent implements OnInit {
     this.fAlmacen.reset();
   }
 
-  // ─── Utilidades ────────────────────────────────────────────────────────────
-
+  // ─── UTILIDADES ────────────────────────────────────────────────────────────
   private manejarError(err: any) {
-    if (err.error?.error?.message) {
-      alert(err.error.error.message);
-    } else {
-      alert('Ocurrió un error inesperado.');
-    }
-    console.error('Error:', err);
+    alert(err?.error?.error?.message ?? 'Ocurrió un error inesperado');
+    console.error(err);
   }
 
-  focusNext(currentField: HTMLElement, nextField?: HTMLElement) {
-    const fieldName = currentField.id || currentField.getAttribute('formControlName') || '';
-    if (this.fGroup.get(fieldName)?.valid) {
-      currentField.blur();
-      if (nextField) nextField.focus();
+  focusNext(current: HTMLElement, next?: HTMLElement) {
+    const name = current.id || current.getAttribute('formControlName') || '';
+    if (this.fGroup.get(name)?.valid) {
+      current.blur();
+      next?.focus();
     } else {
-      currentField.focus();
-      this.fGroup.get(fieldName)?.markAsTouched();
+      this.fGroup.get(name)?.markAsTouched();
+      current.focus();
     }
   }
 
-  focusNextAlmacen(event: Event, currentField: HTMLElement, nextField?: HTMLElement) {
+  focusNextAlmacen(event: Event, current: HTMLElement, next?: HTMLElement) {
     event.preventDefault();
-    const fieldName = currentField.id?.replace('Almacen', '') || currentField.getAttribute('formControlName') || '';
-    if (this.fAlmacen.get(fieldName)?.valid) {
-      currentField.blur();
-      if (nextField) {
-        nextField.focus();
-      } else if (this.fAlmacen.valid) {
-        this.GuardarAlmacen();
-      }
+    const name = current.getAttribute('formControlName') || '';
+    if (this.fAlmacen.get(name)?.valid) {
+      current.blur();
+      next ? next.focus() : this.GuardarAlmacen();
     } else {
-      currentField.focus();
-      this.fAlmacen.get(fieldName)?.markAsTouched();
+      this.fAlmacen.get(name)?.markAsTouched();
+      current.focus();
     }
   }
 
-  submitOrFocusNext(currentField: HTMLElement) {
-    currentField.blur();
-    if (this.fGroup.valid) {
-      this.GuardarInformacion();
-    } else {
-      for (const controlName in this.fGroup.controls) {
-        const control = this.fGroup.get(controlName);
-        if (control && control.invalid) {
-          const invalidField = document.getElementById(controlName);
-          if (invalidField) invalidField.focus();
-          break;
-        }
+  submitOrFocusNext(current: HTMLElement) {
+    current.blur();
+    this.fGroup.valid ? this.GuardarInformacion() : this.focusFirstInvalid();
+  }
+
+  private focusFirstInvalid() {
+    for (const key in this.fGroup.controls) {
+      if (this.fGroup.get(key)?.invalid) {
+        document.getElementById(key)?.focus();
+        break;
       }
     }
   }

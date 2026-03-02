@@ -6,4 +6,5 @@ export class InformacionModel{
     Iva?: number;
     Mensaje?: string;
     Telefono?: string;
+    Prefijo?: string;
 }

@@ -2,7 +2,7 @@ export class VentaModel{
     id?: number;
     Cantidad?: number;
     Precio?: number;
-    Almacen?: string;
+    almacenId?: number;
     zapatoId?: string;
     facturaId?: number;
 }

@@ -22,7 +22,7 @@ export class LineaVentaComponent {
       zapatoId: producto.zapatoId,
       Cantidad: parseInt(producto.CantidadVenta),
       Precio: parseFloat(producto.PrecioVenta),
-      Almacen: ''
+      almacenId: producto.almacenId
     };
 
     this.lineasVenta.push(nuevaLinea);
