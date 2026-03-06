@@ -137,7 +137,6 @@ export class CrearZapatoComponent implements OnInit {
       PrecioVentaMax: campos['PrecioVentaMax'].value,
       PrecioVentaMin: campos['PrecioVentaMin'].value,
       Cantidad: campos['Cantidad'].value,
-      Fecha: new Date().toISOString(),
       proveedorId: parseInt(campos['proveedorId'].value),
     };
 
@@ -182,7 +181,6 @@ export class CrearZapatoComponent implements OnInit {
       Cantidad: this.parseCantidad(campos['Cantidad'].value),
       TallaInicial: parseInt(campos['TallaInicial'].value),
       TallaFinal: parseInt(campos['TallaFinal'].value),
-      Fecha: new Date().toISOString(),
       proveedorId: parseInt(campos['proveedorId'].value),
     };
 

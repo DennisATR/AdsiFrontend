@@ -8,6 +8,5 @@ export class ZapatoModel{
     PrecioVentaMax?: number;
     PrecioVentaMin?: number;
     Cantidad?: number;
-    Fecha?: Date;
     proveedorId?: number;
 }

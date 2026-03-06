@@ -8,6 +8,5 @@ export class ZapatoSerieModel{
     Cantidad?: string;
     TallaInicial?: number;
     TallaFinal?: number;
-    Fecha?: Date;
     proveedorId?: number;
 }

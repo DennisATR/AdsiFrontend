@@ -430,7 +430,7 @@ export class CrearFacturaComponent implements OnInit {
 
     // Datos de la factura (sin las líneas)
     let datosFactura = {
-      Fecha: new Date(campos['Fecha'].value).toISOString(),
+      Fecha: '',
       clienteId: parseInt(campos['clienteId'].value),
       vendedorId: campos['vendedorId'].value,
       metodoPagoId: parseInt(campos['metodoPagoId'].value),
