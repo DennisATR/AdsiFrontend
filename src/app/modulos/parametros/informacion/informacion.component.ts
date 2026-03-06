@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InformacionModel } from '../../../modelos/informacion.model';
 import { InfolocalModel } from '../../../modelos/infolocal.model';
 import { AlmacenModel } from '../../../modelos/almacen.model';
+import { MetodoPagoModel } from '../../../modelos/metodoPago.model';
 import { InformacionService } from '../../../servicios/parametros/informacion.service';
+import { MetodoPagoService } from '../../../servicios/ventas/metodo-pago.service';
 
 @Component({
   selector: 'app-informacion',
@@ -15,6 +17,7 @@ export class InformacionComponent implements OnInit {
   // ─── Formularios ───────────────────────────────────────────────────────────
   fGroup: FormGroup = new FormGroup({});
   fAlmacen: FormGroup = new FormGroup({});
+  fMetodoPago: FormGroup = new FormGroup({});
 
   // ─── Estado ────────────────────────────────────────────────────────────────
   esActualizacion = false;
@@ -23,16 +26,22 @@ export class InformacionComponent implements OnInit {
   almacenes: AlmacenModel[] = [];
   almacenEditandoId?: number;
 
+  metodosPago: MetodoPagoModel[] = [];
+  metodoPagoEditandoId?: number;
+
   constructor(
     private fb: FormBuilder,
-    private servicioInformacion: InformacionService
+    private servicioInformacion: InformacionService,
+    private servicioMetodoPago: MetodoPagoService
   ) {}
 
   // ─── INIT ──────────────────────────────────────────────────────────────────
   ngOnInit() {
     this.ConstruirFormulario();
     this.ConstruirFormularioAlmacen();
+    this.ConstruirFormularioMetodoPago();
     this.RefrescarTodo();
+    this.CargarMetodosPago();
   }
 
   get ObtenerFormGroup() {
@@ -189,6 +198,85 @@ export class InformacionComponent implements OnInit {
   private ResetFormularioAlmacen() {
     this.almacenEditandoId = undefined;
     this.fAlmacen.reset();
+  }
+
+  // ─── FORMULARIO MÉTODO DE PAGO ─────────────────────────────────────────────
+  ConstruirFormularioMetodoPago() {
+    this.fMetodoPago = this.fb.group({
+      Nombre:      ['', Validators.required],
+      Descripcion: ['']
+    });
+  }
+
+  CargarMetodosPago() {
+    this.servicioMetodoPago.ObtenerMetodosPago().subscribe({
+      next: (datos: MetodoPagoModel[]) => {
+        this.metodosPago = datos ?? [];
+      },
+      error: err => console.error('Error cargando métodos de pago:', err)
+    });
+  }
+
+  GuardarMetodoPago() {
+    if (this.fMetodoPago.invalid) {
+      this.fMetodoPago.markAllAsTouched();
+      return;
+    }
+
+    const datos: MetodoPagoModel = {
+      Nombre:      this.fMetodoPago.value.Nombre,
+      Descripcion: this.fMetodoPago.value.Descripcion || ''
+    };
+
+    if (this.metodoPagoEditandoId) {
+      this.servicioMetodoPago.EditarMetodoPago(String(this.metodoPagoEditandoId), datos).subscribe({
+        next: (actualizado: MetodoPagoModel) => {
+          this.metodosPago = this.metodosPago.map(m =>
+            m.id === actualizado.id ? actualizado : m
+          );
+          this.ResetFormularioMetodoPago();
+          this.CargarMetodosPago();
+        },
+        error: err => this.manejarError(err)
+      });
+    } else {
+      this.servicioMetodoPago.RegistrarMetodoPago(datos).subscribe({
+        next: (nuevo: MetodoPagoModel) => {
+          this.metodosPago = [...this.metodosPago, nuevo];
+          this.ResetFormularioMetodoPago();
+          this.CargarMetodosPago();
+        },
+        error: err => this.manejarError(err)
+      });
+    }
+  }
+
+  EditarMetodoPago(metodo: MetodoPagoModel) {
+    this.metodoPagoEditandoId = metodo.id;
+    this.fMetodoPago.patchValue({
+      Nombre:      metodo.Nombre,
+      Descripcion: metodo.Descripcion
+    });
+  }
+
+  EliminarMetodoPago(id: number) {
+    if (!confirm('¿Está seguro de eliminar este método de pago?')) return;
+
+    this.servicioMetodoPago.EliminarMetodoPago(String(id)).subscribe({
+      next: () => {
+        this.metodosPago = this.metodosPago.filter(m => m.id !== id);
+      },
+      error: err => this.manejarError(err)
+    });
+  }
+
+  CancelarEdicionMetodoPago() {
+    this.ResetFormularioMetodoPago();
+  }
+
+  private ResetFormularioMetodoPago() {
+    this.metodoPagoEditandoId = undefined;
+    this.fMetodoPago.reset();
   }
 
   // ─── UTILIDADES ────────────────────────────────────────────────────────────

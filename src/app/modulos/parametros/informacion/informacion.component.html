@@ -92,8 +92,11 @@
     </form>
   </main>
 
-  <!-- COLUMNA DERECHA: Almacenes -->
-  <aside class="almacen-panel">
+  <!-- COLUMNA DERECHA: Almacenes + Métodos de Pago -->
+  <div class="right-panels">
+
+    <!-- Almacenes -->
+    <aside class="almacen-panel">
     <div class="panel-header">
       <span class="panel-icon">🏪</span>
       <h3>Almacenes Asociados</h3>
@@ -145,6 +148,60 @@
         </div>
       </div>
     </div>
-  </aside>
+    </aside>
+
+    <!-- Métodos de Pago -->
+    <aside class="metodo-pago-panel">
+      <div class="panel-header">
+        <span class="panel-icon">💳</span>
+        <h3>Métodos de Pago</h3>
+      </div>
+
+      <!-- Mini formulario -->
+      <form [formGroup]="fMetodoPago" class="metodo-pago-form" (ngSubmit)="GuardarMetodoPago()">
+        <div class="row">
+          <div class="input col s6">
+            <label for="MetodoNombre">Nombre</label>
+            <input id="MetodoNombre" type="text" formControlName="Nombre" #metodoNombre
+              (keydown.enter)="$event.preventDefault(); metodoDescripcion.focus()"
+              placeholder="Ej: Efectivo" class="validate" />
+            <small *ngIf="fMetodoPago.get('Nombre')?.invalid && fMetodoPago.get('Nombre')?.touched">
+              El nombre es obligatorio.
+            </small>
+          </div>
+          <div class="input col s6">
+            <label for="MetodoDescripcion">Descripción</label>
+            <input id="MetodoDescripcion" type="text" formControlName="Descripcion" #metodoDescripcion
+              placeholder="Opcional" class="validate" />
+          </div>
+        </div>
+        <div class="metodo-form-actions">
+          <button type="submit" class="btn-metodo-save">
+            {{ metodoPagoEditandoId ? 'Actualizar' : 'Agregar' }}
+          </button>
+          <button type="button" class="btn-metodo-cancel" *ngIf="metodoPagoEditandoId"
+            (click)="CancelarEdicionMetodoPago()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+
+      <!-- Lista de métodos de pago -->
+      <div class="metodo-pago-list">
+        <p class="list-empty" *ngIf="metodosPago.length === 0">No hay métodos de pago registrados.</p>
+        <div class="metodo-pago-item" *ngFor="let metodo of metodosPago">
+          <div class="metodo-info">
+            <span class="metodo-nombre">{{ metodo.Nombre }}</span>
+            <span class="metodo-descripcion" *ngIf="metodo.Descripcion">{{ metodo.Descripcion }}</span>
+          </div>
+          <div class="metodo-actions">
+            <button class="btn-icon btn-edit" title="Editar" (click)="EditarMetodoPago(metodo)">✏️</button>
+            <button class="btn-icon btn-delete" title="Eliminar" (click)="EliminarMetodoPago(metodo.id!)">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
 
 </div>
