@@ -72,7 +72,7 @@ export class EditarEntregaComponent implements OnInit {
       EmpresaTrans: this.fgValidador.controls['empresaTrans'].value,
       NumCajas: this.fgValidador.controls['numCajas'].value,
       Cobro: this.fgValidador.controls['cobro'].value,
-      Fecha: this.fgValidador.controls['fecha'].value ? new Date(this.fgValidador.controls['fecha'].value).toISOString() : null,
+      Fecha: this.fgValidador.controls['fecha'].value ? new Date(this.fgValidador.controls['fecha'].value).toISOString().slice(0, 19).replace('T', ' ') : null,
       Observacion: this.fgValidador.controls['observacion'].value || ""
     };
 

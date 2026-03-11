@@ -35,7 +35,7 @@ export class CierreCajaService {
   }
 
   EditarCierreCaja(id: number, datos: any): Observable<any> {
-    return this.http.put<any>(`${this.urlBase}cierre-caja/${id}`, datos).pipe(
+    return this.http.patch<any>(`${this.urlBase}cierre-caja/${id}`, datos).pipe(
       catchError(error => {
         console.error('Error al editar el cierre de caja:', error);
         return throwError(() => error);

@@ -1,1 +1,49 @@
-<h2> Bienvenido a la aplicación de Angular</h2>
+<div class="bienvenida-container">
+  <div class="bienvenida-card">
+    <span class="material-icons bienvenida-icono">store</span>
+    <h2>Bienvenido al sistema ADSI</h2>
+    <p>Gestión de ventas y administración</p>
+  </div>
+</div>
+
+<!-- Modal Base de Caja -->
+<div class="modal-overlay" *ngIf="mostrarModalBase">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="material-icons modal-icon">account_balance_wallet</span>
+      <h5>Base de Caja del Día</h5>
+      <p class="modal-subtitle">Ingrese el monto disponible en caja para comenzar el día</p>
+    </div>
+    <form [formGroup]="fGroup" class="modal-form">
+      <div class="input-group">
+        <label for="Base">Monto en caja (Base)</label>
+        <div class="input-with-icon">
+          <span class="currency-symbol">$</span>
+          <input
+            formControlName="Base"
+            id="Base"
+            type="number"
+            min="0"
+            step="10000"
+            placeholder="0"
+            class="modal-input"
+          />
+        </div>
+        <div class="error-message" *ngIf="ObtenerFormGroup['Base'].invalid && ObtenerFormGroup['Base'].touched">
+          <small>Ingrese un monto válido (mayor o igual a 0).</small>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button
+          class="btn-registrar"
+          type="button"
+          (click)="RegistrarBase()"
+          [disabled]="cargando">
+          <span class="material-icons btn-icon">save</span>
+          <span *ngIf="!cargando">Registrar Base</span>
+          <span *ngIf="cargando">Guardando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

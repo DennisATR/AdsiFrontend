@@ -41,4 +41,8 @@ export class GastoService {
       })
     );
   }
+
+  BuscarGastosPorFecha(fecha: string): Observable<GastoModel[]> {
+    return this.http.get<GastoModel[]>(`${this.urlBase}gastos/buscarporfecha/${fecha}`);
+  }
 }

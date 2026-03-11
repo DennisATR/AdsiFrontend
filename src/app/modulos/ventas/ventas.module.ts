@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CrearFacturaComponent } from './factura/crear-factura/crear-factura.component';
 import { LineaVentaComponent } from './factura/linea-venta/linea-venta.component';
+import { CierreCajaComponent } from './cierre-caja/cierre-caja.component';
 
 
 @NgModule({
   declarations: [
     CrearFacturaComponent,
-    LineaVentaComponent
+    LineaVentaComponent,
+    CierreCajaComponent
   ],
   imports: [
     CommonModule,

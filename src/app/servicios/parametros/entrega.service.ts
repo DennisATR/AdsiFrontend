@@ -41,5 +41,9 @@ export class EntregaService {
       })
     );
   }
+
+  BuscarEntregasPorFecha(fecha: string): Observable<EntregaModel[]> {
+    return this.http.get<EntregaModel[]>(`${this.urlBase}entrega/buscarporfecha/${fecha}`);
+  }
 }
 

@@ -60,7 +60,7 @@ export class CrearGastoComponent implements OnInit {
       Concepto: campos['Concepto'].value,
       Descripcion: campos['Descripcion'].value,
       Valor: parseFloat(campos['Valor'].value),
-      Fecha: new Date(campos['Fecha'].value).toISOString()
+      Fecha: new Date(campos['Fecha'].value).toISOString().slice(0, 19).replace('T', ' ')
     };
     
     console.log("Datos del gasto a registrar:", datos);

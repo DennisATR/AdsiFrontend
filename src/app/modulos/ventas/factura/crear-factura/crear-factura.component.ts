@@ -65,7 +65,6 @@ export class CrearFacturaComponent implements OnInit {
 
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
-      Fecha: ['', [Validators.required]],
       clienteId: ['', [Validators.required]],
       vendedorId: ['', [Validators.required]],
       metodoPagoId: ['', [Validators.required]],
@@ -430,7 +429,6 @@ export class CrearFacturaComponent implements OnInit {
 
     // Datos de la factura (sin las líneas)
     let datosFactura = {
-      Fecha: '',
       clienteId: parseInt(campos['clienteId'].value),
       vendedorId: campos['vendedorId'].value,
       metodoPagoId: parseInt(campos['metodoPagoId'].value),

@@ -3,6 +3,6 @@ export class VendedorModel{
     Nombre?: string;
     Apellido?: string;
     Telefono?: string;
-    FechaReg?: Date;
+    FechaReg?: string;
     Correo?: string;
 }

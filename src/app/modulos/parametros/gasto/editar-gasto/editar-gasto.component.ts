@@ -66,7 +66,7 @@ export class EditarGastoComponent {
     let datos = {
       Concepto: this.fgValidador.controls['concepto'].value,
       Valor: this.fgValidador.controls['valor'].value,
-      Fecha: this.fgValidador.controls['fecha'].value ? new Date(this.fgValidador.controls['fecha'].value).toISOString() : null,
+      Fecha: this.fgValidador.controls['fecha'].value ? new Date(this.fgValidador.controls['fecha'].value).toISOString().slice(0, 19).replace('T', ' ') : null,
       Descripcion: this.fgValidador.controls['descripcion'].value || ""
     };
 

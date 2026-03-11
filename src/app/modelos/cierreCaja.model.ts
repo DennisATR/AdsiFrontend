@@ -7,4 +7,6 @@ export class CierreCajaModel {
     MontoReal?: number;
     Diferencia?: number;
     Estado?: string;
+    Caja?: number;
+    Entrega?: number;
   }

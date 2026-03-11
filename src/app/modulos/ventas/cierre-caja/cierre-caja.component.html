@@ -1,0 +1,106 @@
+<div class="card-container">
+  <div class="title">
+    <h5>Cierre de Caja</h5>
+  </div>
+
+  <div *ngIf="!cierreCajaHoy" class="sin-registros">
+    <span class="material-icons">inbox</span>
+    <p>No hay cierre de caja registrado para hoy.</p>
+  </div>
+
+  <form *ngIf="cierreCajaHoy" [formGroup]="fGroup" class="col s12">
+    <div class="form-section">
+      <div class="row">
+
+        <!-- Base Caja -->
+        <div class="input col s4">
+          <input formControlName="Base" id="Base" type="number" min="0" step="10000" class="validate" />
+          <label for="Base">Base de Caja</label>
+          <div *ngIf="ObtenerFormGroup['Base'].invalid && ObtenerFormGroup['Base'].touched" class="error-message">
+            <small>La base es obligatoria y debe ser mayor o igual a 0.</small>
+          </div>
+        </div>
+
+        <!-- Entrega -->
+        <div class="input col s4">
+          <input formControlName="Entrega" id="Entrega" type="number" min="0" step="10000"
+            class="validate" placeholder="Sin entrega registrada" />
+          <label for="Entrega">Entrega</label>
+          <div *ngIf="ObtenerFormGroup['Entrega'].invalid && ObtenerFormGroup['Entrega'].touched"
+            class="error-message">
+            <small>El valor de entrega debe ser mayor o igual a 0.</small>
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="estado-col col s4">
+          <span class="estado-label">Estado</span>
+          <span class="badge" [ngClass]="{
+            'badge-abierto': cierreCajaHoy.Estado === 'Abierto',
+            'badge-cerrado': cierreCajaHoy.Estado === 'Cerrado'
+          }">
+            {{ cierreCajaHoy.Estado }}
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row button-row">
+      <div class="col s12 button-container">
+        <button
+          class="btn-custom btn-reporte waves-effect"
+          type="button"
+          (click)="GenerarReporte()"
+          [disabled]="cargandoReporte">
+          <span *ngIf="!cargandoReporte">Generar Reporte</span>
+          <span *ngIf="cargandoReporte">Generando...</span>
+        </button>
+        <button
+          class="btn-custom waves-effect waves-light"
+          type="button"
+          (click)="GuardarCierreCaja()"
+          [disabled]="cargando">
+          <span *ngIf="!cargando">Guardar</span>
+          <span *ngIf="cargando">Guardando...</span>
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Resumen del día -->
+  <div *ngIf="cierreCajaHoy" class="resumen-container">
+
+    <div class="resumen-card">
+      <span class="material-icons resumen-icon icon-gasto">receipt_long</span>
+      <div class="resumen-info">
+        <span class="resumen-label">Gastos del día</span>
+        <span class="resumen-valor" *ngIf="!cargandoResumen">
+          {{ totalGastosHoy | currency:'$':'symbol':'1.0-0' }}
+        </span>
+        <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
+      </div>
+    </div>
+
+    <div class="resumen-card">
+      <span class="material-icons resumen-icon icon-entrega">local_shipping</span>
+      <div class="resumen-info">
+        <span class="resumen-label">Entregas del día</span>
+        <span class="resumen-valor" *ngIf="!cargandoResumen">
+          {{ totalEntregasHoy | currency:'$':'symbol':'1.0-0' }}
+        </span>
+        <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
+      </div>
+    </div>
+
+    <div class="resumen-card">
+      <span class="material-icons resumen-icon icon-zapatos">inventory_2</span>
+      <div class="resumen-info">
+        <span class="resumen-label">Zapatos vendidos</span>
+        <span class="resumen-valor">{{ cierreCajaHoy.NumeroArticulos ?? 0 }}</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>

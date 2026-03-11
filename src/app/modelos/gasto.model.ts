@@ -1,6 +1,6 @@
 export class GastoModel{
     id?: number;
-    Fecha?: Date;
+    Fecha?: string;
     Valor?: number;
     Concepto?: string;
     Descripcion?: string;

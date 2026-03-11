@@ -29,7 +29,7 @@
         <td>{{ vendedor.Apellido }}</td>
         <td>{{ vendedor.Correo }}</td>
         <td>{{ vendedor.Telefono }}</td>
-        <td>{{ vendedor.FechaReg | date: 'dd/MM/yyyy hh:mm a' }}</td>
+        <td>{{ vendedor.FechaReg | date: 'dd/MM/yyyy hh:mm a' : 'UTC' }}</td>
         <td class="actions-cell">
           <div class="action-buttons">
             <a [routerLink]="['/parametros/vendedor/editar-vendedor', vendedor.id]" 

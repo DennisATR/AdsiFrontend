@@ -63,7 +63,7 @@ export class CrearEntregaComponent implements OnInit {
       EmpresaTrans: campos['EmpresaTrans'].value,
       NumCajas: parseInt(campos['NumCajas'].value),
       Cobro: parseFloat(campos['Cobro'].value),
-      Fecha: new Date(campos['Fecha'].value).toISOString(),
+      Fecha: new Date(campos['Fecha'].value).toISOString().slice(0, 19).replace('T', ' '),
       Observacion: campos['Observacion'].value
     };
     
