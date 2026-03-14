@@ -9,4 +9,5 @@ export class ZapatoModel{
     PrecioVentaMin?: number;
     Cantidad?: number;
     proveedorId?: number;
+    Genero?: string;
 }

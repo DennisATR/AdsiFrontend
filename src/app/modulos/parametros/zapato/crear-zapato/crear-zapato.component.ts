@@ -30,6 +30,7 @@ export class CrearZapatoComponent implements OnInit {
   proveedores: ProveedorModel[] = [];
   proveedoresNombres: string[] = [];
   colores = ConfiguracionListas.colores;
+  generos = ConfiguracionListas.generos;
   searchQuery: string = '';
   pag = 1;
   total = 0;
@@ -105,6 +106,7 @@ export class CrearZapatoComponent implements OnInit {
       Cantidad: ['', Validators.required],
       proveedorId: ['', Validators.required],
       ProveedorNombre: ['', Validators.required],
+      Genero: ['', Validators.required],
     });
   }
 
@@ -122,6 +124,7 @@ export class CrearZapatoComponent implements OnInit {
       TallaFinal: ['', Validators.required],
       proveedorId: ['', Validators.required],
       ProveedorNombre: ['', Validators.required],
+      Genero: ['', Validators.required],
     });
   }
 
@@ -138,6 +141,7 @@ export class CrearZapatoComponent implements OnInit {
       PrecioVentaMin: campos['PrecioVentaMin'].value,
       Cantidad: campos['Cantidad'].value,
       proveedorId: parseInt(campos['proveedorId'].value),
+      Genero: campos['Genero'].value,
     };
 
     console.log(datos);
@@ -182,6 +186,7 @@ export class CrearZapatoComponent implements OnInit {
       TallaInicial: parseInt(campos['TallaInicial'].value),
       TallaFinal: parseInt(campos['TallaFinal'].value),
       proveedorId: parseInt(campos['proveedorId'].value),
+      Genero: campos['Genero'].value,
     };
 
     console.log('Datos para serie:', datos);

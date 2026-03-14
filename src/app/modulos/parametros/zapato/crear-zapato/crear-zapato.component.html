@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <div class="input col s6">
+          <div class="input col s3">
             <input formControlName="Categoria" id="Categoria" appSearchSelect [opciones]="categoriasComunes"
               [permitirPersonalizado]="true" #categoria (keydown.enter)="focusNext(categoria, talla)" type="text"
               class="validate" />
@@ -63,6 +63,18 @@
               <small>La categoría es obligatoria.</small>
             </div>
           </div>
+        <div>
+          <div class="input col s3">
+            <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #genero (keydown.enter)="focusNext(genero, codigoBarra)" type="text" class="validate" />
+            <label for="Genero">Publico</label>
+            <div *ngIf="ObtenerFormGroup['Genero'].invalid && ObtenerFormGroup['Genero'].touched" class="error-message">
+              <small>El género es obligatorio.</small>
+            </div>
+          </div>
+
+        </div>
+
+
         </div>
       </div>
 

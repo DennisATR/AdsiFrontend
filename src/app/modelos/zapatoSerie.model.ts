@@ -9,4 +9,5 @@ export class ZapatoSerieModel{
     TallaInicial?: number;
     TallaFinal?: number;
     proveedorId?: number;
+    Genero?: string;
 }

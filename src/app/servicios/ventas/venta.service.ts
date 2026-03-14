@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfiguracionRutasBackend } from '../../config/configuracion.rutas.backend';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { VentaModel } from '../../modelos/venta.model';
 
 @Injectable({
@@ -38,4 +38,30 @@ export class VentaService {
   EditarVenta(id: string, datos: any): Observable<any> {
     return this.http.put<any>(`${this.urlBase}venta/${id}`, datos);
   }
+
+  ObtenerCantidadZapatosVendidosPorFecha(fecha: string): Observable<number> {
+    return this.http
+      .get<number | VentaModel[] | Record<string, unknown>>(`${this.urlBase}venta/cantidad-zapatos-vendidos/fecha/${fecha}`)
+      .pipe(map((respuesta) => this.NormalizarCantidadZapatosVendidos(respuesta)));
+  }
+
+  private NormalizarCantidadZapatosVendidos(respuesta: number | VentaModel[] | Record<string, unknown>): number {
+    if (typeof respuesta === 'number') {
+      return respuesta;
+    }
+
+    if (Array.isArray(respuesta)) {
+      return respuesta.reduce((total, venta) => total + Number(venta.Cantidad ?? 0), 0);
+    }
+
+    const cantidad = respuesta['cantidad']
+      ?? respuesta['Cantidad']
+      ?? respuesta['total']
+      ?? respuesta['totalZapatosVendidos']
+      ?? respuesta['numeroArticulos']
+      ?? respuesta['NumeroArticulos'];
+
+    return Number(cantidad ?? 0);
+  }
+
 }

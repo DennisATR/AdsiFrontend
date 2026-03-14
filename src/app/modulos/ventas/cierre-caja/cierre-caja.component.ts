@@ -5,6 +5,7 @@ import { CierreCajaService } from '../../../servicios/ventas/cierre-caja.service
 import { CierreCajaModel } from '../../../modelos/cierreCaja.model';
 import { GastoService } from '../../../servicios/parametros/gasto.service';
 import { EntregaService } from '../../../servicios/parametros/entrega.service';
+import { VentaService } from '../../../servicios/ventas/venta.service';
 
 @Component({
   selector: 'app-cierre-caja',
@@ -19,13 +20,15 @@ export class CierreCajaComponent implements OnInit {
 
   totalGastosHoy: number = 0;
   totalEntregasHoy: number = 0;
+  totalZapatosVendidosHoy: number = 0;
   cargandoResumen: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private cierreCajaService: CierreCajaService,
     private gastoService: GastoService,
-    private entregaService: EntregaService
+    private entregaService: EntregaService,
+    private ventaService: VentaService
   ) {}
 
   ngOnInit() {
@@ -97,15 +100,18 @@ export class CierreCajaComponent implements OnInit {
     const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Bogota' });
     forkJoin({
       gastos: this.gastoService.BuscarGastosPorFecha(hoy),
-      entregas: this.entregaService.BuscarEntregasPorFecha(hoy)
+      entregas: this.entregaService.BuscarEntregasPorFecha(hoy),
+      zapatosVendidos: this.ventaService.ObtenerCantidadZapatosVendidosPorFecha(hoy)
     }).subscribe({
-      next: ({ gastos, entregas }) => {
+      next: ({ gastos, entregas, zapatosVendidos }) => {
         this.totalGastosHoy = gastos.reduce((total, gasto) => total + (gasto.Valor ?? 0), 0);
         this.totalEntregasHoy = entregas.reduce((total, entrega) => total + (entrega.Cobro ?? 0), 0);
+        this.totalZapatosVendidosHoy = zapatosVendidos;
         this.cargandoResumen = false;
       },
       error: (err: any) => {
         console.error('Error al cargar el resumen del día:', err);
+        this.totalZapatosVendidosHoy = 0;
         this.cargandoResumen = false;
       }
     });

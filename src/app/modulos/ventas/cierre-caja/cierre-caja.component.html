@@ -97,7 +97,8 @@
       <span class="material-icons resumen-icon icon-zapatos">inventory_2</span>
       <div class="resumen-info">
         <span class="resumen-label">Zapatos vendidos</span>
-        <span class="resumen-valor">{{ cierreCajaHoy.NumeroArticulos ?? 0 }}</span>
+        <span class="resumen-valor" *ngIf="!cargandoResumen">{{ totalZapatosVendidosHoy }}</span>
+        <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
       </div>
     </div>
 

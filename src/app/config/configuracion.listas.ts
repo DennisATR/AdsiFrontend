@@ -30,8 +30,7 @@ export namespace ConfiguracionListas {
         'Escolar', 'Trabajo / seguridad', 'Outdoor', 'Importado',
 
         // Por público o estilo
-        'Hombre', 'Mujer', 'Niño', 'Niña', 'Bebé',
-        'Señorial', 'Económico', 'Elegantes',
+        'Señorial', 'Económico', 'Elegantes', 'Bebe',
 
         // Por materiales
         'Cuero', 'Cuero sintético', 'Lona', 'Gamuza', 'Tela', 'Caucho'
@@ -62,4 +61,9 @@ export namespace ConfiguracionListas {
         'Servientrega', 'Coordinadora', 'Interrapidisimo',
         'Envia', 'TCC', 'Deprisa'
     ];
+
+    export const generos: string[] = [
+        'Hombre', 'Mujer', 'Unisex'
+    ];
+
 }
