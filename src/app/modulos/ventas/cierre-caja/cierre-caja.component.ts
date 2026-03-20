@@ -6,6 +6,7 @@ import { CierreCajaModel } from '../../../modelos/cierreCaja.model';
 import { GastoService } from '../../../servicios/parametros/gasto.service';
 import { EntregaService } from '../../../servicios/parametros/entrega.service';
 import { VentaService } from '../../../servicios/ventas/venta.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cierre-caja',
@@ -28,7 +29,8 @@ export class CierreCajaComponent implements OnInit {
     private cierreCajaService: CierreCajaService,
     private gastoService: GastoService,
     private entregaService: EntregaService,
-    private ventaService: VentaService
+    private ventaService: VentaService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -106,7 +108,7 @@ export class CierreCajaComponent implements OnInit {
       next: ({ gastos, entregas, zapatosVendidos }) => {
         this.totalGastosHoy = gastos.reduce((total, gasto) => total + (gasto.Valor ?? 0), 0);
         this.totalEntregasHoy = entregas.reduce((total, entrega) => total + (entrega.Cobro ?? 0), 0);
-        this.totalZapatosVendidosHoy = zapatosVendidos;
+        this.totalZapatosVendidosHoy = zapatosVendidos.cantidad ?? 0;
         this.cargandoResumen = false;
       },
       error: (err: any) => {
@@ -118,6 +120,10 @@ export class CierreCajaComponent implements OnInit {
   }
 
   GenerarReporte() {
-    // TODO: Generar reporte del día y cambiar Estado a 'Cerrado'
+    this.cargandoReporte = true;
+    this.router.navigate(['/ventas/tirilla'])
+      .finally(() => {
+        this.cargandoReporte = false;
+      });
   }
 }

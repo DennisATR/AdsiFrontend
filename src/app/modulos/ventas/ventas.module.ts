@@ -8,13 +8,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { CrearFacturaComponent } from './factura/crear-factura/crear-factura.component';
 import { LineaVentaComponent } from './factura/linea-venta/linea-venta.component';
 import { CierreCajaComponent } from './cierre-caja/cierre-caja.component';
+import { TirillaComponent } from './tirilla/tirilla.component';
 
 
 @NgModule({
   declarations: [
     CrearFacturaComponent,
     LineaVentaComponent,
-    CierreCajaComponent
+    CierreCajaComponent,
+    TirillaComponent
   ],
   imports: [
     CommonModule,

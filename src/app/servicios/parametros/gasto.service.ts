@@ -3,6 +3,7 @@ import { ConfiguracionRutasBackend } from '../../config/configuracion.rutas.back
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { GastoModel } from '../../modelos/gasto.model';
+import { ResumenDelDiaGastosModel } from '../../modelos/resumenDelDiaGastos.model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,4 +46,9 @@ export class GastoService {
   BuscarGastosPorFecha(fecha: string): Observable<GastoModel[]> {
     return this.http.get<GastoModel[]>(`${this.urlBase}gastos/buscarporfecha/${fecha}`);
   }
+
+  ObtenerResumenDelDia(fecha: string): Observable<ResumenDelDiaGastosModel[]> {
+    return this.http.get<ResumenDelDiaGastosModel[]>(`${this.urlBase}gastos/resumen-dia/fecha/${fecha}`);
+  }
+
 }

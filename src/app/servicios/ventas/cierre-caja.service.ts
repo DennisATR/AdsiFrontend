@@ -3,6 +3,7 @@ import { ConfiguracionRutasBackend } from '../../config/configuracion.rutas.back
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { CierreCajaModel } from '../../modelos/cierreCaja.model';
+import { EfectivoEnCajaModel } from '../../modelos/efectivoEnCaja.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,4 +44,7 @@ export class CierreCajaService {
     );
   }
 
+  ObtenerCierreCajaPorFechaEfectivo(fecha: string): Observable<EfectivoEnCajaModel> {
+    return this.http.get<EfectivoEnCajaModel>(`${this.urlBase}cierre-caja/efectivo/fecha/${fecha}`);
+  }
 }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { FacturaModel } from '../../modelos/factura.model';
 import { MetodoPagoModel } from '../../modelos/metodoPago.model';
+import { ResumenDelDiaMetodoPagoModel } from '../../modelos/resumenDelDiaMetodoPago.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,9 @@ export class MetodoPagoService {
   EditarMetodoPago(id: string, datos: any): Observable<any> {
     return this.http.put<any>(`${this.urlBase}metodo-pago/${id}`, datos);
   }
-  
+
+  ObtenerResumenDelDia(fecha: string): Observable<ResumenDelDiaMetodoPagoModel[]> {
+    return this.http.get<ResumenDelDiaMetodoPagoModel[]>(`${this.urlBase}metodo-pago/resumen-dia/fecha/${fecha}`);
+  }
+
 }

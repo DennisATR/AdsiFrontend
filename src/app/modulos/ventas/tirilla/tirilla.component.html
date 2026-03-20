@@ -1,0 +1,188 @@
+<div class="card-container">
+	<div class="title">
+		<h5>Previsualizacion Tirilla</h5>
+	</div>
+
+	<div class="acciones-superiores">
+		<a class="btn-volver waves-effect" routerLink="/ventas/cierre-caja">Volver a cierre de caja</a>
+	</div>
+
+	<div *ngIf="cargando" class="estado-carga">
+		<span class="material-icons">hourglass_top</span>
+		<p>Cargando datos del reporte...</p>
+	</div>
+
+	<div *ngIf="!cargando && errorCarga" class="estado-error">
+		<span class="material-icons">error_outline</span>
+		<p>{{ errorCarga }}</p>
+	</div>
+
+	<div *ngIf="!cargando && !errorCarga" class="tirilla-preview" #tirillaContent>
+		<div class="tirilla-header">
+			<h6>{{ infoLocal?.Nombre || 'Nombre del local' }}</h6>
+			<p>{{ infoLocal?.Direccion || 'Direccion no registrada' }}</p>
+			<p>NIT: {{ infoLocal?.NIT || '-' }}</p>
+			<p>Telefono: {{ infoLocal?.Telefono || '-' }}</p>
+			<p class="fecha">Fecha: {{ fechaVista }}</p>
+		</div>
+
+		<div class="separador"></div>
+
+		<div class="resumen-rapido">
+			<div class="linea-item">
+				<span>Estado cierre</span>
+				<strong>{{ cierreCajaHoy?.Estado || 'Sin cierre' }}</strong>
+			</div>
+			<div class="linea-item">
+				<span>Base de caja</span>
+				<strong>{{ (cierreCajaHoy?.Base ?? 0) | currency:'$':'symbol':'1.0-0' }}</strong>
+			</div>
+			<div class="linea-item">
+				<span>Gastos del dia</span>
+				<strong>{{ totalGastosHoy | currency:'$':'symbol':'1.0-0' }}</strong>
+			</div>
+			<div class="linea-item">
+				<span>Entregas del dia</span>
+				<strong>{{ totalEntregasHoy | currency:'$':'symbol':'1.0-0' }}</strong>
+			</div>
+			<div class="linea-item">
+				<span>Zapatos vendidos</span>
+				<strong>{{ totalZapatosVendidosHoy }}</strong>
+			</div>
+		</div>
+
+		<div class="separador"></div>
+
+		<div class="detalle-resumen">
+			<h6>Resumen Ventas</h6>
+
+			<div *ngIf="resumenDelDiaVentas.length === 0" class="sin-detalle">
+				No hay movimientos para mostrar.
+			</div>
+
+			<div *ngIf="resumenDelDiaVentas.length > 0" class="tabla-resumen">
+				<div class="tabla-head">
+					<span>Descripcion</span>
+					<span>Cantidad</span>
+					<span>Valor</span>
+				</div>
+
+				<div class="tabla-row" *ngFor="let item of resumenDelDiaVentas">
+					<span>{{ item.descripcion || '-' }}</span>
+					<span>{{ item.cantidad ?? 0 }}</span>
+					<span>{{ (item.valor ?? 0) | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+
+				<div class="tabla-total">
+					<span>Total Ventas</span>
+					<span>{{ TotalVentaResumen | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="separador"></div>
+
+		<div class="detalle-resumen">
+			<h6>Gastos</h6>
+
+			<div *ngIf="resumenDelDiaGastos.length === 0" class="sin-detalle">
+				No hay gastos para mostrar.
+			</div>
+
+			<div *ngIf="resumenDelDiaGastos.length > 0" class="tabla-resumen">
+				<div class="tabla-head">
+					<span>Concepto</span>
+					<span>Cantidad</span>
+					<span>Valor</span>
+				</div>
+
+				<div class="tabla-row" *ngFor="let item of resumenDelDiaGastos">
+					<span>{{ item.concepto || '-' }}</span>
+					<span>{{ item.cantidad ?? 0 }}</span>
+					<span>{{ (item.valor ?? 0) | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+
+				<div class="tabla-total">
+					<span>Total gastos</span>
+					<span>{{ TotalGastosResumen | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+			</div>
+		</div>
+		<div class="separador"></div>
+		<div class="detalle-resumen">
+			<h6>Entregas</h6>
+
+			<div *ngIf="resumenDelDiaEntregas.length === 0" class="sin-detalle">
+				No hay entregas para mostrar.
+			</div>
+
+			<div *ngIf="resumenDelDiaEntregas.length > 0" class="tabla-resumen">
+				<div class="tabla-head">
+					<span>Empresa</span>
+					<span>Cantidad cajas</span>
+					<span>Cobro</span>
+				</div>
+				<div class="tabla-row" *ngFor="let item of resumenDelDiaEntregas">
+					<span>{{ item.empresa || '-' }}</span>
+					<span>{{ item.cantidadCajas ?? 0 }}</span>
+					<span>{{ (item.cobro ?? 0) | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+				<div class="tabla-total">
+					<span>Total entregas</span>
+					<span>{{ TotalEntregasResumen | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="separador"></div>
+
+		<div class="detalle-resumen">
+			<h6>Metodos de pago</h6>
+
+			<div *ngIf="resumenDelDiaMetodoPago.length === 0" class="sin-detalle">
+				No hay metodos de pago para mostrar.
+			</div>
+
+			<div *ngIf="resumenDelDiaMetodoPago.length > 0" class="tabla-resumen">
+				<div class="tabla-head">
+					<span>Descripcion</span>
+					<span>Valor</span>
+				</div>
+
+				<div class="tabla-row" *ngFor="let item of resumenDelDiaMetodoPago">
+					<span>{{ item.nombre || '-' }}</span>
+					<span>{{ (item.valor ?? 0) | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+
+				<div class="tabla-total">
+					<span>Total metodos de pago</span>
+					<span>{{ TotalMetodoPagoResumen | currency:'$':'symbol':'1.0-0' }}</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="separador"></div>
+
+		<div class="resumen-rapido">
+			<div class="linea-item">
+				<span>Entrega</span>
+				<strong class="valor-destacado">{{ (cierreCajaHoy?.Entrega ?? 0) | currency:'$':'symbol':'1.0-0' }}</strong>
+			</div>
+			<div class="linea-item">
+				<span>Efectivo Total</span>
+				<strong class="valor-destacado">{{ (cierreCajaEfectivo?.efectivoEnCaja ?? 0) | currency:'$':'symbol':'1.0-0' }}</strong>
+			</div>
+			<div class="linea-item">
+				<span>Queda en caja</span>
+				<strong class="valor-destacado">{{ (cierreCajaEfectivo?.quedaEnCaja ?? 0) | currency:'$':'symbol':'1.0-0' }}</strong>
+			</div>
+		</div>
+	</div>
+
+	<div *ngIf="!cargando && !errorCarga" class="acciones-exportar">
+		<button class="btn-exportar waves-effect" type="button" (click)="ExportarPDF()">
+			<span class="material-icons">download</span>
+			Descargar en PDF
+		</button>
+	</div>
+</div>

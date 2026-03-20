@@ -4,6 +4,7 @@ import { ValidarSesionActivaGuard } from '../../guardianes/validar-sesion-activa
 import { CrearFacturaComponent } from './factura/crear-factura/crear-factura.component';
 import { LineaVentaComponent } from './factura/linea-venta/linea-venta.component';
 import { CierreCajaComponent } from './cierre-caja/cierre-caja.component';
+import { TirillaComponent } from './tirilla/tirilla.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path: 'cierre-caja',
     component: CierreCajaComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'tirilla',
+    component: TirillaComponent,
     canActivate: [ValidarSesionActivaGuard]
   }
 ];

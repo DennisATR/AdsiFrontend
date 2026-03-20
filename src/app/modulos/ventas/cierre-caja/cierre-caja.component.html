@@ -23,11 +23,10 @@
 
         <!-- Entrega -->
         <div class="input col s4">
-          <input formControlName="Entrega" id="Entrega" type="number" min="0" step="10000"
-            class="validate" placeholder="Sin entrega registrada" />
+          <input formControlName="Entrega" id="Entrega" type="number" min="0" step="10000" class="validate"
+            placeholder="Sin entrega registrada" />
           <label for="Entrega">Entrega</label>
-          <div *ngIf="ObtenerFormGroup['Entrega'].invalid && ObtenerFormGroup['Entrega'].touched"
-            class="error-message">
+          <div *ngIf="ObtenerFormGroup['Entrega'].invalid && ObtenerFormGroup['Entrega'].touched" class="error-message">
             <small>El valor de entrega debe ser mayor o igual a 0.</small>
           </div>
         </div>
@@ -45,21 +44,49 @@
 
       </div>
     </div>
+    <!-- Resumen del día -->
+    <div *ngIf="cierreCajaHoy" class="resumen-container">
 
+      <div class="resumen-card">
+        <span class="material-icons resumen-icon icon-gasto">receipt_long</span>
+        <div class="resumen-info">
+          <span class="resumen-label">Gastos del día</span>
+          <span class="resumen-valor" *ngIf="!cargandoResumen">
+            {{ totalGastosHoy | currency:'$':'symbol':'1.0-0' }}
+          </span>
+          <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
+        </div>
+      </div>
+
+      <div class="resumen-card">
+        <span class="material-icons resumen-icon icon-entrega">local_shipping</span>
+        <div class="resumen-info">
+          <span class="resumen-label">Entregas del día</span>
+          <span class="resumen-valor" *ngIf="!cargandoResumen">
+            {{ totalEntregasHoy | currency:'$':'symbol':'1.0-0' }}
+          </span>
+          <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
+        </div>
+      </div>
+
+      <div class="resumen-card">
+        <span class="material-icons resumen-icon icon-zapatos">inventory_2</span>
+        <div class="resumen-info">
+          <span class="resumen-label">Zapatos vendidos</span>
+          <span class="resumen-valor" *ngIf="!cargandoResumen">{{ totalZapatosVendidosHoy }}</span>
+          <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
+        </div>
+      </div>
+
+    </div>
     <div class="row button-row">
       <div class="col s12 button-container">
-        <button
-          class="btn-custom btn-reporte waves-effect"
-          type="button"
-          (click)="GenerarReporte()"
+        <button class="btn-custom btn-reporte waves-effect" type="button" (click)="GenerarReporte()"
           [disabled]="cargandoReporte">
           <span *ngIf="!cargandoReporte">Generar Reporte</span>
           <span *ngIf="cargandoReporte">Generando...</span>
         </button>
-        <button
-          class="btn-custom waves-effect waves-light"
-          type="button"
-          (click)="GuardarCierreCaja()"
+        <button class="btn-custom waves-effect waves-light" type="button" (click)="GuardarCierreCaja()"
           [disabled]="cargando">
           <span *ngIf="!cargando">Guardar</span>
           <span *ngIf="cargando">Guardando...</span>
@@ -67,41 +94,4 @@
       </div>
     </div>
   </form>
-
-  <!-- Resumen del día -->
-  <div *ngIf="cierreCajaHoy" class="resumen-container">
-
-    <div class="resumen-card">
-      <span class="material-icons resumen-icon icon-gasto">receipt_long</span>
-      <div class="resumen-info">
-        <span class="resumen-label">Gastos del día</span>
-        <span class="resumen-valor" *ngIf="!cargandoResumen">
-          {{ totalGastosHoy | currency:'$':'symbol':'1.0-0' }}
-        </span>
-        <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
-      </div>
-    </div>
-
-    <div class="resumen-card">
-      <span class="material-icons resumen-icon icon-entrega">local_shipping</span>
-      <div class="resumen-info">
-        <span class="resumen-label">Entregas del día</span>
-        <span class="resumen-valor" *ngIf="!cargandoResumen">
-          {{ totalEntregasHoy | currency:'$':'symbol':'1.0-0' }}
-        </span>
-        <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
-      </div>
-    </div>
-
-    <div class="resumen-card">
-      <span class="material-icons resumen-icon icon-zapatos">inventory_2</span>
-      <div class="resumen-info">
-        <span class="resumen-label">Zapatos vendidos</span>
-        <span class="resumen-valor" *ngIf="!cargandoResumen">{{ totalZapatosVendidosHoy }}</span>
-        <span class="resumen-cargando" *ngIf="cargandoResumen">Cargando...</span>
-      </div>
-    </div>
-
-  </div>
-
 </div>

@@ -3,6 +3,7 @@ import { ConfiguracionRutasBackend } from '../../config/configuracion.rutas.back
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { EntregaModel } from '../../modelos/entrega.model';
+import { ResumenDelDiaEntregasModel } from '../../modelos/resumenDelDiaEntregas.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,10 @@ export class EntregaService {
 
   BuscarEntregasPorFecha(fecha: string): Observable<EntregaModel[]> {
     return this.http.get<EntregaModel[]>(`${this.urlBase}entrega/buscarporfecha/${fecha}`);
+  }
+
+  ObtenerResumenDelDia(fecha: string): Observable<ResumenDelDiaEntregasModel[]> {
+    return this.http.get<ResumenDelDiaEntregasModel[]>(`${this.urlBase}entrega/resumen-dia/fecha/${fecha}`);
   }
 }
 
