@@ -8,9 +8,6 @@
                 <div class="form-section-header">
                     <div class="header-contenido">
                         <h5>POS</h5>
-                        <div class="fecha-display-inline">
-                            <span class="fecha-valor">Fecha: {{fGroup.get('Fecha')?.value | date: 'dd/MM/yyyy'}}</span>
-                        </div>
                     </div>
                 </div>
 
@@ -145,33 +142,62 @@
                         <input formControlName="Abono" id="Abono" appFormatoMiles type="text" class="validate"
                             placeholder="$0" />
                         <div class="abono-info">
-                            <small>Total de la venta: {{ totalVenta | currency:'COP':'symbol-narrow':'1.0-0' }}</small>
+                            <small>Saldo pendiente: {{ calcularSaldoPendiente() | currency:'COP':'symbol-narrow':'1.0-0' }}</small>
                         </div>
                     </div>
 
-                    <!-- Nota -->
-                    <div class="input">
-                        <label for="Nota">Nota (Opcional)</label>
-                        <textarea formControlName="Nota" id="Nota" placeholder="Agregar una nota sobre esta venta..."
-                            rows="3"></textarea>
+                    <!-- Botón Agregar Pago -->
+                    <div style="margin-bottom: 15px;">
+                        <button class="btn-agregar-pago" type="button" (click)="agregarPago()">
+                            + Agregar Pago
+                        </button>
                     </div>
 
-                    <!-- Resumen -->
+                    <!-- Lista de Pagos Agregados -->
+                    <div *ngIf="pagosAplicados.length > 0" class="pagos-lista">
+                        <h5 style="margin-bottom: 10px;">Desglose de Pagos</h5>
+                        <div class="tabla-pagos">
+                            <div class="tabla-header">
+                                <div class="col-metodo">Método de Pago</div>
+                                <div class="col-monto">Monto</div>
+                                <div class="col-acciones">Acción</div>
+                            </div>
+                            <div *ngFor="let pago of pagosAplicados; let i = index" class="tabla-fila">
+                                <div class="col-metodo">{{ obtenerNombreMetodoPago(pago.metodoPagoId) }}</div>
+                                <div class="col-monto">{{ pago.monto | currency:'COP':'symbol-narrow':'1.0-0' }}</div>
+                                <div class="col-acciones">
+                                    <button class="btn-eliminar-pago" type="button" (click)="eliminarPago(i)">
+                                        ✕ Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nota (Opcional) -->
+                    <div class="input" style="margin-top: 15px;">
+                        <label for="Nota">Nota (Opcional)</label>
+                        <textarea formControlName="Nota" id="Nota" placeholder="Agregar una nota sobre esta venta..."
+                            rows="2"></textarea>
+                    </div>
+
+                    <!-- Resumen Final -->
                     <div class="modal-resumen">
                         <div class="resumen-item">
-                            <span class="resumen-label">Total:</span>
+                            <span class="resumen-label">Total de la Venta:</span>
                             <span class="resumen-valor">{{ totalVenta | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
                         </div>
                         <div class="resumen-item">
-                            <span class="resumen-label">Abono:</span>
-                            <span class="resumen-valor">{{ fGroup.get('Abono')?.value |
-                                currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+                            <span class="resumen-label">Total Pagado:</span>
+                            <span class="resumen-valor" [class.completo]="estaCompletoElPago()">
+                                {{ obtenerTotalPagado() | currency:'COP':'symbol-narrow':'1.0-0' }}
+                            </span>
                         </div>
                         <div class="resumen-item saldo">
                             <span class="resumen-label">Saldo Pendiente:</span>
-                            <span class="resumen-valor">{{ calcularSaldoPendiente() |
-                                currency:'COP':'symbol-narrow':'1.0-0'
-                                }}</span>
+                            <span class="resumen-valor" [class.pendiente]="calcularSaldoPendiente() > 0">
+                                {{ calcularSaldoPendiente() | currency:'COP':'symbol-narrow':'1.0-0' }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -180,8 +206,10 @@
                     <button class="btn-modal-cancelar" type="button" (click)="cerrarModal()">
                         Cancelar
                     </button>
-                    <button class="btn-modal-confirmar" type="button" (click)="confirmarVenta()">
-                        Confirmar Venta
+                    <button class="btn-modal-confirmar" type="button" (click)="confirmarVenta()"
+                        [disabled]="!puedeContinuar()"
+                        [title]="!puedeContinuar() ? (pagosAplicados.length === 0 ? 'Seleccione un método de pago' : 'Complete todos los pagos para finalizar') : 'Finalizar venta'">
+                        {{ pagosAplicados.length === 0 ? 'Confirmar Venta' : (calcularSaldoPendiente() !== 0 ? 'Confirmar Venta (' + calcularSaldoPendiente() + ')' : 'Confirmar Venta') }}
                     </button>
                 </div>
             </div>

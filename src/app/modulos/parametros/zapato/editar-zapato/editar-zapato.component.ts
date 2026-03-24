@@ -18,7 +18,8 @@ export class EditarZapatoComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: string = "";
   fgValidador!: FormGroup;
-
+  
+  generos = ConfiguracionListas.generos;
   proveedores: ProveedorModel[] = [];
   proveedoresNombres: string[] = [];
   referenciaValue: string = "";
@@ -46,6 +47,7 @@ export class EditarZapatoComponent implements OnInit {
       categoria: ['', [Validators.required]],
       color: ['', [Validators.required]],
       talla: ['', [Validators.required]],
+      genero: ['', [Validators.required]],
       referencia: ['', [Validators.required]],
       precioVentaMax: ['', [Validators.required]],
       precioVentaMin: ['', [Validators.required]],
@@ -126,7 +128,7 @@ export class EditarZapatoComponent implements OnInit {
       Cantidad: this.fgValidador.controls['cantidad'].value,
       proveedorId: parseInt(this.fgValidador.controls['proveedorId'].value),
       Referencia: this.fgValidador.controls['referencia'].value,
-      Fecha: new Date(),
+      Genero: this.fgValidador.controls['genero'].value,
     };
 
     this.servicio.EditarZapato(this.recordId, datos).subscribe({
@@ -168,4 +170,5 @@ export class EditarZapatoComponent implements OnInit {
   get cantidad() { return this.fgValidador.get('cantidad'); }
   get proveedorId() { return this.fgValidador.get('proveedorId'); }
   get referencia() { return this.fgValidador.get('referencia'); }
+  get genero() { return this.fgValidador.get('genero'); }
 }

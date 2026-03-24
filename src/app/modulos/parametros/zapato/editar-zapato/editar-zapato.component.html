@@ -27,6 +27,16 @@
             </div>
           </div>
 
+        <div class="input">
+            <input type="text" id="genero" appSearchSelect [opciones]="generos" [permitirPersonalizado]="true"
+              formControlName="genero" class="validate" [class.error]="genero?.invalid && genero?.touched">
+            <label for="genero">Público</label>
+            <div *ngIf="genero?.invalid && genero?.touched" class="error-message">
+              <small *ngIf="genero?.errors?.['required']">El público es requerido</small>
+            </div>
+        </div>
+        
+
           <!-- Talla -->
           <div class="input">
             <input type="number" id="talla" formControlName="talla" class="validate"

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ConfiguracionRutasBackend } from '../../config/configuracion.rutas.backend';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
-import { FacturaModel } from '../../modelos/factura.model';
 import { MetodoPagoModel } from '../../modelos/metodoPago.model';
 import { ResumenDelDiaMetodoPagoModel } from '../../modelos/resumenDelDiaMetodoPago.model';
 
