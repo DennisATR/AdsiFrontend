@@ -1,0 +1,84 @@
+<!-- Modal de Pago -->
+<div *ngIf="mostrarModal" class="modal-overlay" (click)="CerrarModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h5>Registrar Abono</h5>
+      <button type="button" class="btn-close" (click)="CerrarModal()">✕</button>
+    </div>
+
+    <div class="modal-body" *ngIf="creditoSeleccionado">
+      <!-- Información del Crédito -->
+      <div class="credit-info">
+        <div class="info-row two-cols">
+          <div class="info-pair">
+            <strong>Factura</strong>
+            <span>#{{ creditoSeleccionado.facturaId }}</span>
+          </div>
+          <div class="info-pair">
+            <strong>Cliente</strong>
+            <span>{{ creditoSeleccionado.clienteNombre }} {{ creditoSeleccionado.clienteApellido }}</span>
+          </div>
+        </div>
+        <div class="info-row">
+          <strong>Producto</strong>
+          <span>{{ creditoSeleccionado.zapatoDescripcion }}</span>
+        </div>
+        <div class="info-row two-cols">
+          <div class="info-pair">
+            <strong>Talla / Color</strong>
+            <span>{{ creditoSeleccionado.zapatoTalla }} / {{ creditoSeleccionado.zapatoColor }}</span>
+          </div>
+          <div class="info-pair">
+            <strong>Valor Total</strong>
+            <span class="amount">${{ creditoSeleccionado.valorTotal | number:'1.2-2' }}</span>
+          </div>
+        </div>
+        <div class="info-row two-cols balance-row">
+          <div class="info-pair">
+            <strong>Valor Abonado</strong>
+            <span class="amount-paid">${{ creditoSeleccionado.valorAbonado | number:'1.2-2' }}</span>
+          </div>
+          <div class="info-pair">
+            <strong>Saldo Pendiente</strong>
+            <span class="amount-pending">${{ creditoSeleccionado.saldo | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de Pago -->
+      <form [formGroup]="fgPago" (ngSubmit)="RegistrarPago()" class="payment-form">
+        <div class="input">
+          <label for="montoPago">Monto a Pagar</label>
+          <input formControlName="montoPago" id="montoPago" type="number" 
+                 placeholder="Ingrese el monto" step="0.01" class="validate"
+                 [class.error]="montoPago?.invalid && montoPago?.touched" />
+          <div *ngIf="montoPago?.invalid && montoPago?.touched" class="error-message">
+            <small *ngIf="montoPago?.errors?.['required']">El monto es obligatorio</small>
+            <small *ngIf="montoPago?.errors?.['min']">El monto debe ser mayor a 0</small>
+          </div>
+        </div>
+
+        <div class="input">
+          <label for="metodoPago">Método de Pago</label>
+          <input formControlName="MetodoPagoNombre" id="metodoPago" appSearchSelect
+                 [opciones]="metodosPagoNombres" [permitirPersonalizado]="false"
+                 (opcionSeleccionada)="onMetodoPagoSeleccionado($event)"
+                 placeholder="Seleccionar método de pago..." type="text" class="validate"
+                 [class.error]="metodoPago?.invalid && metodoPago?.touched" />
+          <div *ngIf="metodoPago?.invalid && metodoPago?.touched" class="error-message">
+            <small>El método de pago es obligatorio</small>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" (click)="RegistrarPago()" class="btn-submit">
+        ✓ Registrar Pago
+      </button>
+      <button type="button" (click)="CerrarModal()" class="btn-cancel">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>

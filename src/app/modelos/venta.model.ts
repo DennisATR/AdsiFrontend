@@ -5,4 +5,5 @@ export class VentaModel{
     almacenId?: number;
     zapatoId?: string;
     facturaId?: number;
+    tipoVenta?: string; // 'contado' o 'credito'
 }

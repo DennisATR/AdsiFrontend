@@ -19,7 +19,8 @@
                             <input formControlName="ClienteNombre" id="ClienteNombre" #clienteId appSearchSelect
                                 [opciones]="clientesNombres" [permitirPersonalizado]="false"
                                 (opcionSeleccionada)="onClienteSeleccionado($event)"
-                                (keydown.enter)="focusNext(clienteId, vendedorId)" placeholder="Buscar un cliente..."
+                                (keydown.enter)="focusNext(clienteId, vendedorId)"
+                                placeholder="Buscar un cliente..."
                                 type="text" class="validate" />
                             <div *ngIf="ObtenerFormGroup['clienteId'].invalid && ObtenerFormGroup['clienteId'].touched"
                                 class="error-message">
@@ -32,7 +33,8 @@
                             <input formControlName="VendedorNombre" id="VendedorNombre" #vendedorId appSearchSelect
                                 [opciones]="vendedoresNombres" [permitirPersonalizado]="false"
                                 (opcionSeleccionada)="onVendedorSeleccionado($event)"
-                                (keydown.enter)="focusNext(vendedorId, zapatoId)" placeholder="Buscar un vendedor..."
+                                (keydown.enter)="focusNext(vendedorId, zapatoId)"
+                                placeholder="Buscar un vendedor..."
                                 type="text" class="validate" />
                             <div *ngIf="ObtenerFormGroup['vendedorId'].invalid && ObtenerFormGroup['vendedorId'].touched"
                                 class="error-message">
@@ -45,7 +47,7 @@
                     <div class="input">
                         <label for="zapatoId">ID del Zapato</label>
                         <input formControlName="zapatoId" id="zapatoId" #zapatoId placeholder="Ingrese ID del zapato..."
-                            type="text" class="validate" (keydown.enter)="obtenerZapato()" />
+                            type="text" class="validate" (keydown.enter)="obtenerZapato(); focusNext(zapatoId, precioVenta)" />
                     </div>
 
                     <!-- Descripción, Talla y Color -->
@@ -123,12 +125,27 @@
                 </div>
 
                 <div class="modal-body">
+                    <!-- Tipo de Venta -->
+                    <div class="input">
+                        <label for="TipoVentaNombre">Tipo de Venta</label>
+                        <input formControlName="TipoVentaNombre" id="TipoVentaNombre" #tipoVentaNombre appSearchSelect
+                            [opciones]="tiposVentaNombres" [permitirPersonalizado]="false"
+                            (opcionSeleccionada)="onTipoVentaSeleccionado($event)"
+                            (keydown.enter)="focusNext(tipoVentaNombre, metodoPagoNombre)"
+                            placeholder="Seleccionar tipo de venta..." type="text" class="validate" />
+                        <div *ngIf="ObtenerFormGroup['tipoVenta'].invalid && ObtenerFormGroup['tipoVenta'].touched"
+                            class="error-message">
+                            <small>Debe seleccionar un tipo de venta.</small>
+                        </div>
+                    </div>
+
                     <!-- Método de Pago -->
                     <div class="input">
                         <label for="MetodoPagoNombre">Método de Pago</label>
-                        <input formControlName="MetodoPagoNombre" id="MetodoPagoNombre" appSearchSelect
+                        <input formControlName="MetodoPagoNombre" id="MetodoPagoNombre" #metodoPagoNombre appSearchSelect
                             [opciones]="metodosPagoNombres" [permitirPersonalizado]="false"
                             (opcionSeleccionada)="onMetodoPagoSeleccionado($event)"
+                            (keydown.enter)="focusNext(metodoPagoNombre, abono)"
                             placeholder="Seleccionar método de pago..." type="text" class="validate" />
                         <div *ngIf="ObtenerFormGroup['metodoPagoId'].invalid && ObtenerFormGroup['metodoPagoId'].touched"
                             class="error-message">
@@ -140,14 +157,20 @@
                     <div class="input">
                         <label for="Abono">Abono</label>
                         <input formControlName="Abono" id="Abono" appFormatoMiles type="text" class="validate"
-                            placeholder="$0" />
+                            placeholder="$0" #abono (keydown.enter)="agregarPago()" />
                         <div class="abono-info">
-                            <small>Saldo pendiente: {{ calcularSaldoPendiente() | currency:'COP':'symbol-narrow':'1.0-0' }}</small>
+                            <small *ngIf="ObtenerFormGroup['tipoVenta'].value === 'contado'">
+                                Abono: Debe ser igual al total o 0 para pago completo
+                            </small>
+                            <small *ngIf="ObtenerFormGroup['tipoVenta'].value === 'credito'">
+                                Abono: Puede ser menor - el saldo se registrará como crédito
+                            </small>
+                            <small style="display: block; margin-top: 5px;">Saldo pendiente: {{ calcularSaldoPendiente() | currency:'COP':'symbol-narrow':'1.0-0' }}</small>
                         </div>
                     </div>
 
-                    <!-- Botón Agregar Pago -->
-                    <div style="margin-bottom: 15px;">
+                    <!-- Botón Agregar Pago (Solo en Contado) -->
+                    <div style="margin-bottom: 15px;" *ngIf="permitirMultiplesPagos">
                         <button class="btn-agregar-pago" type="button" (click)="agregarPago()">
                             + Agregar Pago
                         </button>

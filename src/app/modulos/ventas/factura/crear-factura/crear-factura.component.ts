@@ -17,6 +17,8 @@ import { VentaService } from '../../../../servicios/ventas/venta.service';
 import { InformacionService } from '../../../../servicios/parametros/informacion.service';
 import { AlmacenModel } from '../../../../modelos/almacen.model';
 import { PagoFacturaService } from '../../../../servicios/ventas/pago-factura.service';
+import { CreditoService } from '../../../../servicios/ventas/credito.service';
+import { CreditoModel } from '../../../../modelos/credito.model';
 
 @Component({
   selector: 'app-crear-factura',
@@ -36,6 +38,7 @@ export class CrearFacturaComponent implements OnInit {
   vendedoresNombres: string[] = [];
   metodosPago: MetodoPagoModel[] = [];
   metodosPagoNombres: string[] = [];
+  tiposVentaNombres: string[] = ['Contado', 'Crédito'];
   almacenes: AlmacenModel[] = [];
   mostrarModalFinalizar: boolean = false;
   totalVenta: number = 0;
@@ -44,6 +47,7 @@ export class CrearFacturaComponent implements OnInit {
   pagosAplicados: Array<{metodoPagoId: number, monto: number}> = [];
   metodoPagoActualNombre: string = '';
   abonoActual: number = 0;
+  permitirMultiplesPagos: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -54,7 +58,8 @@ export class CrearFacturaComponent implements OnInit {
     private servicioMetodoPago: MetodoPagoService,
     private servicioZapato: ZapatoService,
     private servicioInformacion: InformacionService,
-    private servicioPagoFactura: PagoFacturaService
+    private servicioPagoFactura: PagoFacturaService,
+    private servicioCredito: CreditoService
   ) { }
 
   ngOnInit() {
@@ -74,6 +79,8 @@ export class CrearFacturaComponent implements OnInit {
       clienteId: ['', [Validators.required]],
       vendedorId: ['', [Validators.required]],
       metodoPagoId: ['', [Validators.required]],
+      tipoVenta: ['contado', [Validators.required]],
+      TipoVentaNombre: ['Contado', [Validators.required]],
       Abono: [0, [Validators.min(0)]],
       Nota: [''],
       ClienteNombre: ['', Validators.required],
@@ -330,6 +337,24 @@ export class CrearFacturaComponent implements OnInit {
     }
   }
 
+  onTipoVentaSeleccionado(tipo: string): void {
+    const tipoVentaValor = tipo.toLowerCase() === 'contado' ? 'contado' : 'credito';
+    this.fGroup.get('tipoVenta')?.setValue(tipoVentaValor);
+    
+    // Limpiar pagos aplicados y configurar si se permiten múltiples pagos
+    this.pagosAplicados = [];
+    this.permitirMultiplesPagos = tipoVentaValor === 'contado';
+    
+    // Limpiar campos de pago
+    this.fGroup.patchValue({
+      MetodoPagoNombre: '',
+      metodoPagoId: '',
+      Abono: 0
+    });
+    
+    console.log(`💳 Tipo de venta seleccionado: ${tipoVentaValor}, permitirMultiplesPagos: ${this.permitirMultiplesPagos}`);
+  }
+
   abrirModalFinalizar(): void {
     // Validar que haya productos agregados
     if (!this.lineasVenta || this.lineasVenta.length === 0) {
@@ -358,6 +383,8 @@ export class CrearFacturaComponent implements OnInit {
     // Limpiar campos del modal
     this.pagosAplicados = [];
     this.fGroup.patchValue({
+      tipoVenta: 'contado',
+      TipoVentaNombre: 'Contado',
       MetodoPagoNombre: '',
       metodoPagoId: '',
       Abono: 0,
@@ -372,6 +399,12 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   agregarPago(): void {
+    // Validar que no haya un pago en crédito ya agregado
+    if (!this.permitirMultiplesPagos && this.pagosAplicados.length > 0) {
+      alert('En crédito solo se permite un pago. Confirme la venta para finalizarla.');
+      return;
+    }
+
     if (this.fGroup.get('metodoPagoId')?.invalid) {
       alert('Debe seleccionar un método de pago.');
       return;
@@ -407,12 +440,14 @@ export class CrearFacturaComponent implements OnInit {
     console.log('✅ Pago agregado:', {metodoPagoId, monto: abono});
     console.log('📋 Pagos aplicados:', this.pagosAplicados);
 
-    // Limpiar campos para un nuevo pago
-    this.fGroup.patchValue({
-      MetodoPagoNombre: '',
-      metodoPagoId: '',
-      Abono: 0
-    });
+    // Limpiar campos para un nuevo pago (solo en contado)
+    if (this.permitirMultiplesPagos) {
+      this.fGroup.patchValue({
+        MetodoPagoNombre: '',
+        metodoPagoId: '',
+        Abono: 0
+      });
+    }
   }
 
   eliminarPago(index: number): void {
@@ -434,33 +469,39 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   puedeContinuar(): boolean {
-    // Si no hay pagos registrados
-    if (this.pagosAplicados.length === 0) {
-      // Necesita método de pago seleccionado
-      if (!this.fGroup.get('metodoPagoId')?.valid) {
-        return false;
-      }
-
-      // Obtener el abono ingresado
-      const abonoValue = this.fGroup.get('Abono')?.value || 0;
-      let abono = 0;
-      
-      if (abonoValue) {
-        const abonoStr = abonoValue.toString().replace(/\./g, '');
-        abono = parseFloat(abonoStr) || 0;
-      }
-
-      // Permite continuar si:
-      // 1. Abono es 0 (pago completo) O
-      // 2. Abono es exacto al total
-      return abono === 0 || abono === this.totalVenta;
+    const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
+    
+    // Necesita método de pago seleccionado
+    if (!this.fGroup.get('metodoPagoId')?.valid) {
+      return false;
     }
 
-    // Si hay pagos, el saldo debe ser 0
-    return this.calcularSaldoPendiente() === 0;
+    // Obtener el abono ingresado
+    const abonoValue = this.fGroup.get('Abono')?.value || 0;
+    let abono = 0;
+    
+    if (abonoValue) {
+      const abonoStr = abonoValue.toString().replace(/\./g, '');
+      abono = parseFloat(abonoStr) || 0;
+    }
+
+    if (tipoVenta === 'contado') {
+      // CONTADO: requiere pagos agregados O abono exacto al total
+      if (this.pagosAplicados.length === 0) {
+        // Sin pagos agregados: abono debe ser 0 o exacto al total
+        return abono === 0 || abono === this.totalVenta;
+      }
+      // Con pagos: el saldo debe ser 0
+      return this.calcularSaldoPendiente() === 0;
+    } else {
+      // CRÉDITO: solo requiere abono > 0 (puede ser parcial)
+      return abono > 0;
+    }
   }
 
   confirmarVenta(): void {
+    const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
+    
     // Si no hay pagos registrados, verifica si hay un abono manual
     if (this.pagosAplicados.length === 0) {
       if (this.fGroup.get('metodoPagoId')?.invalid) {
@@ -477,28 +518,53 @@ export class CrearFacturaComponent implements OnInit {
         abono = parseFloat(abonoStr) || 0;
       }
 
-      // Si escribió un abono pero no es exacto al total y no es 0
-      if (abono > 0 && abono !== this.totalVenta) {
-        alert(`El abono ingresado (${abono}) no es exacto al total (${this.totalVenta}). Use "+ Agregar Pago" para pagos parciales.`);
-        return;
+      // Validaciones según tipo de venta
+      if (tipoVenta === 'contado') {
+        // Para CONTADO: el abono debe ser exacto al total o 0
+        if (abono > 0 && abono !== this.totalVenta) {
+          alert(`El abono ingresado ($${abono}) no es exacto al total ($${this.totalVenta}).`);
+          return;
+        }
+        
+        // Crear un pago único con el total de la venta
+        const metodoPagoId = parseInt(this.fGroup.get('metodoPagoId')?.value);
+        this.pagosAplicados.push({
+          metodoPagoId: metodoPagoId,
+          monto: this.totalVenta
+        });
+        console.log('✅ Pago único registrado automáticamente:', this.pagosAplicados);
+      } else if (tipoVenta === 'credito') {
+        // Para CRÉDITO: el abono puede ser menor que el total
+        if (abono < 0) {
+          alert('El abono no puede ser negativo.');
+          return;
+        }
+        
+        if (abono > this.totalVenta) {
+          alert(`El abono ($${abono}) no puede ser mayor al total ($${this.totalVenta}).`);
+          return;
+        }
+
+        // Si hay abono, crear un pago con ese monto
+        if (abono > 0) {
+          const metodoPagoId = parseInt(this.fGroup.get('metodoPagoId')?.value);
+          this.pagosAplicados.push({
+            metodoPagoId: metodoPagoId,
+            monto: abono
+          });
+          console.log('✅ Pago inicial registrado para crédito:', this.pagosAplicados);
+        }
       }
-
-      // Crear un pago único con el total de la venta
-      const metodoPagoId = parseInt(this.fGroup.get('metodoPagoId')?.value);
-      this.pagosAplicados.push({
-        metodoPagoId: metodoPagoId,
-        monto: this.totalVenta
-      });
-
-      console.log('✅ Pago único registrado automáticamente:', this.pagosAplicados);
     }
 
-    // Validar que el total de pagos sea exacto
-    const totalPagado = this.obtenerTotalPagado();
-    
-    if (totalPagado !== this.totalVenta) {
-      alert(`El total de pagos (${totalPagado}) debe ser exacto al total de la venta (${this.totalVenta}). Saldo pendiente: ${this.calcularSaldoPendiente()}`);
-      return;
+    // Para CONTADO: validar que el total de pagos sea exacto
+    // Para CRÉDITO: el saldo pendiente será registrado como crédito
+    if (tipoVenta === 'contado') {
+      const totalPagado = this.obtenerTotalPagado();
+      if (totalPagado !== this.totalVenta) {
+        alert(`El total de pagos ($${totalPagado}) debe ser exacto al total de la venta ($${this.totalVenta}). Saldo pendiente: $${this.calcularSaldoPendiente()}`);
+        return;
+      }
     }
 
     this.RegistrarFactura();
@@ -612,6 +678,12 @@ export class CrearFacturaComponent implements OnInit {
     let pagosRegistrados = 0;
     let erroresEncontrados = false;
 
+    // Si no hay pagos, ir directamente a registrar crédito si es necesario
+    if (this.pagosAplicados.length === 0) {
+      this.registrarCreditoSiEsNecesario(facturaId);
+      return;
+    }
+
     this.pagosAplicados.forEach((pago, index) => {
       const datoPago = {
         facturaId: facturaId,
@@ -628,9 +700,8 @@ export class CrearFacturaComponent implements OnInit {
 
           // Si todos los pagos se registraron correctamente
           if (pagosRegistrados === this.pagosAplicados.length && !erroresEncontrados) {
-            alert('Factura, líneas de venta y todos los pagos registrados correctamente');
-            this.cerrarModal();
-            this.limpiarFormulario();
+            // Registrar crédito si es necesario
+            this.registrarCreditoSiEsNecesario(facturaId);
           }
         },
         error: (err: any) => {
@@ -642,6 +713,50 @@ export class CrearFacturaComponent implements OnInit {
         }
       });
     });
+  }
+
+  registrarCreditoSiEsNecesario(facturaId: number) {
+    const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
+
+    // Si es crédito y hay saldo pendiente
+    if (tipoVenta === 'credito') {
+      const totalPagado = this.obtenerTotalPagado();
+      const saldoPendiente = this.totalVenta - totalPagado;
+
+      if (saldoPendiente > 0) {
+        const datosCredito = {
+          facturaId: facturaId,
+          Estado: 'Pendiente'
+        };
+
+        console.log(`💰 Registrando crédito:`, datosCredito);
+
+        this.servicioCredito.RegistrarCredito(datosCredito).subscribe({
+          next: (respuestaCredito: any) => {
+            console.log(`✅ Crédito registrado:`, respuestaCredito);
+            alert('✅ Factura, líneas, pagos y crédito registrados correctamente');
+            this.cerrarModal();
+            this.limpiarFormulario();
+          },
+          error: (err: any) => {
+            console.error(`❌ Error al registrar crédito:`, err);
+            alert('✅ Factura, líneas y pagos registrados. ⚠️ Error al registrar el crédito. Por favor registre manualmente.');
+            this.cerrarModal();
+            this.limpiarFormulario();
+          }
+        });
+      } else {
+        // No hay saldo pendiente
+        alert('✅ Factura, líneas de venta y todos los pagos registrados correctamente');
+        this.cerrarModal();
+        this.limpiarFormulario();
+      }
+    } else {
+      // Es CONTADO
+      alert('✅ Factura, líneas de venta y todos los pagos registrados correctamente');
+      this.cerrarModal();
+      this.limpiarFormulario();
+    }
   }
 
   registrarPagoFactura(facturaId: number, metodoPagoId: number, monto: number) {
@@ -680,24 +795,6 @@ export class CrearFacturaComponent implements OnInit {
     } else {
       currentField.focus();
       this.fGroup.get(fieldName)?.markAsTouched();
-    }
-  }
-
-  submitOrFocusNext(currentField: HTMLElement) {
-    currentField.blur();
-    if (this.fGroup.valid) {
-      this.RegistrarFactura();
-    } else {
-      for (const controlName in this.fGroup.controls) {
-        const control = this.fGroup.get(controlName);
-        if (control && control.invalid) {
-          const invalidField = document.getElementById(controlName);
-          if (invalidField) {
-            invalidField.focus();
-          }
-          break;
-        }
-      }
     }
   }
 }

@@ -5,6 +5,9 @@ import { CrearFacturaComponent } from './factura/crear-factura/crear-factura.com
 import { LineaVentaComponent } from './factura/linea-venta/linea-venta.component';
 import { CierreCajaComponent } from './cierre-caja/cierre-caja.component';
 import { TirillaComponent } from './tirilla/tirilla.component';
+import { ListarCreditoComponent } from './credito/listar-credito/listar-credito.component';
+import { EditarCreditoComponent } from './credito/editar-credito/editar-credito.component';
+import { EliminarCreditoComponent } from './credito/eliminar-credito/eliminar-credito.component';
 
 const routes: Routes = [
   {
@@ -25,6 +28,21 @@ const routes: Routes = [
   {
     path: 'tirilla',
     component: TirillaComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'credito/listar-credito',
+    component: ListarCreditoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'credito/editar-credito',
+    component: EditarCreditoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'credito/eliminar-credito',
+    component: EliminarCreditoComponent,
     canActivate: [ValidarSesionActivaGuard]
   }
 ];

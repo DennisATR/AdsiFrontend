@@ -48,4 +48,14 @@ export class VentaService {
   ObtenerResumenDelDia(fecha: string): Observable<ResumenDelDiaVentasModel[]> {
     return this.http.get<ResumenDelDiaVentasModel[]>(`${this.urlBase}venta/resumen-dia/fecha/${fecha}`);
   }
+
+  ObtenerVentasPorFactura(facturaId: string): Observable<VentaModel[]> {
+    return this.http.get<VentaModel[]>(`${this.urlBase}venta/factura/${facturaId}`).pipe(
+      catchError(error => {
+        // Si el endpoint no existe, retornar array vacío
+        console.warn('No se encontraron ventas para la factura:', facturaId);
+        return throwError(() => error);
+      })
+    );
+  }
 }

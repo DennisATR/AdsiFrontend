@@ -1,0 +1,68 @@
+<div class="card-container">
+  <div class="title">
+    <h5>Gestión de Créditos</h5>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h5>Listado de Créditos</h5>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar por factura, cliente o producto..." [(ngModel)]="searchQuery"
+        (input)="FiltrarCreditos()" class="validate" />
+    </div>
+
+    <!-- Lista de créditos -->
+    <div class="credits-list">
+      <div *ngIf="creditosDetalleFiltrados.length === 0" class="no-data">
+        <p>No hay créditos disponibles</p>
+      </div>
+
+      <div
+        *ngFor="let credito of creditosDetalleFiltrados | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: creditosDetalleFiltrados.length }"
+        class="credit-card">
+
+        <!-- Info principal -->
+        <div class="card-left">
+          <div class="card-top">
+            <span class="cliente-nombre">Cliente: <span>{{ credito.clienteNombre }} {{ credito.clienteApellido
+                }}</span></span>
+            <span class="status" [class.pagado]="credito.saldo === 0"
+              [class.pendiente]="credito.saldo && credito.saldo > 0">
+              {{ credito.saldo === 0 ? 'Pagado' : 'Pendiente' }}
+            </span>
+          </div>
+          <div class="card-meta">
+            <span class="meta-item">Factura <span>#{{ credito.facturaId }}</span></span>
+            <span class="meta-item">Producto: <span>{{ credito.zapatoDescripcion }}</span></span>
+            <span class="meta-item">Talla/Color: <span>{{ credito.zapatoTalla }} / {{ credito.zapatoColor
+                }}</span></span>
+          </div>
+        </div>
+
+        <!-- Saldo y acción -->
+        <div class="card-right">
+          <div class="amounts">
+            <div [class.amount-pending]="(credito.saldo ?? 0) > 0" [class.amount-paid]="(credito.saldo ?? 0) === 0">
+              {{ (credito.saldo ?? 0) | currency:'COP':'symbol':'1.0-0' }}
+            </div>
+            <div class="amount-label">saldo</div>
+          </div>
+          <button type="button" (click)="AbrirModalPago(credito)" [disabled]="credito.saldo === 0" class="btn-abonar">
+            Abonar
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <pagination-controls (pageChange)="pag = $event"></pagination-controls>
+  </div>
+</div>
+
+<!-- Modal de Pago -->
+<app-editar-credito [mostrarModal]="mostrarModal" [creditoSeleccionado]="creditoSeleccionado"
+  (cerrarModal)="CerrarModal()" (pagoRegistrado)="PagoRegistrado()">
+</app-editar-credito>

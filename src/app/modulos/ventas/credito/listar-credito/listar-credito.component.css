@@ -1,0 +1,286 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.card-container {
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 0 0 2.5rem 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1e293b;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  padding: 1.5rem 0;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  border-radius: 8px 8px 0 0;
+  margin: -1.5rem -1.5rem -2.5rem -1.5rem;
+}
+
+/* TABLA CONTENEDOR */
+.table-container {
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.table-header h5 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* BARRA DE BÚSQUEDA */
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: #fefefe;
+}
+
+.search-bar input:hover {
+  border-color: #9ca3af;
+}
+
+/* LISTADO DE CRÉDITOS */
+.credits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.credits-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.credits-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.credits-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.credits-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* TARJETA DE CRÉDITO - Diseño horizontal compacto */
+.credit-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.credit-card:hover {
+  border-color: #0ea5e9;
+  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Columna izquierda: info principal */
+.card-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.cliente-nombre {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.status {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status.pagado {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status.pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Fila de metadatos en línea */
+.card-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.meta-item span {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+/* Columna derecha: saldo + botón */
+.card-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.amounts {
+  text-align: right;
+}
+
+.amount-pending {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #f97316;
+}
+
+.amount-paid {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.amount-label {
+  font-size: 0.65rem;
+  color: #9ca3af;
+}
+
+.btn-abonar {
+  border: 1px solid #d1d5db;
+  padding: 5px 14px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #1e293b;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.75rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-abonar:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #0ea5e9;
+  color: #0ea5e9;
+}
+
+.btn-abonar:disabled {
+  background-color: #f8fafc;
+  color: #cbd5e1;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/* PAGINACIÓN */
+::ng-deep .ngx-pagination {
+  display: flex;
+  background-color: #F4F4F4;
+  justify-content: center;
+}
+
+::ng-deep .ngx-pagination .current {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .credit-card {
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  .card-left {
+    width: 100%;
+  }
+
+  .card-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .card-meta {
+    gap: 8px;
+  }
+
+  .meta-item {
+    font-size: 0.7rem;
+  }
+}

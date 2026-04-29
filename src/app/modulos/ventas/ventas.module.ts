@@ -9,6 +9,9 @@ import { CrearFacturaComponent } from './factura/crear-factura/crear-factura.com
 import { LineaVentaComponent } from './factura/linea-venta/linea-venta.component';
 import { CierreCajaComponent } from './cierre-caja/cierre-caja.component';
 import { TirillaComponent } from './tirilla/tirilla.component';
+import { EditarCreditoComponent } from './credito/editar-credito/editar-credito.component';
+import { ListarCreditoComponent } from './credito/listar-credito/listar-credito.component';
+import { EliminarCreditoComponent } from './credito/eliminar-credito/eliminar-credito.component';
 
 
 @NgModule({
@@ -16,7 +19,10 @@ import { TirillaComponent } from './tirilla/tirilla.component';
     CrearFacturaComponent,
     LineaVentaComponent,
     CierreCajaComponent,
-    TirillaComponent
+    TirillaComponent,
+    EditarCreditoComponent,
+    ListarCreditoComponent,
+    EliminarCreditoComponent,
   ],
   imports: [
     CommonModule,

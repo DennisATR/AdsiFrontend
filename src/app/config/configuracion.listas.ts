@@ -66,4 +66,7 @@ export namespace ConfiguracionListas {
         'Hombre', 'Mujer', 'Unisex'
     ];
 
+    export const tipodeVentas: string[] = [
+        'Contado', 'Crédito'
+    ];
 }
