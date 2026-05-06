@@ -9,6 +9,8 @@ import { MenuLateralComponent } from './public/pagina-maestra/menu-lateral/menu-
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -25,7 +27,7 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

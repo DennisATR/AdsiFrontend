@@ -1,3 +1,4 @@
 export namespace ConfiguracionRutasBackend {
-  export const urlBackend:string = 'http://localhost:3000/';
+  const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+  export const urlBackend:string = `http://${host}:3000/`;
 }

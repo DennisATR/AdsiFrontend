@@ -6,6 +6,9 @@ import { ConfiguracionRutasBackend } from '../config/configuracion.rutas.backend
 import { UsuarioValidadoModel } from '../modelos/usuario.validado.model';
 import { cambiarClavemodel } from '../modelos/cambiarClave.model';
 import { RolModel } from '../modelos/rol.model';
+import { PermisoModel } from '../modelos/permiso.model';
+import { ConfiguracionEncabezado } from '../config/configuracion.encabezado';
+import { ItemEncabezadoModel } from '../modelos/item.encabezado.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +19,8 @@ export class SeguridadService {
     this.validacionDeSesion();
   }
 
-  IdentificarUsuario(usuario: string, clave: string): Observable<UsuarioModel> {
-    return this.http.post<UsuarioModel>(`${this.urlBase}identificar-usuario`, {
+  IdentificarUsuario(usuario: string, clave: string): Observable<UsuarioValidadoModel> {
+    return this.http.post<UsuarioValidadoModel>(`${this.urlBase}identificar-usuario`, {
       correo: usuario,
       clave: clave
     });
@@ -65,6 +68,10 @@ export class SeguridadService {
     } else {
       let datosString = JSON.stringify(datos);
       localStorage.setItem("datos-sesion", datosString);
+      // Si la respuesta incluye permisos, construir y almacenar el encabezado
+      if (datos.menu && datos.menu.length > 0) {
+        this.ConstruirEncabezado(datos.menu);
+      }
       this.ActualizarComportamientoUsuario(datos);
       return true;
     }
@@ -92,6 +99,43 @@ export class SeguridadService {
     return this.datosUsuarioValidado.next(datos);
   }
 
+
+  ConstruirEncabezado(permisos: PermisoModel[]) {
+  let menu: ItemEncabezadoModel[] = [];
+
+  permisos.forEach((permiso) => {
+    let datosRuta = ConfiguracionEncabezado.listaMenus
+      .filter(x => 
+        x.id == permiso.menuId && permiso[x.accion as keyof PermisoModel]
+      );
+
+    if (datosRuta.length > 0) {
+      let item = new ItemEncabezadoModel();
+      item.idMenu = permiso.menuId;
+      item.ruta = datosRuta[0].ruta;
+      item.texto = datosRuta[0].texto;
+
+      menu.push(item);
+    }
+  });
+
+  this.AlmacenarItemsEncabezado(menu);
+}
+
+  AlmacenarItemsEncabezado(items: ItemEncabezadoModel[]) {
+    let menuString = JSON.stringify(items);
+    localStorage.setItem("menu-encabezado", menuString);
+  }
+  
+  ObtenerItemsEncabezado(): ItemEncabezadoModel[] {
+    let menu: ItemEncabezadoModel[] = [];
+    let menuString = localStorage.getItem("menu-encabezado");
+    if (menuString) {
+      menu = JSON.parse(menuString);
+    }
+    return menu;
+  }
+
   RemoverDatosUsuarioValidado() {
     let datosUsuario = localStorage.getItem("datos-usuario");
     let datosSesion = localStorage.getItem("datos-sesion");
@@ -111,7 +155,6 @@ export class SeguridadService {
     return this.http.post<UsuarioModel>(`${this.urlBase}usuario`, {
       Nombre: datos.Nombre,
       Telefono: datos.Telefono,
-      FechaReg: new Date().toISOString(),
       Apellido: datos.Apellido,
       Clave: datos.Clave,
       Correo: datos.Correo,
@@ -159,4 +202,15 @@ export class SeguridadService {
   ObtenerRoles(): Observable<RolModel[]> {
     return this.http.get<RolModel[]>(`${this.urlBase}rol`);
   }
+
+  ObtenerTokenLocalStorage():string {
+    let ls = localStorage.getItem("datos-sesion");
+    if (ls) {
+      let usuario: UsuarioValidadoModel = JSON.parse(ls);
+      return usuario.token!;
+    } else {
+      return "";
+    }
+  }
+
 }

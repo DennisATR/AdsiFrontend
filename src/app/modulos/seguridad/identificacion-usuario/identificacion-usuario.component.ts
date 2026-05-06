@@ -5,6 +5,7 @@ import { UsuarioModel } from '../../../modelos/usuario.model';
 import { SeguridadService } from '../../../servicios/seguridad.service';
 import { MD5 } from 'crypto-js';
 import { Router } from '@angular/router';
+import { UsuarioValidadoModel } from '../../../modelos/usuario.validado.model';
 
 @Component({
   selector: 'app-identificacion-usuario',
@@ -34,31 +35,30 @@ export class IdentificacionUsuarioComponent {
   }
 
   IdentificarUsuario() {
-    if (this.fGroup.invalid) {
-      alert("Datos incompletos");
-    } else {
-      let usuario = this.obtenerFormGroup['usuario'].value;
-      let clave = this.obtenerFormGroup['clave'].value;
-      let claveCifrada = MD5(clave).toString();
-      this.servicioSeguridad.IdentificarUsuario(usuario, claveCifrada).subscribe({
-        next: (datos: UsuarioModel) => {
-          if (datos && datos.id) {
-            if (this.servicioSeguridad.AlmacenarDatosUsuarioIdentificado(datos)) {
-              console.log(datos);
-              this.servicioSeguridad.AlmacenarDatosUsuarioValidado({user: datos,});
-              this.router.navigate(['/inicio']);
-            }
-          }else{
-            alert("Usuario o clave incorrectos");
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      });
-    }
+  if (this.fGroup.invalid) {
+    alert('Datos incompletos');
+    return;
   }
 
+  const usuario = this.obtenerFormGroup['usuario'].value;
+  const clave = this.obtenerFormGroup['clave'].value;
+
+  this.servicioSeguridad.IdentificarUsuario(usuario, clave).subscribe({
+    next: (resp: UsuarioValidadoModel) => {
+      if (resp?.user && resp?.token) {
+        this.servicioSeguridad.AlmacenarDatosUsuarioIdentificado(resp.user);
+        this.servicioSeguridad.AlmacenarDatosUsuarioValidado(resp);
+        this.router.navigate(['/inicio']);
+      } else {
+        alert('Usuario o clave incorrectos');
+      }
+    },
+    error: (err) => {
+      console.log(err);
+      alert('Usuario o clave incorrectos');
+    }
+  });
+}
 
   get obtenerFormGroup() {
     return this.fGroup.controls;

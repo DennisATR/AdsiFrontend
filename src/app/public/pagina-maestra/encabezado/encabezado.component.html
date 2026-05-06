@@ -7,18 +7,12 @@
       ADSI
     </a>
 
-    <ul class="right hide-on-med-and-down">
+    <ul class="right">
       <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
       <ng-container *ngIf="sesionActiva">
-        <li><a routerLink="/seguridad/usuario/crear-usuario">Usuarios</a></li>
-        <li><a routerLink="/parametros/entrega/crear-entrega">Entregas</a></li>
-        <li><a routerLink="/parametros/gasto/crear-gasto">Gastos</a></li>
-        <li><a routerLink="/parametros/vendedor/crear-vendedor">Vendedores</a></li>
-        <li><a routerLink="/parametros/cliente/crear-cliente">Clientes</a></li>
-        <li><a routerLink="/parametros/zapato/crear-zapato">Zapatos</a></li>
-        <li><a routerLink="/parametros/proveedor/crear-proveedor">Proveedores</a></li>
-        <li><a routerLink="/ventas/credito/listar-credito">Créditos</a></li>
-        <li><a routerLink="/ventas/factura/crear-factura">Facturas</a></li>
+        <li *ngFor="let menu of listaMenus">
+          <a [routerLink]="menu.ruta">{{ menu.texto }}</a>
+        </li>
       </ng-container>
     </ul>
   </div>
