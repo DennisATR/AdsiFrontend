@@ -20,6 +20,7 @@ export class MultiSelectDirective implements OnInit, OnDestroy {
   private valoresSeleccionados: string[] = [];
   private selectedIndex: number = -1;
   private showDropdown: boolean = false;
+  private isSelectingWithMouse: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -199,6 +200,12 @@ export class MultiSelectDirective implements OnInit, OnDestroy {
 
     this.renderer.listen(this.searchInput, 'blur', () => {
       setTimeout(() => {
+        // Si estamos seleccionando con mouse, ignorar el blur
+        if (this.isSelectingWithMouse) {
+          this.isSelectingWithMouse = false;
+          return;
+        }
+
         this.showDropdown = false;
         if (this.searchInput) {
           this.searchInput.value = '';
@@ -347,9 +354,18 @@ export class MultiSelectDirective implements OnInit, OnDestroy {
         this.renderer.appendChild(optionName, text);
         this.renderer.appendChild(optionEl, optionName);
 
-        this.renderer.listen(optionEl, 'mousedown', (e: Event) => {
-          e.preventDefault();
-          e.stopPropagation();
+        // Selección con mouse/puntero. Usamos pointerdown (mejor cobertura) y
+        // fallback a click si pointer events no están disponibles.
+        this.renderer.listen(optionEl, 'pointerdown', (e: Event) => {
+          this.isSelectingWithMouse = true;
+          this.toggleOpcion(opcion);
+          // limpiar el flag poco después para evitar bloquear futuros blur
+          setTimeout(() => { this.isSelectingWithMouse = false; }, 300);
+        });
+
+        this.renderer.listen(optionEl, 'click', (e: Event) => {
+          // Si pointerdown ya manejó la selección, ignoramos el click
+          if (this.isSelectingWithMouse) return;
           this.toggleOpcion(opcion);
         });
 

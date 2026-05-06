@@ -17,6 +17,7 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
   private selectedIndex: number = -1;
   private showDropdown: boolean = false;
   private modelValue: string = '';
+  private isSelectingWithMouse: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -123,10 +124,17 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
         this.renderer.appendChild(optionName, text);
         this.renderer.appendChild(optionEl, optionName);
 
-        // Click en la opción - usar mousedown para evitar conflicto con blur
-        this.renderer.listen(optionEl, 'mousedown', (e: Event) => {
-          e.preventDefault();
-          e.stopPropagation();
+        // Selección con mouse/puntero. Usamos pointerdown (mejor cobertura) y
+        // fallback a click si pointer events no están disponibles.
+        this.renderer.listen(optionEl, 'pointerdown', (e: Event) => {
+          this.isSelectingWithMouse = true;
+          this.seleccionarOpcion(opcion);
+          setTimeout(() => { this.isSelectingWithMouse = false; }, 300);
+        });
+
+        this.renderer.listen(optionEl, 'click', (e: Event) => {
+          // Si pointerdown ya manejó la selección, ignoramos el click
+          if (this.isSelectingWithMouse) return;
           this.seleccionarOpcion(opcion);
         });
 
@@ -239,6 +247,12 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
   @HostListener('blur')
   onBlur(): void {
     setTimeout(() => {
+      // Si estamos en proceso de seleccionar con mouse, no procesar el blur
+      if (this.isSelectingWithMouse) {
+        this.isSelectingWithMouse = false;
+        return;
+      }
+
       this.showDropdown = false;
       this.actualizarDropdown();
       
