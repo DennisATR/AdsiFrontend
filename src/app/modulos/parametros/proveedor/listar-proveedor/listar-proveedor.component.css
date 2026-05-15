@@ -1,43 +1,3 @@
-/* Estilos para las tablas */
-table.striped {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-table.striped th {
-  background-color: #f8fafc;
-  color: #374151;
-  font-weight: 600;
-  padding: 1rem;
-  text-align: left;
-  font-size: 0.875rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-table.striped td {
-  padding: 0.875rem 1rem;
-  border-bottom: 1px solid #f1f5f9;
-  font-size: 0.875rem;
-  color: #4b5563;
-}
-
-table.striped tbody tr:nth-child(odd) {
-  background-color: #f9fafb;
-}
-
-table.striped tbody tr:hover {
-  background-color: #e0f2fe;
-  transition: background-color 0.2s ease;
-}
-
-table.striped tbody tr:last-child td {
-  border-bottom: none;
-}
-
 /* Estilos para la sección de tabla */
 .table-container {
   margin-top: 3rem;
@@ -88,6 +48,27 @@ table.striped tbody tr:last-child td {
 
 .search-bar input:hover {
   border-color: #9ca3af;
+}
+
+/* Contenedor responsivo para la tabla */
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para las tablas */
+table.striped {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: none;
 }
 
 /* Estilos para botones de acciones */
@@ -163,6 +144,161 @@ table.striped tbody tr:last-child td {
   border-color: #3b82f6;
 }
 
+@media (max-width: 768px) {
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .table-header h5 {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+
+  .search-bar input {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+  }
+  
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 0 -0.5rem;
+    padding: 0 0.5rem;
+  }
+
+  table.striped {
+    min-width: 550px;
+    font-size: 0.75rem;
+    margin: 0;
+  }
+  
+  table.striped th {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  table.striped td {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .actions-cell {
+    width: 60px;
+    min-width: 60px;
+    white-space: normal;
+  }
+
+  .action-buttons {
+    gap: 0.15rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-action {
+    width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
+    padding: 0.2rem;
+  }
+
+  /* Scrollbar styling para móviles */
+  .table-wrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
+
+@media (max-width: 480px){
+  .table-container {
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .table-header h5 {
+    font-size: 1rem;
+  }
+
+  .search-bar {
+    padding: 0;
+    margin: 0 -0.5rem 0.5rem -0.5rem;
+  }
+
+  .search-bar input {
+    border-radius: 4px;
+    font-size: 0.75rem;
+    padding: 0.5rem 0.5rem;
+  }
+
+  .table-wrapper {
+    margin: 0 -0.5rem;
+    width: calc(100% + 1rem);
+  }
+
+  table.striped {
+    min-width: 480px;
+    font-size: 0.65rem;
+  }
+
+  table.striped th {
+    padding: 0.4rem 0.35rem;
+    font-size: 0.65rem;
+  }
+
+  table.striped td {
+    padding: 0.35rem;
+    font-size: 0.65rem;
+  }
+
+  .actions-cell {
+    width: 50px;
+    min-width: 50px;
+  }
+
+  .btn-action {
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
+    padding: 0.15rem;
+  }
+}
+
+/* Estilos para la paginación */
+::ng-deep .ngx-pagination {
+  display: flex;
+  background-color: #F4F4F4; 
+  justify-content: center;
+}
+
+::ng-deep .ngx-pagination .current {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .table-header {
@@ -221,4 +357,5 @@ table.striped tbody tr:last-child td {
     height: 22px;
     font-size: 0.75rem;
   }
+  
 }

@@ -6,7 +6,7 @@
       <!-- Sección de Información del Proveedor -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Nombre"
                    id="Nombre"
                    #nombre
@@ -19,7 +19,7 @@
             </div>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Empresa"
                    id="Empresa"
                    #empresa
@@ -32,7 +32,7 @@
             </div>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Telefono"
                    id="Telefono"
                    #telefono
@@ -50,7 +50,7 @@
       <!-- Sección de Contacto y Ubicación -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Correo"
                    id="Correo"
                    #correo
@@ -63,7 +63,7 @@
             </div>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
           <input formControlName="Ciudad" appSearchSelect [opciones]="ciudadesComunes" [permitirPersonalizado]="true"
             placeholder="Escribe o selecciona una ciudad..." id="Ciudad" #ciudadSelect
             (keydown.enter)="focusNext(ciudadSelect, nit)" type="text" class="validate" />
@@ -73,7 +73,7 @@
           </div>
         </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="NIT"
                    id="NIT"
                    #nit

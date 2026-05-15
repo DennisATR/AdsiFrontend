@@ -6,7 +6,7 @@
         <!-- Sección de Información de la Entrega -->
         <div class="form-section">
             <div class="row">
-                <div class="input col s7">
+                <div class="input col s12 m6 l7">
                     <input formControlName="Remitente" id="Remitente" #remitente
                         (keydown.enter)="focusNext(remitente, empresaTrans)" type="text" class="validate" />
                     <label for="Remitente">Remitente</label>
@@ -16,7 +16,7 @@
                     </div>
                 </div>
 
-                <div class="input col s5">
+                <div class="input col s12 m6 l5">
                     <input formControlName="EmpresaTrans" appSearchSelect [opciones]="empresasComunes"
                         [permitirPersonalizado]="true" placeholder="Selecciona una empresa..." id="EmpresaTrans"
                         #empresaTrans (keydown.enter)="focusNext(empresaTrans, numCajas)" type="text" class="validate" />
@@ -32,7 +32,7 @@
         <!-- Sección de Cantidad y Cobro -->
         <div class="form-section">
             <div class="row">
-                <div class="input col s4">
+                <div class="input col s12 m4 l4">
                     <input formControlName="NumCajas" id="NumCajas" #numCajas
                         (keydown.enter)="focusNext(numCajas, cobro)" type="number" min="1" class="validate" />
                     <label for="NumCajas">Número de Cajas</label>
@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                <div class="input col s4">
+                <div class="input col s12 m4 l4">
                     <input formControlName="Cobro" appFormatoMiles id="Cobro" #cobro
                         (keydown.enter)="focusNext(cobro, fecha)" type="text" class="validate" />
                     <label for="Cobro">Cobro</label>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                <div class="input col s4">
+                <div class="input col s12 m4 l4">
                     <input formControlName="Fecha" id="Fecha" #fecha (keydown.enter)="focusNext(fecha, observacion)"
                         type="date" class="validate" />
                     <label for="Fecha">Fecha</label>

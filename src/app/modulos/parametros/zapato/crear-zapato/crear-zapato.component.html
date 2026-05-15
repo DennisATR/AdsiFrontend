@@ -26,12 +26,12 @@
       <!-- Sección de Identificación -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="CodigoBarra" id="CodigoBarra" #codigoBarra
             (keydown.enter)="focusNext(codigoBarra, descripcion)" type="text" class="validate" />
             <label for="CodigoBarra">Código de Barras</label>
           </div>
-          <div class="col s8 checkbox-container">
+          <div class="col s12 m8 l8 checkbox-container">
             <label class="checkbox-label">
               <input type="checkbox" id="checkboxCodigoBarra" (change)="habilitarCodigoBarra($event)" />
               <span>Habilitar Código de Barras</span>
@@ -43,7 +43,7 @@
       <!-- Sección de Información Básica -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s6">
+          <div class="input col s12 m6 l6">
             <input formControlName="Descripcion" id="Descripcion" #descripcion
               (keydown.enter)="focusNext(descripcion, categoria)" type="text" class="validate" />
             <label for="Descripcion">Descripción</label>
@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="Categoria" id="Categoria" appSearchSelect [opciones]="categoriasComunes"
               [permitirPersonalizado]="true" #categoria (keydown.enter)="focusNext(categoria, talla)" type="text"
               class="validate" />
@@ -64,7 +64,7 @@
             </div>
           </div>
         <div>
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #genero (keydown.enter)="focusNext(genero, codigoBarra)" type="text" class="validate" />
             <label for="Genero">Publico</label>
             <div *ngIf="ObtenerFormGroup['Genero'].invalid && ObtenerFormGroup['Genero'].touched" class="error-message">
@@ -81,7 +81,7 @@
       <!-- Sección de Características -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s2">
+          <div class="input col s12 m3 l2">
             <input formControlName="Talla" id="Talla" #talla (keydown.enter)="focusNext(talla, color)" type="number"
               class="validate" />
             <label for="Talla">Talla</label>
@@ -90,7 +90,7 @@
             </div>
           </div>
 
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="Color" appMultiSelect [opciones]="colores" placeholder="Selecciona colores..."
               (enterPresionado)="focusNext(color, proveedor)" id="Color" #color type="text" class="validate" />
             <label for="Color">Color(es)</label>
@@ -99,7 +99,7 @@
             </div>
           </div>
 
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="ProveedorNombre" appSearchSelect [opciones]="proveedoresNombres"
               [permitirPersonalizado]="false" (opcionSeleccionada)="onProveedorSeleccionado($event)"
               placeholder="Busca un proveedor..." id="ProveedorNombre" #proveedor
@@ -111,7 +111,7 @@
             </div>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m3 l4">
             <input formControlName="Referencia" id="Referencia" #referencia
               (keydown.enter)="focusNext(referencia, precioVentaMax)" type="Text" class="validate" />
             <label for="Referencia">Referencia</label>
@@ -127,19 +127,19 @@
       <div class="form-section">
         <div class="row">
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="PrecioVentaMax" id="PrecioVentaMax" appFormatoMiles #precioVentaMax
               (keydown.enter)="focusNext(precioVentaMax, precioVentaMin)" type="text" class="validate" />
             <label for="PrecioVentaMax">Precio de Venta Máx.</label>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="PrecioVentaMin" id="PrecioVentaMin" appFormatoMiles #precioVentaMin
               (keydown.enter)="focusNext(precioVentaMin, cantidad)" type="text" class="validate" />
             <label for="PrecioVentaMin">Precio de Venta Mín.</label>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Cantidad" id="Cantidad" #cantidad (keydown.enter)="submitOrFocusNext(cantidad)"
               type="number" class="validate" />
             <label for="Cantidad">Cantidad</label>
@@ -167,7 +167,7 @@
     <form [formGroup]="fGroupSerie" class="col s12">
       <div class="form-section">
         <div class="row">
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Prefijo" id="Prefijo" #prefijo type="text" 
             (keydown.enter)="focusNext(prefijo, descripcionSerie)" class="validate" />
             <label for="Prefijo">Prefijo del Código de Barras</label>
@@ -176,7 +176,7 @@
               <small>El prefijo del código de barra es obligatorio.</small>
             </div>
           </div>
-          <div class="col s8 checkbox-container">
+          <div class="col s12 m8 l8 checkbox-container">
             <label class="checkbox-label">
               <input type="checkbox" id="checkboxPrefijo" (change)="habilitarPrefijoCodigoBarra($event)" />
               <span>Habilitar Código de Barras</span>
@@ -187,7 +187,7 @@
       <!-- Información Básica -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s4">
+          <div class="input col s12 m6 l6">
             <input formControlName="Descripcion" id="Descripcion" #descripcionSerie
               (keydown.enter)="focusNext(descripcionSerie, categoriaSerie)" type="text" class="validate" />
             <label for="Descripcion">Descripción</label>
@@ -197,7 +197,7 @@
             </div>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m3 l3">
             <input formControlName="Categoria" id="Categoria" appSearchSelect [opciones]="categoriasComunes"
               [permitirPersonalizado]="true" #categoriaSerie
               (keydown.enter)="focusNext(categoriaSerie, tallaInicialSerie)" type="text" class="validate" />
@@ -208,7 +208,7 @@
             </div>
           </div>
 
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #genero (keydown.enter)="focusNext(genero, tallaInicialSerie)" type="text" class="validate" />
             <label for="Genero">Publico</label>
             <div *ngIf="ObtenerFormGroup['Genero'].invalid && ObtenerFormGroup['Genero'].touched" class="error-message">
@@ -222,7 +222,7 @@
       <!-- Características -->
       <div class="form-section">
         <div class="row">
-          <div class="input col s2">
+          <div class="input col s12 m2 l2">
             <input formControlName="TallaInicial" id="TallaInicial" #tallaInicialSerie
               (keydown.enter)="focusNext(tallaInicialSerie, tallaFinalSerie)" type="number" class="validate" />
             <label for="TallaInicial">Talla Inicial</label>
@@ -231,7 +231,7 @@
               <small>La talla inicial es obligatoria.</small>
             </div>
           </div>
-          <div class="input col s2">
+          <div class="input col s12 m2 l2">
             <input formControlName="TallaFinal" id="TallaFinal" #tallaFinalSerie
               (keydown.enter)="focusNext(tallaFinalSerie, colorSerie)" type="number" class="validate" />
             <label for="TallaFinal">Talla Final</label>
@@ -240,7 +240,7 @@
               <small>La talla final es obligatoria.</small>
             </div>
           </div>
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="Color" appMultiSelect [opciones]="colores" placeholder="Selecciona colores..."
               (enterPresionado)="focusNext(colorSerie, proveedorSerie)" id="Color" #colorSerie type="text"
               class="validate" />
@@ -251,7 +251,7 @@
             </div>
           </div>
 
-          <div class="input col s2">
+          <div class="input col s12 m2 l2">
             <input formControlName="ProveedorNombre" appSearchSelect [opciones]="proveedoresNombres"
               [permitirPersonalizado]="false" (opcionSeleccionada)="onProveedorSeleccionadoSerie($event)"
               placeholder="Busca un proveedor..." id="ProveedorNombre" #proveedorSerie
@@ -263,7 +263,7 @@
             </div>
           </div>
 
-          <div class="input col s3">
+          <div class="input col s12 m3 l3">
             <input formControlName="Referencia" id="Referencia" #referenciaSerie
               (keydown.enter)="focusNext(referenciaSerie, precioVentaMaxSerie)" type="text" class="validate" />
             <label for="Referencia">Referencia</label>
@@ -279,19 +279,19 @@
       <div class="form-section">
         <div class="row">
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="PrecioVentaMax" id="PrecioVentaMax" appFormatoMiles #precioVentaMaxSerie
               (keydown.enter)="focusNext(precioVentaMaxSerie, precioVentaMinSerie)" type="text" class="validate" />
             <label for="PrecioVentaMax">Precio de Venta Máx.</label>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="PrecioVentaMin" id="PrecioVentaMin" appFormatoMiles #precioVentaMinSerie
               (keydown.enter)="focusNext(precioVentaMinSerie, cantidadSerie)" type="text" class="validate" />
             <label for="PrecioVentaMin">Precio de Venta Mín.</label>
           </div>
 
-          <div class="input col s4">
+          <div class="input col s12 m4 l4">
             <input formControlName="Cantidad" id="Cantidad" #cantidadSerie
               (keydown.enter)="submitOrFocusNextSerie(cantidadSerie)" type="text" class="validate" />
             <label for="Cantidad">Cantidad por Talla</label>

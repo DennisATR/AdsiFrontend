@@ -7,7 +7,7 @@
         <div class="form-section">
             <div class="row">
 
-                <div class="input col s7">
+                <div class="input col s12 m6 l7">
                     <input formControlName="Concepto" appSearchSelect [opciones]="conceptosComunes"
                         [permitirPersonalizado]="true" placeholder="Selecciona un concepto..." id="Concepto"
                         #conceptoSelect (keydown.enter)="focusNext(conceptoSelect, valor)" type="text" class="validate" />
@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <div class="input col s5">
+                <div class="input col s12 m6 l5">
                     <input formControlName="Valor" appFormatoMiles id="Valor" #valor
                         (keydown.enter)="focusNext(valor, descripcion)" type="text" class="validate" />
                     <label for="Valor">Valor</label>
@@ -35,12 +35,12 @@
         <!-- Sección de Fecha y Descripcion -->
         <div class="form-section">
             <div class="row">
-                <div class="input col s7">
+                <div class="input col s12 m6 l7">
                     <input formControlName="Descripcion" id="Descripcion" #descripcion
                         (keydown.enter)="focusNext(descripcion, fecha)" type="text" class="validate" />
                     <label for="Descripcion">Descripción (Opcional)</label>
                 </div>
-                <div class="input col s5">
+                <div class="input col s12 m6 l5">
                     <input formControlName="Fecha" id="Fecha" #fecha (keydown.enter)="submitOrFocusNext(fecha)"
                         type="date" class="validate" />
                     <label for="Fecha">Fecha</label>

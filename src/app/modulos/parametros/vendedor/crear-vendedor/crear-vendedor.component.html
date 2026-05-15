@@ -6,7 +6,7 @@
     <!-- Sección de Información del Vendedor -->
     <div class="form-section">
       <div class="row">
-        <div class="input col s6">
+        <div class="input col s12 m6 l6">
           <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, apellido)" type="text"
             class="validate" />
           <label for="Nombre">Nombre</label>
@@ -14,7 +14,7 @@
             <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
           </div>
         </div>
-        <div class="input col s6">
+        <div class="input col s12 m6 l6">
           <input formControlName="Apellido" id="Apellido" #apellido (keydown.enter)="focusNext(apellido, correo)"
             type="text" class="validate" />
           <label for="Apellido">Apellido</label>
@@ -29,7 +29,7 @@
     <!-- Sección de Contacto -->
     <div class="form-section">
       <div class="row">
-        <div class="input col s6">
+        <div class="input col s12 m6 l6">
           <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, telefono)"
             type="email" class="validate" />
           <label for="Correo">Correo Electrónico</label>
@@ -37,7 +37,7 @@
             <small>El correo es obligatorio y debe tener un formato válido.</small>
           </div>
         </div>
-        <div class="input col s6">
+        <div class="input col s12 m6 l6">
           <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="submitOrFocusNext(telefono)"
             type="text" class="validate" />
           <label for="Telefono">Teléfono Celular</label>

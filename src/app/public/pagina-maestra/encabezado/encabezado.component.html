@@ -3,11 +3,11 @@
     <!-- Incluir el componente del menú lateral aquí -->
     <app-menu-lateral *ngIf="sesionActiva"></app-menu-lateral>
     
-    <a routerLink="/inicio" class="brand-logo left" style="margin-left: 3rem;">
+    <a routerLink="/inicio" class="brand-logo left" style="margin-left: 2rem; font-weight: bold; ">
       ADSI
     </a>
 
-    <ul class="right">
+    <ul class="right nav-items">
       <li><a *ngIf="!sesionActiva" routerLink="/seguridad/identificar-usuario">Inicio Sesión</a></li>
       <ng-container *ngIf="sesionActiva">
         <li *ngFor="let menu of listaMenus">

@@ -1,5 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SeguridadService } from '../../../servicios/seguridad.service';
+import { ItemEncabezadoModel } from '../../../modelos/item.encabezado.model';
 
 declare const iniciarMenuLateral: any;
 declare const destruirMenuLateral: any; // Si existe alguna función para destruir el menú
@@ -10,8 +11,9 @@ declare const M: any;
   templateUrl: './menu-lateral.component.html',
   styleUrls: ['./menu-lateral.component.css']
 })
-export class MenuLateralComponent implements OnDestroy {
+export class MenuLateralComponent implements OnDestroy, OnInit {
   nombreUsuario: string = '';
+  listaMenus: ItemEncabezadoModel[] = [];
 
   constructor(private servicioSeguridad: SeguridadService) {}
 
@@ -24,6 +26,9 @@ export class MenuLateralComponent implements OnDestroy {
       if (typeof destruirMenuLateral === 'function') {
         destruirMenuLateral();  // Destruye el menú si existe esa función
       }
+
+      // Obtener items dinámicos del encabezado
+      this.listaMenus = this.servicioSeguridad.ObtenerItemsEncabezado();
 
       setTimeout(() => {
         iniciarMenuLateral();  // Inicializa nuevamente el menú

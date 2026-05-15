@@ -205,7 +205,23 @@ small {
   .form-section {
     padding: 0;
   }
-  
+
+  .input {
+    margin-bottom: 1.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .input input[type="text"],
+  .input input[type="number"],
+  .input input[type="email"],
+  .input input[type="password"] {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .input label {
+    font-size: 0.75rem;
+  }
 
   .search-select-dropdown {
     max-height: 150px;
@@ -216,16 +232,66 @@ small {
   .card-container {
     margin: 0.5rem;
     padding: 1rem;
+    border-radius: 8px;
   }
   
   .title {
     font-size: 1.25rem;
     margin: -1rem -1rem 1.5rem -1rem;
     padding: 0.75rem 0;
+    border-radius: 8px 8px 0 0;
   }
   
   .form-section {
     padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .input {
+    margin-bottom: 1.25rem;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .input input[type="text"],
+  .input input[type="number"],
+  .input input[type="email"],
+  .input input[type="password"] {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    box-sizing: border-box;
+  }
+
+  .input label {
+    font-size: 0.7rem;
+    top: -18px;
+    left: 0;
+  }
+
+  .error-message {
+    margin-top: 0.2rem;
+  }
+
+  .error-message small {
+    font-size: 0.7rem;
+  }
+
+  .button-row {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .button-container {
+    padding: 0;
+  }
+
+  .btn-custom {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    min-width: unset;
   }
 
   .search-select-dropdown {
@@ -234,5 +300,6 @@ small {
 
   .search-select-option {
     padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
   }
 }

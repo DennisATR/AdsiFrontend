@@ -6,7 +6,7 @@
     <!-- Sección de Información del Usuario -->
     <div class="form-section">
       <div class="row">
-        <div class="input col s4">
+        <div class="input col s12 m6 l4">
           <input formControlName="Nombre" id="Nombre" #nombre (keydown.enter)="focusNext(nombre, apellido)" type="text"
             class="validate" />
           <label for="Nombre">Nombre</label>
@@ -14,7 +14,7 @@
             <small>El nombre es obligatorio y debe tener al menos 2 caracteres.</small>
           </div>
         </div>
-        <div class="input col s4">
+        <div class="input col s12 m6 l4">
           <input formControlName="Apellido" id="Apellido" #apellido (keydown.enter)="focusNext(apellido, rol)"
             type="text" class="validate" />
           <label for="Apellido">Apellido</label>
@@ -23,7 +23,7 @@
             <small>El apellido es obligatorio y debe tener al menos 2 caracteres.</small>
           </div>
         </div>
-        <div class="input col s4">
+        <div class="input col s12 m6 l4">
           <input formControlName="RolNombre" appSearchSelect [opciones]="rolesNombres" [permitirPersonalizado]="false"
             (opcionSeleccionada)="onRolSeleccionado($event)" placeholder="Busca un rol..." id="RolNombre" #rol
             (keydown.enter)="focusNext(rol, correo)" type="text" class="validate" />
@@ -38,7 +38,7 @@
     <!-- Sección de Contacto y Seguridad -->
     <div class="form-section">
       <div class="row">
-        <div class="input col s4">
+        <div class="input col s12 m6 l4">
           <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, contrasena)"
             type="email" class="validate" />
           <label for="Correo">Correo Electrónico</label>
@@ -46,7 +46,7 @@
             <small>El correo es obligatorio y debe tener un formato válido.</small>
           </div>
         </div>
-        <div class="input col s4">
+        <div class="input col s12 m6 l4">
           <input formControlName="Contraseña" id="Contraseña" #contrasena
             (keydown.enter)="focusNext(contrasena, telefono)" type="password" class="validate" />
           <label for="Contraseña">Contraseña</label>
@@ -55,7 +55,7 @@
             <small>La contraseña es obligatoria y debe tener al menos 3 caracteres.</small>
           </div>
         </div>
-        <div class="input col s4">
+        <div class="input col s12 m6 l4">
           <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="submitOrFocusNext(telefono)"
             type="text" class="validate" />
           <label for="Telefono">Teléfono Celular</label>

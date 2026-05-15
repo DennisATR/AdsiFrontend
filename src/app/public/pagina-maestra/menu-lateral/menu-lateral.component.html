@@ -18,6 +18,14 @@
       </a>
     </div>
   </li>
+  <div class="menu-dinamico" *ngIf="listaMenus && listaMenus.length">
+    <li *ngFor="let menu of listaMenus">
+      <a [routerLink]="menu.ruta"><i class="material-icons">arrow_right</i>{{ menu.texto }}</a>
+    </li>
+    <li class="divider"></li>
+  </div>
+
+  <!-- Enlaces fijos adicionales -->
   <li><a routerLink="/parametros/informacion"><i class="material-icons">info</i>Información del Local</a></li>
   <li><a routerLink="/ventas/cierre-caja"><i class="material-icons">account_balance</i>Cierre de Caja</a></li>
   <li><a routerLink="/seguridad/cambio-clave"><i class="material-icons">lock</i>Cambiar Clave</a></li>

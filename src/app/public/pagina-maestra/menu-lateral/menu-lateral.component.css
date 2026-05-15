@@ -1,0 +1,11 @@
+/* Ocultar items dinámicos en pantallas grandes */
+.menu-dinamico {
+	display: none;
+}
+
+/* Mostrar items dinámicos solo en pantallas pequeñas */
+@media (max-width: 992px) {
+	.menu-dinamico {
+		display: block;
+	}
+}
