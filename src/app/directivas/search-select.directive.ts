@@ -18,6 +18,8 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
   private showDropdown: boolean = false;
   private modelValue: string = '';
   private isSelectingWithMouse: boolean = false;
+  private windowScrollListener: (() => void) | null = null;
+  private windowResizeListener: (() => void) | null = null;
 
   constructor(
     private elementRef: ElementRef,
@@ -38,12 +40,21 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
     if (this.dropdown && this.dropdown.parentElement) {
       this.dropdown.parentElement.removeChild(this.dropdown);
     }
+
+    if (this.windowScrollListener) {
+      this.windowScrollListener();
+      this.windowScrollListener = null;
+    }
+    if (this.windowResizeListener) {
+      this.windowResizeListener();
+      this.windowResizeListener = null;
+    }
   }
 
   private setupInput(): void {
     this.renderer.setAttribute(this.el, 'autocomplete', 'off');
     this.renderer.setAttribute(this.el, 'placeholder', this.placeholder);
-    this.renderer.addClass(this.el, 'search-select-input');
+    this.renderer.addClass(this.el, 'validate');
   }
 
   private crearEstructura(): void {
@@ -61,8 +72,11 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
       // Mover el input dentro del contenedor
       this.renderer.appendChild(this.container, this.el);
       
-      // Mover el label también si existe
-      const label = this.el.nextElementSibling;
+      // Mover el label también si existe (puede estar antes o después del input)
+      let label = this.el.nextElementSibling as Element | null;
+      if (!label) {
+        label = this.el.previousElementSibling as Element | null;
+      }
       if (label && label.tagName === 'LABEL') {
         this.renderer.appendChild(this.container, label);
       }
@@ -70,14 +84,28 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
       this.container = parent;
     }
     
-    // Crear dropdown
+    // Crear dropdown y anexarlo al body para evitar recorte por overflow
     this.dropdown = this.renderer.createElement('div');
     this.renderer.addClass(this.dropdown, 'search-select-dropdown');
     this.renderer.setStyle(this.dropdown, 'display', 'none');
-    
-    if (this.container) {
-      this.renderer.appendChild(this.container, this.dropdown);
-    }
+    this.renderer.setStyle(this.dropdown, 'position', 'absolute');
+    this.renderer.setStyle(this.dropdown, 'z-index', '10000');
+    this.renderer.setStyle(this.dropdown, 'background', '#fff');
+    this.renderer.setStyle(this.dropdown, 'box-shadow', '0 2px 8px rgba(0,0,0,0.15)');
+    this.renderer.setStyle(this.dropdown, 'border', '1px solid rgba(0,0,0,0.12)');
+    this.renderer.setStyle(this.dropdown, 'max-height', '240px');
+    this.renderer.setStyle(this.dropdown, 'overflow', 'auto');
+
+    // append to body so it isn't clipped by parent containers
+    this.renderer.appendChild(document.body, this.dropdown);
+
+    // Listeners to reposition on scroll/resize
+    this.windowScrollListener = this.renderer.listen('window', 'scroll', () => {
+      if (this.showDropdown) this.updateDropdownPosition();
+    });
+    this.windowResizeListener = this.renderer.listen('window', 'resize', () => {
+      if (this.showDropdown) this.updateDropdownPosition();
+    });
   }
 
   private setupValueChanges(): void {
@@ -149,6 +177,41 @@ export class SearchSelectDirective implements OnInit, OnDestroy {
     }
 
     this.renderer.setStyle(this.dropdown, 'display', this.showDropdown ? 'block' : 'none');
+    if (this.showDropdown) {
+      this.updateDropdownPosition();
+    }
+  }
+
+  private updateDropdownPosition(): void {
+    if (!this.dropdown) return;
+
+    const rect = this.el.getBoundingClientRect();
+    const scrollX = window.scrollX || window.pageXOffset || 0;
+    const scrollY = window.scrollY || window.pageYOffset || 0;
+
+    const optionHeight = 40; // altura aproximada por opción
+    const estimatedHeight = Math.min(this.opcionesFiltradas.length * optionHeight, 240);
+
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    let top: number;
+    if (spaceBelow < estimatedHeight && spaceAbove > spaceBelow) {
+      // abrir hacia arriba
+      top = rect.top + scrollY - estimatedHeight;
+      this.renderer.setStyle(this.dropdown, 'max-height', `${Math.min(spaceAbove, 240)}px`);
+    } else {
+      // abrir hacia abajo
+      top = rect.bottom + scrollY;
+      this.renderer.setStyle(this.dropdown, 'max-height', `${Math.min(spaceBelow, 240)}px`);
+    }
+
+    const left = rect.left + scrollX;
+    const width = rect.width;
+
+    this.renderer.setStyle(this.dropdown, 'top', `${top}px`);
+    this.renderer.setStyle(this.dropdown, 'left', `${left}px`);
+    this.renderer.setStyle(this.dropdown, 'width', `${width}px`);
   }
 
   private filtrarOpciones(query: string): void {

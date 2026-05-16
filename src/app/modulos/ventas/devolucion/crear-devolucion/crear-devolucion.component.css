@@ -1,0 +1,373 @@
+.card-container {
+	max-width: 1400px;
+	margin: 1rem auto;
+	padding: 1.5rem;
+	background-color: #ffffff;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	border-radius: 12px;
+	border: 1px solid #e2e8f0;
+}
+
+.title {
+	text-align: center;
+	color: #1e293b;
+	font-weight: 700;
+	padding: 1.2rem 0;
+	background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+	border-radius: 8px 8px 0 0;
+    margin: -1.5rem -1.5rem 1rem -1.5rem;
+}
+
+.title h5 {
+	margin: 0;
+	color: #ffffff;
+	font-size: 1.35rem;
+}
+
+.contenido-principal {
+	display: grid;
+	grid-template-columns: 0.95fr 1.3fr 0.95fr;
+	gap: 1rem;
+}
+
+.panel {
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	overflow: hidden;
+	background: #ffffff;
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+.panel-header {
+	background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+	color: #ffffff;
+	padding: 0.9rem 1rem;
+}
+
+.panel-header h5 {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.panel-subtitulo {
+	display: block;
+	margin-top: 0.2rem;
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.panel-body {
+	padding: 1rem;
+	flex: 1;
+}
+
+.input {
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.input input[type="text"],
+.input input[type="number"],
+.input textarea,
+.input input[appSearchSelect] {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 1px solid #d1d5db;
+	border-radius: 8px;
+	font-size: 0.875rem;
+	transition: all 0.2s ease;
+	background-color: white;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	box-sizing: border-box;
+}
+
+.input textarea {
+	resize: vertical;
+	min-height: 110px;
+}
+
+.input input[type="text"]:focus,
+.input textarea:focus,
+.input input[appSearchSelect]:focus {
+	outline: none;
+	border-color: #3b82f6;
+	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input label {
+	top: -20px;
+	left: 0;
+	font-size: 0.875rem;
+	color: #374151;
+	font-weight: 500;
+	background: #ffffff;
+	padding: 0 10px;
+	z-index: 1;
+}
+
+.error-message {
+	margin-top: 0.35rem;
+	color: #dc2626;
+	font-size: 0.78rem;
+}
+
+.error-message small {
+	display: block;
+}
+
+.estado-panel {
+	margin: 0.75rem 0 1rem 0;
+	display: grid;
+	gap: 0.5rem;
+}
+
+.estado-carga,
+.estado-exito,
+.estado-error {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	border-radius: 8px;
+	padding: 0.8rem 0.9rem;
+	font-size: 0.85rem;
+}
+
+.estado-carga {
+	background: #eff6ff;
+	color: #1d4ed8;
+}
+
+.estado-exito {
+	background: #ecfdf5;
+	color: #047857;
+}
+
+.estado-error {
+	background: #fef2f2;
+	color: #b91c1c;
+}
+
+.estado-carga .material-icons,
+.estado-exito .material-icons,
+.estado-error .material-icons {
+	font-size: 1.1rem;
+}
+
+.acciones-formulario {
+	display: flex;
+	gap: 0.75rem;
+	margin-top: 0.9rem;
+}
+
+.btn-secundario,
+.btn-primario {
+	border: none;
+	padding: 0.85rem 1rem;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	font-size: 0.88rem;
+	font-weight: 700;
+	width: 100%;
+}
+
+.btn-secundario {
+	background: #e2e8f0;
+	color: #0f172a;
+}
+
+.btn-secundario:hover {
+	background: #cbd5e1;
+}
+
+.btn-primario {
+	background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+	color: #ffffff;
+	box-shadow: 0 4px 15px rgba(220, 38, 38, 0.24);
+}
+
+.btn-primario:hover:not(:disabled) {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px rgba(220, 38, 38, 0.28);
+}
+
+.btn-primario:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.vaciar-placeholder,
+.detalle-placeholder {
+	min-height: 240px;
+	border: 2px dashed #cbd5e1;
+	border-radius: 10px;
+	background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: #64748b;
+	padding: 1.5rem;
+}
+
+.placeholder-icon {
+	font-size: 2.6rem;
+	margin-bottom: 0.5rem;
+}
+
+.tabla-ventas-container {
+	overflow: auto;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+}
+
+.tabla-ventas {
+	width: 100%;
+	border-collapse: collapse;
+	background: #ffffff;
+}
+
+.tabla-ventas thead {
+	background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%);
+	position: sticky;
+	top: 0;
+	z-index: 1;
+}
+
+.tabla-ventas th,
+.tabla-ventas td {
+	padding: 0.75rem 0.8rem;
+	text-align: left;
+	font-size: 0.82rem;
+	color: #334155;
+	border-bottom: 1px solid #eef2f7;
+}
+
+.tabla-ventas th {
+	text-transform: uppercase;
+	font-size: 0.72rem;
+	letter-spacing: 0.03em;
+	color: #475569;
+}
+
+.tabla-ventas tbody tr {
+	cursor: pointer;
+	transition: background-color 0.18s ease;
+}
+
+.tabla-ventas tbody tr:hover,
+.tabla-ventas tbody tr.fila-activa {
+	background: #eff6ff;
+}
+
+.col-seleccion {
+	width: 58px;
+	text-align: center;
+}
+
+.col-zapato {
+	min-width: 140px;
+}
+
+.col-cantidad,
+.col-precio,
+.col-subtotal {
+	min-width: 92px;
+}
+
+.celda-principal {
+	font-weight: 700;
+	color: #0f172a;
+}
+
+.celda-secundaria {
+	margin-top: 0.15rem;
+	font-size: 0.72rem;
+	color: #64748b;
+}
+
+.resumen-venta {
+	display: grid;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.resumen-item {
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	padding: 0.75rem 0.85rem;
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	align-items: center;
+}
+
+.resumen-item span {
+	font-size: 0.8rem;
+	color: #64748b;
+	font-weight: 600;
+}
+
+.resumen-item strong {
+	color: #0f172a;
+	font-size: 0.92rem;
+}
+
+.resumen-item.dos-columnas {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.resumen-item.dos-columnas > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.2rem;
+}
+
+.form-devolucion {
+	margin-top: 1rem;
+}
+
+@media (max-width: 1180px) {
+	.contenido-principal {
+		grid-template-columns: 1fr;
+	}
+
+	.panel {
+		min-height: auto;
+	}
+}
+
+@media (max-width: 720px) {
+	.card-container {
+		margin: 0.5rem;
+		padding: 1rem;
+	}
+
+	.title h5 {
+		font-size: 1.1rem;
+	}
+
+	.panel-body {
+		padding: 0.85rem;
+	}
+
+	.acciones-formulario {
+		flex-direction: column;
+	}
+
+	.resumen-item.dos-columnas {
+		grid-template-columns: 1fr;
+	}
+
+	.tabla-ventas th,
+	.tabla-ventas td {
+		padding: 0.65rem 0.55rem;
+	}
+}

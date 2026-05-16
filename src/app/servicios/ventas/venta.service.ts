@@ -50,7 +50,7 @@ export class VentaService {
   }
 
   ObtenerVentasPorFactura(facturaId: string): Observable<VentaModel[]> {
-    return this.http.get<VentaModel[]>(`${this.urlBase}venta/factura/${facturaId}`).pipe(
+    return this.http.get<VentaModel[]>(`${this.urlBase}venta/factura/${facturaId}/devoluciones-elegibles`).pipe(
       catchError(error => {
         // Si el endpoint no existe, retornar array vacío
         console.warn('No se encontraron ventas para la factura:', facturaId);

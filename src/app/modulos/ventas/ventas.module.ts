@@ -12,6 +12,7 @@ import { TirillaComponent } from './tirilla/tirilla.component';
 import { EditarCreditoComponent } from './credito/editar-credito/editar-credito.component';
 import { ListarCreditoComponent } from './credito/listar-credito/listar-credito.component';
 import { EliminarCreditoComponent } from './credito/eliminar-credito/eliminar-credito.component';
+import { CrearDevolucionComponent } from './devolucion/crear-devolucion/crear-devolucion.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { EliminarCreditoComponent } from './credito/eliminar-credito/eliminar-cr
     EditarCreditoComponent,
     ListarCreditoComponent,
     EliminarCreditoComponent,
+    CrearDevolucionComponent
   ],
   imports: [
     CommonModule,

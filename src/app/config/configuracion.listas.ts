@@ -69,4 +69,10 @@ export namespace ConfiguracionListas {
     export const tipodeVentas: string[] = [
         'Contado', 'Crédito'
     ];
+
+    export const razonesDevolucion: string[] = [
+        'Producto defectuoso', 'Talla incorrecta', 'Cambio de producto', 
+        'Color diferente al pedido', 'Entrega tardía', 'Producto equivocado', 
+        'Dañado durante el envío'
+    ];
 }

@@ -56,6 +56,12 @@ export namespace ConfiguracionEncabezado {
             texto:"Facturas",
             accion: "Guardar"
         },
+        {
+            id: "19",
+            ruta: "/ventas/devolucion/crear-devolucion",
+            texto:"Devoluciones",
+            accion: "Guardar"
+        },
         
     ];
 }

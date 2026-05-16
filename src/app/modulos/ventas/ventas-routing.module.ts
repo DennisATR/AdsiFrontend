@@ -8,6 +8,7 @@ import { TirillaComponent } from './tirilla/tirilla.component';
 import { ListarCreditoComponent } from './credito/listar-credito/listar-credito.component';
 import { EditarCreditoComponent } from './credito/editar-credito/editar-credito.component';
 import { EliminarCreditoComponent } from './credito/eliminar-credito/eliminar-credito.component';
+import { CrearDevolucionComponent } from './devolucion/crear-devolucion/crear-devolucion.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,11 @@ const routes: Routes = [
   {
     path: 'credito/eliminar-credito',
     component: EliminarCreditoComponent,
+    canActivate: [ValidarSesionActivaGuard]
+  },
+  {
+    path: 'devolucion/crear-devolucion',
+    component: CrearDevolucionComponent,
     canActivate: [ValidarSesionActivaGuard]
   }
 ];

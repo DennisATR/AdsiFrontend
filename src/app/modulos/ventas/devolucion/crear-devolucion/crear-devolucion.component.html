@@ -1,0 +1,170 @@
+<div class="card-container">
+	<div class="title">
+		<h5>Gestión de Devoluciones</h5>
+	</div>
+
+	<div class="contenido-principal">
+		<div class="panel panel-busqueda">
+			<div class="panel-header">
+				<h5>Buscar factura</h5>
+				<span class="panel-subtitulo">Seleccione la factura para ver sus ventas</span>
+			</div>
+
+			<form [formGroup]="fGroup" class="panel-body">
+				<div class="input">
+					<label for="facturaBusqueda">Número de Factura</label>
+					<input formControlName="facturaBusqueda" id="facturaBusqueda" placeholder="Ingrese número de factura..."
+						type="text" class="validate" 
+						(keydown.enter)="obtenerFactura()" 
+						[class.error]="ObtenerFormGroup['facturaBusqueda'].invalid && ObtenerFormGroup['facturaBusqueda'].touched" />
+					<div *ngIf="ObtenerFormGroup['facturaBusqueda'].invalid && ObtenerFormGroup['facturaBusqueda'].touched"
+						class="error-message">
+						<small>Debe ingresar una factura.</small>
+					</div>
+				</div>
+
+				<div class="estado-panel" *ngIf="cargandoFacturas || cargandoVentas || mensajeEstado || errorEstado">
+					<div *ngIf="cargandoFacturas || cargandoVentas" class="estado-carga">
+						<span class="material-icons">hourglass_top</span>
+						<p>Cargando información...</p>
+					</div>
+
+					<div *ngIf="mensajeEstado" class="estado-exito">
+						<span class="material-icons">info</span>
+						<p>{{ mensajeEstado }}</p>
+					</div>
+
+					<div *ngIf="errorEstado" class="estado-error">
+						<span class="material-icons">error_outline</span>
+						<p>{{ errorEstado }}</p>
+					</div>
+				</div>
+
+				<div class="acciones-formulario">
+					<button class="btn-secundario" type="button" (click)="LimpiarConsulta()">
+						Limpiar búsqueda
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="panel panel-ventas">
+			<div class="panel-header">
+				<h5>Ventas de la factura</h5>
+				<span class="panel-subtitulo">Seleccione una venta para devolver</span>
+			</div>
+
+			<div class="panel-body">
+				<div *ngIf="ventasFactura.length === 0" class="vaciar-placeholder">
+					<div class="placeholder-icon">🧾</div>
+					<p>No hay ventas cargadas</p>
+					<small>Busque una factura para listar sus ventas.</small>
+				</div>
+
+				<div *ngIf="ventasFactura.length > 0" class="tabla-ventas-container">
+					<table class="tabla-ventas">
+						<thead>
+							<tr>
+								<th class="col-seleccion">Sel.</th>
+								<th class="col-zapato">Zapato</th>
+								<th class="col-cantidad">Cant.</th>
+								<th class="col-precio">Precio</th>
+								<th class="col-subtotal">Subtotal</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let venta of ventasFactura" [class.fila-activa]="ventaSeleccionada?.id === venta.id"
+								(click)="SeleccionarVenta(venta)">
+								<td class="col-seleccion">
+									<input type="radio" name="ventaSeleccionada" [checked]="ventaSeleccionada?.id === venta.id"
+										(change)="SeleccionarVenta(venta)" />
+								</td>
+								<td class="col-zapato">
+									<div class="celda-principal">{{ venta.zapatoId || 'Sin dato' }}</div>
+									<div class="celda-secundaria">Factura #{{ venta.facturaId || '-' }}</div>
+								</td>
+								<td class="col-cantidad">{{ venta.Cantidad ?? 0 }}</td>
+								<td class="col-precio">{{ (venta.Precio ?? 0) | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+								<td class="col-subtotal">{{ calcularSubtotal(venta) | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-detalle">
+			<div class="panel-header">
+				<h5>Venta seleccionada</h5>
+				<span class="panel-subtitulo">Revise los datos antes de devolver</span>
+			</div>
+
+			<form [formGroup]="fGroup" class="panel-body">
+				<div *ngIf="!ventaSeleccionada" class="detalle-placeholder">
+					<p>Seleccione una venta para ver el resumen.</p>
+				</div>
+
+				<div *ngIf="ventaSeleccionada" class="resumen-venta">
+					<div class="resumen-item">
+						<span>Venta ID</span>
+						<strong>#{{ ventaSeleccionada.id }}</strong>
+					</div>
+					<div class="resumen-item">
+						<span>Zapato</span>
+						<strong>{{ ventaSeleccionada.zapatoId || '-' }}</strong>
+					</div>
+					<div class="resumen-item dos-columnas">
+						<div>
+							<span>Cantidad</span>
+							<strong>{{ ventaSeleccionada.Cantidad ?? 0 }}</strong>
+						</div>
+						<div>
+							<span>Precio</span>
+							<strong>{{ (ventaSeleccionada.Precio ?? 0) | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+						</div>
+					</div>
+					<div class="resumen-item total">
+						<span>Subtotal Original</span>
+						<strong>{{ calcularSubtotal(ventaSeleccionada) | currency:'COP':'symbol-narrow':'1.0-0' }}</strong>
+					</div>
+				</div>
+
+				<div class="form-devolucion">
+					<div class="grid-dos-columnas">
+						<div class="input">
+							<label for="Cantidad">Cantidad a devolver:
+								<small> (Disponible: {{ ventaSeleccionada?.Cantidad ?? 0 }})</small>
+							</label>
+							<input formControlName="Cantidad" id="Cantidad" type="number" class="validate"
+								[class.error]="ObtenerFormGroup['Cantidad'].invalid && ObtenerFormGroup['Cantidad'].touched" />
+							<div *ngIf="ObtenerFormGroup['Cantidad'].invalid && ObtenerFormGroup['Cantidad'].touched"
+								class="error-message">
+								<small *ngIf="ObtenerFormGroup['Cantidad'].errors?.['required']">La cantidad es obligatoria.</small>
+								<small *ngIf="ObtenerFormGroup['Cantidad'].errors?.['min']">La cantidad debe ser al menos 1.</small>
+								<small *ngIf="ObtenerFormGroup['Cantidad'].errors?.['max']">La cantidad no puede superar la disponible.</small>
+							</div>
+						</div>
+					</div>
+
+					<div class="input">
+							<label for="Observacion">Observación</label>
+							<input formControlName="Observacion" id="Observacion" appSearchSelect
+								[opciones]="razonesDevolucion" [permitirPersonalizado]="true"
+								placeholder="Explique el motivo de la devolución..." class="validate" />
+						<div *ngIf="ObtenerFormGroup['Observacion'].invalid && ObtenerFormGroup['Observacion'].touched"
+							class="error-message">
+							<small *ngIf="ObtenerFormGroup['Observacion'].errors?.['required']">La observación es obligatoria.</small>
+							<small *ngIf="ObtenerFormGroup['Observacion'].errors?.['minlength']">Debe escribir al menos 5 caracteres.</small>
+						</div>
+					</div>
+
+					<div class="acciones-formulario">
+						<button class="btn-primario" type="button" (click)="RegistrarDevolucion()"
+							[disabled]="registrandoDevolucion || ventasFactura.length === 0 || !ventaSeleccionada">
+							{{ registrandoDevolucion ? 'Registrando...' : 'Registrar devolución' }}
+						</button>
+					</div>
+				</div>
+			</form>
+	</div>
+</div>
