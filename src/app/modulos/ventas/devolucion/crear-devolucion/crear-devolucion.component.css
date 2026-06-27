@@ -150,9 +150,9 @@
 	color: #b91c1c;
 }
 
-.estado-carga .material-icons,
-.estado-exito .material-icons,
-.estado-error .material-icons {
+.estado-carga svg,
+.estado-exito svg,
+.estado-error svg {
 	font-size: 1.1rem;
 }
 

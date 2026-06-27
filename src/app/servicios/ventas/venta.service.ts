@@ -15,9 +15,13 @@ export class VentaService {
 
   constructor(private http: HttpClient) { }
 
-  RegistrarVenta(datos: any) {
+  RegistrarVenta(datos: any, lugarImpresion?: string) {
     console.log(datos);
-    return this.http.post(`${this.urlBase}venta`, datos).pipe(
+    let url = `${this.urlBase}venta`;
+    if (lugarImpresion) {
+      url += `?lugarImpresion=${lugarImpresion}`;
+    }
+    return this.http.post(url, datos).pipe(
       catchError(error => {
         console.error('Error al registrar la venta:', error);
         return throwError(() => error);

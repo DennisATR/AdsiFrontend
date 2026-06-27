@@ -105,6 +105,7 @@ body {
 .input {
   position: relative;
   margin-bottom: 1.5rem;
+  padding-top: 20px;
 }
 
 .input input[type="text"],
@@ -162,7 +163,7 @@ body {
 
 .input label {
   position: absolute;
-  top: -18px;
+  top: 2px;
   left: 0;
   font-size: 0.8rem;
   color: #374151;
@@ -790,4 +791,33 @@ body {
   background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
   transform: none;
   box-shadow: 0 4px 15px rgba(203, 213, 225, 0.3);
+}
+
+/* ==================== SELECT DE IMPRESIÓN ==================== */
+.select-impresion {
+  display: block !important;
+  visibility: visible !important;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
+  color: #1e293b;
+  box-sizing: border-box;
+  appearance: auto;
+  -webkit-appearance: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-impresion:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.select-impresion:hover {
+  border-color: #9ca3af;
 }

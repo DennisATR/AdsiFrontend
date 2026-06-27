@@ -197,6 +197,15 @@
                         </div>
                     </div>
 
+                    <!-- Lugar de Impresión -->
+                    <div class="input" style="margin-top: 15px;">
+                        <label for="LugarImpresion">Lugar de Impresión</label>
+                        <select [(ngModel)]="lugarImpresion" [ngModelOptions]="{standalone: true}" id="LugarImpresion" class="select-impresion">
+                            <option value="servidor">Imprimir en Caja / Servidor</option>
+                            <option value="cliente">Imprimir en mi Computador</option>
+                        </select>
+                    </div>
+
                     <!-- Nota (Opcional) -->
                     <div class="input" style="margin-top: 15px;">
                         <label for="Nota">Nota (Opcional)</label>

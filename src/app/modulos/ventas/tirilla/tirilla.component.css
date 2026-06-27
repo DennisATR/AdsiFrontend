@@ -52,8 +52,8 @@
 	color: #dc2626;
 }
 
-.estado-carga .material-icons,
-.estado-error .material-icons {
+.estado-carga svg,
+.estado-error svg {
 	font-size: 2.2rem;
 	display: block;
 	margin-bottom: 0.5rem;
@@ -220,6 +220,6 @@
 	transform: translateY(0);
 }
 
-.btn-exportar .material-icons {
+.btn-exportar svg {
 	font-size: 1.2rem;
 }

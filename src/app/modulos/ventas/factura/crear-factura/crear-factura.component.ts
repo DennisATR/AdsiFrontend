@@ -19,6 +19,7 @@ import { AlmacenModel } from '../../../../modelos/almacen.model';
 import { PagoFacturaService } from '../../../../servicios/ventas/pago-factura.service';
 import { CreditoService } from '../../../../servicios/ventas/credito.service';
 import { CreditoModel } from '../../../../modelos/credito.model';
+import { PrintService } from '../../../../servicios/ventas/print.service';
 
 @Component({
   selector: 'app-crear-factura',
@@ -48,6 +49,7 @@ export class CrearFacturaComponent implements OnInit {
   metodoPagoActualNombre: string = '';
   abonoActual: number = 0;
   permitirMultiplesPagos: boolean = true;
+  lugarImpresion: string = 'servidor';
 
   constructor(
     private fb: FormBuilder,
@@ -59,7 +61,8 @@ export class CrearFacturaComponent implements OnInit {
     private servicioZapato: ZapatoService,
     private servicioInformacion: InformacionService,
     private servicioPagoFactura: PagoFacturaService,
-    private servicioCredito: CreditoService
+    private servicioCredito: CreditoService,
+    private printService: PrintService
   ) { }
 
   ngOnInit() {
@@ -648,7 +651,7 @@ export class CrearFacturaComponent implements OnInit {
         facturaId: facturaId
       };
 
-      this.servicioVenta.RegistrarVenta(ventaData).subscribe({
+      this.servicioVenta.RegistrarVenta(ventaData, this.lugarImpresion).subscribe({
         next: (respuestaVenta: VentaModel) => {
           ventasRegistradas++;
           console.log(`✅ Línea ${index + 1} registrada:`, respuestaVenta);
@@ -735,28 +738,40 @@ export class CrearFacturaComponent implements OnInit {
           next: (respuestaCredito: any) => {
             console.log(`✅ Crédito registrado:`, respuestaCredito);
             alert('✅ Factura, líneas, pagos y crédito registrados correctamente');
-            this.cerrarModal();
-            this.limpiarFormulario();
+            this.procesarImpresionLocalSiEsNecesario(facturaId);
           },
           error: (err: any) => {
             console.error(`❌ Error al registrar crédito:`, err);
             alert('✅ Factura, líneas y pagos registrados. ⚠️ Error al registrar el crédito. Por favor registre manualmente.');
-            this.cerrarModal();
-            this.limpiarFormulario();
+            this.procesarImpresionLocalSiEsNecesario(facturaId);
           }
         });
       } else {
         // No hay saldo pendiente
         alert('✅ Factura, líneas de venta y todos los pagos registrados correctamente');
-        this.cerrarModal();
-        this.limpiarFormulario();
+        this.procesarImpresionLocalSiEsNecesario(facturaId);
       }
     } else {
       // Es CONTADO
       alert('✅ Factura, líneas de venta y todos los pagos registrados correctamente');
-      this.cerrarModal();
-      this.limpiarFormulario();
+      this.procesarImpresionLocalSiEsNecesario(facturaId);
     }
+  }
+
+  procesarImpresionLocalSiEsNecesario(facturaId: number) {
+    if (this.lugarImpresion === 'cliente') {
+      this.printService.obtenerBufferFactura(facturaId).subscribe({
+        next: (res) => {
+          this.printService.imprimirLocal(res.buffer).subscribe({
+            next: () => console.log('Impresión enviada al agente local'),
+            error: (err) => alert('No se pudo comunicar con el agente de impresión local. Asegúrate de que el script se está ejecutando.')
+          });
+        },
+        error: (err) => console.error('Error al obtener buffer:', err)
+      });
+    }
+    this.cerrarModal();
+    this.limpiarFormulario();
   }
 
   registrarPagoFactura(facturaId: number, metodoPagoId: number, monto: number) {
