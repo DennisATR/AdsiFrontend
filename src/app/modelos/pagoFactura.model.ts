@@ -3,4 +3,7 @@ export class PagoFacturaModel {
     facturaId?: number;
     metodopagoId?: number;
     Monto?: number;
+    MontoRecibido?: number;
+    Cambio?: number;
 }
+

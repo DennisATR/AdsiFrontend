@@ -1,0 +1,213 @@
+/* ====================================================
+   ADSI — Ventana de diálogo personalizada
+   ==================================================== */
+
+/* Fondo con blur y fade */
+.adsi-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.adsi-overlay.visible {
+  opacity: 1;
+}
+
+/* Tarjeta */
+.adsi-card {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  width: 90%;
+  max-width: 390px;
+  opacity: 0;
+  transform: scale(0.92) translateY(12px);
+  transition: opacity 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.adsi-card.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Icono circular */
+.adsi-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.adsi-icon-wrap svg {
+  width: 26px;
+  height: 26px;
+}
+
+.adsi-icon-wrap.success {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.adsi-icon-wrap.error {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.adsi-icon-wrap.warning {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.adsi-icon-wrap.info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+/* Texto */
+.adsi-content {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.adsi-content h3 {
+  color: #111827;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.adsi-content p {
+  color: #4b5563;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Botones */
+.adsi-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.adsi-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* Botón cancelar (neutro) */
+.adsi-btn-cancel {
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.adsi-btn-cancel:hover {
+  background: #f3f4f6;
+}
+
+/* Botón confirmar / aceptar — colores según tipo */
+.adsi-btn-confirm.success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+.adsi-btn-confirm.success:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+
+.adsi-btn-confirm.error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+.adsi-btn-confirm.error:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
+}
+
+.adsi-btn-confirm.warning {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
+}
+.adsi-btn-confirm.warning:hover {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.4);
+  transform: translateY(-1px);
+}
+
+.adsi-btn-confirm.info {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+.adsi-btn-confirm.info:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.adsi-btn-confirm:active {
+  transform: translateY(0) !important;
+}
+
+/* Caja de cambio a devolver */
+.adsi-cambio-card {
+  margin-top: 18px;
+  padding: 20px;
+  background: #f0fdf4;
+  border: 2.5px dashed #10b981;
+  border-radius: 14px;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.08);
+  text-align: center;
+}
+
+.adsi-cambio-label {
+  font-size: 1.05rem;
+  color: #15803d;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.adsi-cambio-value {
+  font-size: 2.9rem;
+  font-weight: 800;
+  color: #166534;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  display: block;
+}

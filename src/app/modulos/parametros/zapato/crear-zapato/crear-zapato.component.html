@@ -28,7 +28,7 @@
         <div class="row">
           <div class="input col s12 m4 l4">
             <input formControlName="CodigoBarra" id="CodigoBarra" #codigoBarra
-            (keydown.enter)="focusNext(codigoBarra, descripcion)" type="text" class="validate" />
+              (keydown.enter)="focusNext(codigoBarra, descripcion)" type="text" class="validate" />
             <label for="CodigoBarra">Código de Barras</label>
           </div>
           <div class="col s12 m8 l8 checkbox-container">
@@ -55,7 +55,7 @@
 
           <div class="input col s12 m3 l3">
             <input formControlName="Categoria" id="Categoria" appSearchSelect [opciones]="categoriasComunes"
-              [permitirPersonalizado]="true" #categoria (keydown.enter)="focusNext(categoria, talla)" type="text"
+              [permitirPersonalizado]="true" #categoria (keydown.enter)="focusNext(categoria, genero)" type="text"
               class="validate" />
             <label for="Categoria">Categoría</label>
             <div *ngIf="ObtenerFormGroup['Categoria'].invalid && ObtenerFormGroup['Categoria'].touched"
@@ -63,16 +63,18 @@
               <small>La categoría es obligatoria.</small>
             </div>
           </div>
-        <div>
-          <div class="input col s12 m3 l3">
-            <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #genero (keydown.enter)="focusNext(genero, codigoBarra)" type="text" class="validate" />
-            <label for="Genero">Publico</label>
-            <div *ngIf="ObtenerFormGroup['Genero'].invalid && ObtenerFormGroup['Genero'].touched" class="error-message">
-              <small>El género es obligatorio.</small>
+          <div>
+            <div class="input col s12 m3 l3">
+              <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #genero
+                (keydown.enter)="focusNext(genero, talla)" type="text" class="validate" />
+              <label for="Genero">Público</label>
+              <div *ngIf="ObtenerFormGroup['Genero'].invalid && ObtenerFormGroup['Genero'].touched"
+                class="error-message">
+                <small>El público es obligatorio.</small>
+              </div>
             </div>
-          </div>
 
-        </div>
+          </div>
 
 
         </div>
@@ -168,8 +170,8 @@
       <div class="form-section">
         <div class="row">
           <div class="input col s12 m4 l4">
-            <input formControlName="Prefijo" id="Prefijo" #prefijo type="text" 
-            (keydown.enter)="focusNext(prefijo, descripcionSerie)" class="validate" />
+            <input formControlName="Prefijo" id="Prefijo" #prefijo type="text"
+              (keydown.enter)="focusNext(prefijo, descripcionSerie)" class="validate" />
             <label for="Prefijo">Prefijo del Código de Barras</label>
             <div *ngIf="fGroupSerie.get('Prefijo')?.invalid && fGroupSerie.get('Prefijo')?.touched"
               class="error-message">
@@ -199,8 +201,8 @@
 
           <div class="input col s12 m3 l3">
             <input formControlName="Categoria" id="Categoria" appSearchSelect [opciones]="categoriasComunes"
-              [permitirPersonalizado]="true" #categoriaSerie
-              (keydown.enter)="focusNext(categoriaSerie, tallaInicialSerie)" type="text" class="validate" />
+              [permitirPersonalizado]="true" #categoriaSerie (keydown.enter)="focusNext(categoriaSerie, generoSerie)"
+              type="text" class="validate" />
             <label for="Categoria">Categoría</label>
             <div *ngIf="ObtenerFormGroupSerie['Categoria'].invalid && ObtenerFormGroupSerie['Categoria'].touched"
               class="error-message">
@@ -209,10 +211,12 @@
           </div>
 
           <div class="input col s12 m3 l3">
-            <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #genero (keydown.enter)="focusNext(genero, tallaInicialSerie)" type="text" class="validate" />
-            <label for="Genero">Publico</label>
-            <div *ngIf="ObtenerFormGroup['Genero'].invalid && ObtenerFormGroup['Genero'].touched" class="error-message">
-              <small>El género es obligatorio.</small>
+            <input formControlName="Genero" id="Genero" appSearchSelect [opciones]="generos" #generoSerie
+              (keydown.enter)="focusNext(generoSerie, tallaInicialSerie)" type="text" class="validate" />
+            <label for="Genero">Público</label>
+            <div *ngIf="ObtenerFormGroupSerie['Genero'].invalid && ObtenerFormGroupSerie['Genero'].touched"
+              class="error-message">
+              <small>El público es obligatorio.</small>
             </div>
           </div>
 

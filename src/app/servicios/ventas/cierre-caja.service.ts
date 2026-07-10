@@ -47,4 +47,11 @@ export class CierreCajaService {
   ObtenerCierreCajaPorFechaEfectivo(fecha: string): Observable<EfectivoEnCajaModel> {
     return this.http.get<EfectivoEnCajaModel>(`${this.urlBase}cierre-caja/efectivo/fecha/${fecha}`);
   }
+
+  /**
+   * Dispara la impresión de la tirilla de cierre de caja en la impresora conectada al servidor.
+   */
+  ImprimirCierreCajaServidor(id: number): Observable<any> {
+    return this.http.post<any>(`${this.urlBase}cierre-caja/${id}/imprimir-servidor`, {});
+  }
 }

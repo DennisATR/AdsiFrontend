@@ -35,6 +35,7 @@ export class EditarCreditoComponent implements OnInit {
   ConstruirFormulario() {
     this.fgPago = this.fb.group({
       montoPago: ['', [Validators.required, Validators.min(0)]],
+      montoRecibido: ['', [Validators.min(0)]],
       metodoPagoId: ['', [Validators.required]],
       MetodoPagoNombre: ['', [Validators.required]]
     });
@@ -53,16 +54,27 @@ export class EditarCreditoComponent implements OnInit {
 
     const montoPago = this.fgPago.get('montoPago')?.value;
     const metodoPagoId = this.fgPago.get('metodoPagoId')?.value;
+    let montoRecibido = this.fgPago.get('montoRecibido')?.value;
 
     if (montoPago > (this.creditoSeleccionado.saldo || 0)) {
       alert("El monto del pago no puede ser mayor al saldo pendiente");
       return;
     }
 
+    if (montoRecibido === null || montoRecibido === undefined || montoRecibido === '' || montoRecibido === 0) {
+      montoRecibido = montoPago;
+    }
+
+    if (montoRecibido < montoPago) {
+      alert("El monto recibido no puede ser menor al monto a pagar");
+      return;
+    }
+
     const datoPago = {
       facturaId: this.creditoSeleccionado.facturaId,
       metodoPagoId: parseInt(metodoPagoId, 10),
-      Monto: montoPago
+      Monto: parseFloat(montoPago),
+      MontoRecibido: parseFloat(montoRecibido)
     };
 
     this.servicioPago.RegistrarPagoFactura(datoPago).subscribe({
@@ -102,7 +114,31 @@ export class EditarCreditoComponent implements OnInit {
     }
   }
 
+  onMontoPagoClick() {
+    if (this.creditoSeleccionado && this.creditoSeleccionado.saldo) {
+      const currentVal = this.fgPago.get('montoPago')?.value;
+      if (!currentVal || currentVal === 0) {
+        this.fgPago.get('montoPago')?.setValue(this.creditoSeleccionado.saldo);
+        
+        const currentRecibido = this.fgPago.get('montoRecibido')?.value;
+        if (!currentRecibido || currentRecibido === 0) {
+          this.fgPago.get('montoRecibido')?.setValue(this.creditoSeleccionado.saldo);
+        }
+      }
+    }
+  }
+
+  calcularCambio(): number {
+    const montoPago = this.fgPago.get('montoPago')?.value || 0;
+    const montoRecibido = this.fgPago.get('montoRecibido')?.value || 0;
+    if (montoRecibido > 0 && montoRecibido >= montoPago) {
+      return montoRecibido - montoPago;
+    }
+    return 0;
+  }
+
   // Métodos para validaciones
   get montoPago() { return this.fgPago.get('montoPago'); }
+  get montoRecibido() { return this.fgPago.get('montoRecibido'); }
   get metodoPago() { return this.fgPago.get('metodoPagoId'); }
 }

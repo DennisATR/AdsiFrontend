@@ -121,3 +121,152 @@
 .search-select-input.ng-valid.ng-touched {
   border-color: #10b981;
 }
+
+/* ============================================================
+   SweetAlert2 — Estilos personalizados con colores del programa
+   ============================================================ */
+
+/* Fondo con blur */
+.swal2-container.swal2-center {
+  background: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+/* Tarjeta del popup */
+.swal2-popup.swal-custom-popup {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1) !important;
+  border-radius: 16px !important;
+  padding: 32px 24px 24px !important;
+  width: 90% !important;
+  max-width: 400px !important;
+  position: relative !important;
+  animation: swalScaleIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+}
+
+@keyframes swalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Icono reducido */
+.swal2-icon {
+  width: 3.25rem !important;
+  height: 3.25rem !important;
+  margin: 0 auto 0.75rem auto !important;
+  border-width: 2px !important;
+}
+
+.swal2-icon .swal2-icon-content {
+  font-size: 1.75rem !important;
+}
+
+/* Título con colores del programa */
+.swal2-title.swal-custom-title {
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  color: #111827 !important;
+  margin: 0 0 10px 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+/* Texto del mensaje */
+.swal2-html-container.swal-custom-content {
+  font-size: 0.9rem !important;
+  color: #4b5563 !important;
+  line-height: 1.5 !important;
+  margin: 0 0 4px 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+/* Contenedor de botones */
+.swal2-actions {
+  display: flex !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+  width: 100% !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+}
+
+/* Base de botones */
+.swal2-styled.swal-custom-confirm,
+.swal2-styled.swal-custom-cancel {
+  flex: 1 !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  box-shadow: none !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Botón cancelar — estilo neutro blanco con borde */
+.swal2-styled.swal-custom-cancel {
+  background: #ffffff !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.swal2-styled.swal-custom-cancel:hover {
+  background: #f3f4f6 !important;
+}
+
+/* Botones de confirmación por tipo */
+.btn-swal-info {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+.btn-swal-info:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4) !important;
+}
+
+.btn-swal-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+.btn-swal-success:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-swal-error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+.btn-swal-error:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4) !important;
+}
+
+.btn-swal-warning {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3) !important;
+}
+.btn-swal-warning:hover {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.4) !important;
+}
+
+
+

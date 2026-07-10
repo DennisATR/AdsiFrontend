@@ -145,7 +145,7 @@
                         <input formControlName="MetodoPagoNombre" id="MetodoPagoNombre" #metodoPagoNombre appSearchSelect
                             [opciones]="metodosPagoNombres" [permitirPersonalizado]="false"
                             (opcionSeleccionada)="onMetodoPagoSeleccionado($event)"
-                            (keydown.enter)="focusNext(metodoPagoNombre, abono)"
+                            (keydown.enter)="focusNext(metodoPagoNombre, montoRecibido)"
                             placeholder="Seleccionar método de pago..." type="text" class="validate" />
                         <div *ngIf="ObtenerFormGroup['metodoPagoId'].invalid && ObtenerFormGroup['metodoPagoId'].touched"
                             class="error-message">
@@ -153,14 +153,21 @@
                         </div>
                     </div>
 
+                    <!-- Monto Recibido -->
+                    <div class="input">
+                        <label for="MontoRecibido">Monto Recibido (Efectivo dado por el cliente)</label>
+                        <input formControlName="MontoRecibido" id="MontoRecibido" appFormatoMiles type="text" class="validate"
+                            placeholder="$0" #montoRecibido (keydown.enter)="focusNext(montoRecibido, abono)" />
+                    </div>
+
                     <!-- Abono -->
                     <div class="input">
-                        <label for="Abono">Abono</label>
+                        <label for="Abono">Valor a Pagar (Abono)</label>
                         <input formControlName="Abono" id="Abono" appFormatoMiles type="text" class="validate"
                             placeholder="$0" #abono (keydown.enter)="agregarPago()" />
                         <div class="abono-info">
                             <small *ngIf="ObtenerFormGroup['tipoVenta'].value === 'contado'">
-                                Abono: Debe ser igual al total o 0 para pago completo
+                                Abono: Debe ser igual al total o 0 para pago completo (se calcula solo si ingresa Monto Recibido)
                             </small>
                             <small *ngIf="ObtenerFormGroup['tipoVenta'].value === 'credito'">
                                 Abono: Puede ser menor - el saldo se registrará como crédito
@@ -213,25 +220,7 @@
                             rows="2"></textarea>
                     </div>
 
-                    <!-- Resumen Final -->
-                    <div class="modal-resumen">
-                        <div class="resumen-item">
-                            <span class="resumen-label">Total de la Venta:</span>
-                            <span class="resumen-valor">{{ totalVenta | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
-                        </div>
-                        <div class="resumen-item">
-                            <span class="resumen-label">Total Pagado:</span>
-                            <span class="resumen-valor" [class.completo]="estaCompletoElPago()">
-                                {{ obtenerTotalPagado() | currency:'COP':'symbol-narrow':'1.0-0' }}
-                            </span>
-                        </div>
-                        <div class="resumen-item saldo">
-                            <span class="resumen-label">Saldo Pendiente:</span>
-                            <span class="resumen-valor" [class.pendiente]="calcularSaldoPendiente() > 0">
-                                {{ calcularSaldoPendiente() | currency:'COP':'symbol-narrow':'1.0-0' }}
-                            </span>
-                        </div>
-                    </div>
+
                 </div>
 
                 <div class="modal-footer">

@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AlertDialogComponent } from './shared/dialog/alert-dialog.component';
 
 
 @NgModule({
@@ -19,13 +20,15 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     EncabezadoComponent,
     InicioComponent,
     RutaNoEncontradaComponent,
-    MenuLateralComponent
+    MenuLateralComponent,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]

@@ -1,25 +1,24 @@
 // Agregar estas importaciones al inicio del archivo
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FacturaService } from '../../../../servicios/ventas/factura.service';
-import { FacturaModel } from '../../../../modelos/factura.model';
-import { ClienteModel } from '../../../../modelos/cliente.model';
-import { VendedorModel } from '../../../../modelos/vendedor.model';
-import { MetodoPagoModel } from '../../../../modelos/metodoPago.model';
-import { ClienteService } from '../../../../servicios/parametros/cliente.service';
-import { VendedorService } from '../../../../servicios/parametros/vendedor.service';
-import { MetodoPagoService } from '../../../../servicios/ventas/metodo-pago.service';
-import { ZapatoService } from '../../../../servicios/parametros/zapato.service';
-import { ZapatoModel } from '../../../../modelos/zapato.model';
-import { VentaModel } from '../../../../modelos/venta.model';
-import { LineaVentaComponent } from '../linea-venta/linea-venta.component';
-import { VentaService } from '../../../../servicios/ventas/venta.service';
-import { InformacionService } from '../../../../servicios/parametros/informacion.service';
-import { AlmacenModel } from '../../../../modelos/almacen.model';
-import { PagoFacturaService } from '../../../../servicios/ventas/pago-factura.service';
-import { CreditoService } from '../../../../servicios/ventas/credito.service';
-import { CreditoModel } from '../../../../modelos/credito.model';
-import { PrintService } from '../../../../servicios/ventas/print.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AlmacenModel} from '../../../../modelos/almacen.model';
+import {ClienteModel} from '../../../../modelos/cliente.model';
+import {MetodoPagoModel} from '../../../../modelos/metodoPago.model';
+import {VendedorModel} from '../../../../modelos/vendedor.model';
+import {VentaModel} from '../../../../modelos/venta.model';
+import {ZapatoModel} from '../../../../modelos/zapato.model';
+import {ClienteService} from '../../../../servicios/parametros/cliente.service';
+import {InformacionService} from '../../../../servicios/parametros/informacion.service';
+import {VendedorService} from '../../../../servicios/parametros/vendedor.service';
+import {ZapatoService} from '../../../../servicios/parametros/zapato.service';
+import {CreditoService} from '../../../../servicios/ventas/credito.service';
+import {FacturaService} from '../../../../servicios/ventas/factura.service';
+import {MetodoPagoService} from '../../../../servicios/ventas/metodo-pago.service';
+import {PagoFacturaService} from '../../../../servicios/ventas/pago-factura.service';
+import {PrintService} from '../../../../servicios/ventas/print.service';
+import {VentaService} from '../../../../servicios/ventas/venta.service';
+import {LineaVentaComponent} from '../linea-venta/linea-venta.component';
+import {DialogService} from '../../../../servicios/dialog.service';
 
 @Component({
   selector: 'app-crear-factura',
@@ -43,13 +42,13 @@ export class CrearFacturaComponent implements OnInit {
   almacenes: AlmacenModel[] = [];
   mostrarModalFinalizar: boolean = false;
   totalVenta: number = 0;
-  
+
   // Múltiples pagos
-  pagosAplicados: Array<{metodoPagoId: number, monto: number}> = [];
+  pagosAplicados: Array<{metodoPagoId: number, monto: number, montoRecibido: number}> = [];
   metodoPagoActualNombre: string = '';
   abonoActual: number = 0;
   permitirMultiplesPagos: boolean = true;
-  lugarImpresion: string = 'servidor';
+  lugarImpresion: string = 'cliente';
 
   constructor(
     private fb: FormBuilder,
@@ -62,7 +61,8 @@ export class CrearFacturaComponent implements OnInit {
     private servicioInformacion: InformacionService,
     private servicioPagoFactura: PagoFacturaService,
     private servicioCredito: CreditoService,
-    private printService: PrintService
+    private printService: PrintService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -85,6 +85,7 @@ export class CrearFacturaComponent implements OnInit {
       tipoVenta: ['contado', [Validators.required]],
       TipoVentaNombre: ['Contado', [Validators.required]],
       Abono: [0, [Validators.min(0)]],
+      MontoRecibido: [0, [Validators.min(0)]],
       Nota: [''],
       ClienteNombre: ['', Validators.required],
       VendedorNombre: ['', Validators.required],
@@ -152,8 +153,8 @@ export class CrearFacturaComponent implements OnInit {
       this.lineaVentaComponent.actualizarTotal();
     }
 
-    console.log('✅ Producto agregado. Total:', this.totalFactura);
-    console.log('📦 Líneas actuales:', this.lineasVenta);
+    console.log('Producto agregado. Total:', this.totalFactura);
+    console.log('Lineas actuales:', this.lineasVenta);
 
     this.limpiarCamposProducto();
   }
@@ -193,13 +194,15 @@ export class CrearFacturaComponent implements OnInit {
     this.pagosAplicados = [];
     this.metodoPagoActualNombre = '';
     this.abonoActual = 0;
-    this.fGroup.patchValue({ Abono: 0 });
+    this.fGroup.patchValue({Abono: 0, MontoRecibido: 0});
   }
 
   cancelarFactura(): void {
-    if (confirm('¿Está seguro que desea cancelar? Se perderán todos los datos no guardados.')) {
-      this.limpiarFormulario();
-    }
+    this.dialogService.confirmar('Está seguro que desea cancelar? Se perderán todos los datos no guardados.').then(confirmed => {
+      if (confirmed) {
+        this.limpiarFormulario();
+      }
+    });
   }
 
   obtenerClientes() {
@@ -343,18 +346,18 @@ export class CrearFacturaComponent implements OnInit {
   onTipoVentaSeleccionado(tipo: string): void {
     const tipoVentaValor = tipo.toLowerCase() === 'contado' ? 'contado' : 'credito';
     this.fGroup.get('tipoVenta')?.setValue(tipoVentaValor);
-    
+
     // Limpiar pagos aplicados y configurar si se permiten múltiples pagos
     this.pagosAplicados = [];
     this.permitirMultiplesPagos = tipoVentaValor === 'contado';
-    
+
     // Limpiar campos de pago
     this.fGroup.patchValue({
       MetodoPagoNombre: '',
       metodoPagoId: '',
       Abono: 0
     });
-    
+
     console.log(`💳 Tipo de venta seleccionado: ${tipoVentaValor}, permitirMultiplesPagos: ${this.permitirMultiplesPagos}`);
   }
 
@@ -391,6 +394,7 @@ export class CrearFacturaComponent implements OnInit {
       MetodoPagoNombre: '',
       metodoPagoId: '',
       Abono: 0,
+      MontoRecibido: 0,
       Nota: ''
     });
   }
@@ -421,34 +425,49 @@ export class CrearFacturaComponent implements OnInit {
       abono = parseFloat(abonoStr) || 0;
     }
 
+    let montoRecibidoValue = this.fGroup.get('MontoRecibido')?.value || 0;
+    let montoRecibido = 0;
+    if (montoRecibidoValue) {
+      const mrStr = montoRecibidoValue.toString().replace(/\./g, '');
+      montoRecibido = parseFloat(mrStr) || 0;
+    }
+
+    const saldoPendiente = this.calcularSaldoPendiente();
+
+    // Si no ingresaron abono, asumimos que es el saldo pendiente (si el monto recibido alcanza)
+    if (abono === 0 && montoRecibido > 0) {
+      abono = Math.min(montoRecibido, saldoPendiente);
+    }
+
     if (abono <= 0) {
       alert('El monto del pago debe ser mayor a 0.');
       return;
     }
 
-    const saldoPendiente = this.calcularSaldoPendiente();
     if (abono > saldoPendiente) {
       alert(`El pago no puede exceder el saldo pendiente de $${saldoPendiente}`);
       return;
     }
 
     const metodoPagoId = parseInt(this.fGroup.get('metodoPagoId')?.value);
-    
+
     // Agregar el pago al array
     this.pagosAplicados.push({
       metodoPagoId: metodoPagoId,
-      monto: abono
+      monto: abono,
+      montoRecibido: montoRecibido > 0 ? montoRecibido : abono
     });
 
-    console.log('✅ Pago agregado:', {metodoPagoId, monto: abono});
-    console.log('📋 Pagos aplicados:', this.pagosAplicados);
+    console.log('Pago agregado:', {metodoPagoId, monto: abono, montoRecibido});
+    console.log('Pagos aplicados:', this.pagosAplicados);
 
     // Limpiar campos para un nuevo pago (solo en contado)
     if (this.permitirMultiplesPagos) {
       this.fGroup.patchValue({
         MetodoPagoNombre: '',
         metodoPagoId: '',
-        Abono: 0
+        Abono: 0,
+        MontoRecibido: 0
       });
     }
   }
@@ -471,9 +490,35 @@ export class CrearFacturaComponent implements OnInit {
     return this.obtenerTotalPagado() === this.totalVenta;
   }
 
+  calcularCambio(): number {
+    let montoRecibidoValue = this.fGroup.get('MontoRecibido')?.value || 0;
+    let montoRecibido = 0;
+    if (montoRecibidoValue) {
+      const mrStr = montoRecibidoValue.toString().replace(/\./g, '');
+      montoRecibido = parseFloat(mrStr) || 0;
+    }
+
+    let abonoValue = this.fGroup.get('Abono')?.value || 0;
+    let abono = 0;
+    if (abonoValue) {
+      const abonoStr = abonoValue.toString().replace(/\./g, '');
+      abono = parseFloat(abonoStr) || 0;
+    }
+
+    const saldoPendiente = this.calcularSaldoPendiente();
+    if (abono === 0 && montoRecibido > 0) {
+      abono = Math.min(montoRecibido, saldoPendiente);
+    }
+
+    if (montoRecibido > 0 && montoRecibido >= abono) {
+      return montoRecibido - abono;
+    }
+    return 0;
+  }
+
   puedeContinuar(): boolean {
     const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
-    
+
     // Necesita método de pago seleccionado
     if (!this.fGroup.get('metodoPagoId')?.valid) {
       return false;
@@ -482,10 +527,21 @@ export class CrearFacturaComponent implements OnInit {
     // Obtener el abono ingresado
     const abonoValue = this.fGroup.get('Abono')?.value || 0;
     let abono = 0;
-    
+
     if (abonoValue) {
       const abonoStr = abonoValue.toString().replace(/\./g, '');
       abono = parseFloat(abonoStr) || 0;
+    }
+
+    const montoRecibidoValue = this.fGroup.get('MontoRecibido')?.value || 0;
+    let montoRecibido = 0;
+    if (montoRecibidoValue) {
+      const mrStr = montoRecibidoValue.toString().replace(/\./g, '');
+      montoRecibido = parseFloat(mrStr) || 0;
+    }
+
+    if (abono === 0 && montoRecibido > 0) {
+      abono = Math.min(montoRecibido, this.calcularSaldoPendiente());
     }
 
     if (tipoVenta === 'contado') {
@@ -504,7 +560,7 @@ export class CrearFacturaComponent implements OnInit {
 
   confirmarVenta(): void {
     const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
-    
+
     // Si no hay pagos registrados, verifica si hay un abono manual
     if (this.pagosAplicados.length === 0) {
       if (this.fGroup.get('metodoPagoId')?.invalid) {
@@ -515,10 +571,21 @@ export class CrearFacturaComponent implements OnInit {
       // Obtener el abono ingresado manualmente
       const abonoValue = this.fGroup.get('Abono')?.value || 0;
       let abono = 0;
-      
+
       if (abonoValue) {
         const abonoStr = abonoValue.toString().replace(/\./g, '');
         abono = parseFloat(abonoStr) || 0;
+      }
+
+      const montoRecibidoValue = this.fGroup.get('MontoRecibido')?.value || 0;
+      let montoRecibido = 0;
+      if (montoRecibidoValue) {
+        const mrStr = montoRecibidoValue.toString().replace(/\./g, '');
+        montoRecibido = parseFloat(mrStr) || 0;
+      }
+
+      if (abono === 0 && montoRecibido > 0) {
+        abono = Math.min(montoRecibido, this.totalVenta);
       }
 
       // Validaciones según tipo de venta
@@ -528,21 +595,22 @@ export class CrearFacturaComponent implements OnInit {
           alert(`El abono ingresado ($${abono}) no es exacto al total ($${this.totalVenta}).`);
           return;
         }
-        
+
         // Crear un pago único con el total de la venta
         const metodoPagoId = parseInt(this.fGroup.get('metodoPagoId')?.value);
         this.pagosAplicados.push({
           metodoPagoId: metodoPagoId,
-          monto: this.totalVenta
+          monto: this.totalVenta,
+          montoRecibido: montoRecibido > 0 ? montoRecibido : this.totalVenta
         });
-        console.log('✅ Pago único registrado automáticamente:', this.pagosAplicados);
+        console.log('Pago unico registrado automaticamente:', this.pagosAplicados);
       } else if (tipoVenta === 'credito') {
         // Para CRÉDITO: el abono puede ser menor que el total
         if (abono < 0) {
           alert('El abono no puede ser negativo.');
           return;
         }
-        
+
         if (abono > this.totalVenta) {
           alert(`El abono ($${abono}) no puede ser mayor al total ($${this.totalVenta}).`);
           return;
@@ -553,9 +621,10 @@ export class CrearFacturaComponent implements OnInit {
           const metodoPagoId = parseInt(this.fGroup.get('metodoPagoId')?.value);
           this.pagosAplicados.push({
             metodoPagoId: metodoPagoId,
-            monto: abono
+            monto: abono,
+            montoRecibido: montoRecibido > 0 ? montoRecibido : abono
           });
-          console.log('✅ Pago inicial registrado para crédito:', this.pagosAplicados);
+          console.log('Pago inicial registrado para credito:', this.pagosAplicados);
         }
       }
     }
@@ -613,12 +682,12 @@ export class CrearFacturaComponent implements OnInit {
       Total: totalFactura
     };
 
-    console.log("📄 Datos de la factura a registrar:", datosFactura);
+    console.log("Datos de la factura a registrar:", datosFactura);
 
     // Paso 1: Registrar la factura
     this.servicioFactura.RegistrarFactura(datosFactura).subscribe({
       next: (respuestaFactura: any) => {
-        console.log("✅ Factura registrada:", respuestaFactura);
+        console.log("Factura registrada:", respuestaFactura);
         const facturaId = respuestaFactura.id;
 
         // Paso 2: Registrar cada línea de venta
@@ -630,7 +699,7 @@ export class CrearFacturaComponent implements OnInit {
         } else {
           alert('Ocurrió un error al registrar la factura.');
         }
-        console.error('❌ Error al registrar factura:', err);
+        console.error('Error al registrar factura:', err);
       }
     });
   }
@@ -639,7 +708,7 @@ export class CrearFacturaComponent implements OnInit {
     let ventasRegistradas = 0;
     let erroresEncontrados = false;
 
-    console.log(`📦 Registrando ${this.lineasVenta.length} líneas de venta...`);
+    console.log(`Registrando ${this.lineasVenta.length} lineas de venta...`);
 
     // Iterar sobre cada línea de venta
     this.lineasVenta.forEach((linea, index) => {
@@ -654,7 +723,7 @@ export class CrearFacturaComponent implements OnInit {
       this.servicioVenta.RegistrarVenta(ventaData, this.lugarImpresion).subscribe({
         next: (respuestaVenta: VentaModel) => {
           ventasRegistradas++;
-          console.log(`✅ Línea ${index + 1} registrada:`, respuestaVenta);
+          console.log(`Linea ${index + 1} registrada:`, respuestaVenta);
 
           // Si todas las ventas se registraron correctamente
           if (ventasRegistradas === this.lineasVenta.length && !erroresEncontrados) {
@@ -664,8 +733,8 @@ export class CrearFacturaComponent implements OnInit {
         },
         error: (err: any) => {
           erroresEncontrados = true;
-          console.error(`❌ Error al registrar línea ${index + 1}:`, err);
-          
+          console.error(`Error al registrar linea ${index + 1}:`, err);
+
           // Mostrar error solo una vez
           if (ventasRegistradas + 1 === this.lineasVenta.length) {
             alert('La factura se creó pero hubo errores al registrar algunas líneas de venta. Por favor verifique.');
@@ -676,8 +745,8 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   registrarMultiplesPagos(facturaId: number) {
-    console.log(`💳 Registrando ${this.pagosAplicados.length} pagos...`);
-    
+    console.log(`Registrando ${this.pagosAplicados.length} pagos...`);
+
     let pagosRegistrados = 0;
     let erroresEncontrados = false;
 
@@ -691,15 +760,16 @@ export class CrearFacturaComponent implements OnInit {
       const datoPago = {
         facturaId: facturaId,
         metodoPagoId: pago.metodoPagoId,
-        Monto: pago.monto
+        Monto: pago.monto,
+        MontoRecibido: pago.montoRecibido
       };
 
-      console.log(`💳 Registrando pago ${index + 1}:`, datoPago);
+      console.log(`Registrando pago ${index + 1}:`, datoPago);
 
       this.servicioPagoFactura.RegistrarPagoFactura(datoPago).subscribe({
         next: (respuestaPago: any) => {
           pagosRegistrados++;
-          console.log(`✅ Pago ${index + 1} registrado:`, respuestaPago);
+          console.log(`Pago ${index + 1} registrado:`, respuestaPago);
 
           // Si todos los pagos se registraron correctamente
           if (pagosRegistrados === this.pagosAplicados.length && !erroresEncontrados) {
@@ -709,7 +779,7 @@ export class CrearFacturaComponent implements OnInit {
         },
         error: (err: any) => {
           erroresEncontrados = true;
-          console.error(`❌ Error al registrar pago ${index + 1}:`, err);
+          console.error(`Error al registrar pago ${index + 1}:`, err);
           alert(`La factura y líneas se crearon pero hubo error al registrar el pago ${index + 1}. Por favor registre los pagos manualmente.`);
           this.cerrarModal();
           this.limpiarFormulario();
@@ -732,29 +802,37 @@ export class CrearFacturaComponent implements OnInit {
           Estado: 'Pendiente'
         };
 
-        console.log(`💰 Registrando crédito:`, datosCredito);
+        console.log(`Registrando credito:`, datosCredito);
 
         this.servicioCredito.RegistrarCredito(datosCredito).subscribe({
           next: (respuestaCredito: any) => {
-            console.log(`✅ Crédito registrado:`, respuestaCredito);
-            alert('✅ Factura, líneas, pagos y crédito registrados correctamente');
-            this.procesarImpresionLocalSiEsNecesario(facturaId);
+            console.log(`Credito registrado:`, respuestaCredito);
+            const cambio = this.calcularTotalCambio();
+            this.dialogService.mostrar('Venta registrada con éxito.', 'success', cambio).then(() => {
+              this.procesarImpresionLocalSiEsNecesario(facturaId);
+            });
           },
           error: (err: any) => {
-            console.error(`❌ Error al registrar crédito:`, err);
-            alert('✅ Factura, líneas y pagos registrados. ⚠️ Error al registrar el crédito. Por favor registre manualmente.');
-            this.procesarImpresionLocalSiEsNecesario(facturaId);
+            console.error(`Error al registrar credito:`, err);
+            const cambio = this.calcularTotalCambio();
+            this.dialogService.mostrar('Venta registrada. Error al registrar el crédito, por favor regístrelo manualmente.', 'warning', cambio).then(() => {
+              this.procesarImpresionLocalSiEsNecesario(facturaId);
+            });
           }
         });
       } else {
         // No hay saldo pendiente
-        alert('✅ Factura, líneas de venta y todos los pagos registrados correctamente');
-        this.procesarImpresionLocalSiEsNecesario(facturaId);
+        const cambio = this.calcularTotalCambio();
+        this.dialogService.mostrar('Venta registrada con éxito.', 'success', cambio).then(() => {
+          this.procesarImpresionLocalSiEsNecesario(facturaId);
+        });
       }
     } else {
       // Es CONTADO
-      alert('✅ Factura, líneas de venta y todos los pagos registrados correctamente');
-      this.procesarImpresionLocalSiEsNecesario(facturaId);
+      const cambio = this.calcularTotalCambio();
+      this.dialogService.mostrar('Venta registrada con éxito.', 'success', cambio).then(() => {
+        this.procesarImpresionLocalSiEsNecesario(facturaId);
+      });
     }
   }
 
@@ -763,15 +841,41 @@ export class CrearFacturaComponent implements OnInit {
       this.printService.obtenerBufferFactura(facturaId).subscribe({
         next: (res) => {
           this.printService.imprimirLocal(res.buffer).subscribe({
-            next: () => console.log('Impresión enviada al agente local'),
-            error: (err) => alert('No se pudo comunicar con el agente de impresión local. Asegúrate de que el script se está ejecutando.')
+            next: () => {
+              console.log('Impresión enviada al agente local');
+              this.cerrarModal();
+              this.limpiarFormulario();
+            },
+            error: (err) => {
+              this.dialogService.mostrar(
+                'No se pudo comunicar con el agente de impresión local. Asegúrate de que el script se está ejecutando.',
+                'error'
+              );
+              // No se cierra la sesión para que el usuario pueda reintentar
+            }
           });
         },
-        error: (err) => console.error('Error al obtener buffer:', err)
+        error: (err) => {
+          console.error('Error al obtener buffer:', err);
+          this.dialogService.mostrar('Error al obtener los datos de impresión.', 'error');
+          // No se cierra la sesión para que el usuario pueda reintentar
+        }
+      });
+    } else {
+      // Impresión en servidor: se llama AQUÍ, después de que todos los pagos ya están en BD
+      this.servicioFactura.ImprimirFacturaServidor(facturaId).subscribe({
+        next: () => {
+          console.log('Impresion enviada al servidor');
+          this.cerrarModal();
+          this.limpiarFormulario();
+        },
+        error: (err) => {
+          console.error('Error al imprimir en servidor:', err);
+          this.dialogService.mostrar('Error al imprimir en el servidor. La venta quedó registrada.', 'error');
+          // No se cierra la sesión para que el usuario pueda reintentar
+        }
       });
     }
-    this.cerrarModal();
-    this.limpiarFormulario();
   }
 
   registrarPagoFactura(facturaId: number, metodoPagoId: number, monto: number) {
@@ -781,21 +885,38 @@ export class CrearFacturaComponent implements OnInit {
       Monto: monto
     };
 
-    console.log("💳 Registrando pago:", datoPago);
+    console.log("Registrando pago:", datoPago);
 
     this.servicioPagoFactura.RegistrarPagoFactura(datoPago).subscribe({
       next: (respuestaPago: any) => {
-        console.log("✅ Pago registrado:", respuestaPago);
-        alert('Factura, líneas de venta y pago registrados correctamente');
-        this.cerrarModal();
-        this.limpiarFormulario();
+        console.log("Pago registrado:", respuestaPago);
+        this.dialogService.mostrar('Venta registrada con éxito', 'success').then(() => {
+          this.cerrarModal();
+          this.limpiarFormulario();
+        });
       },
       error: (err: any) => {
-        console.error('❌ Error al registrar pago:', err);
-        alert('La factura y líneas se crearon pero hubo error al registrar el pago. Por favor registre el pago manualmente.');
-        this.cerrarModal();
-        this.limpiarFormulario();
+        console.error('Error al registrar pago:', err);
+        this.dialogService.mostrar('Venta registrada, pero ocurrió un error al registrar el pago. Por favor regístrelo manualmente.', 'error').then(() => {
+          this.cerrarModal();
+          this.limpiarFormulario();
+        });
       }
+    });
+  }
+
+  calcularTotalCambio(): number {
+    return this.pagosAplicados.reduce((sum, pago) => {
+      const cambioPago = (pago.montoRecibido || 0) - (pago.monto || 0);
+      return sum + (cambioPago > 0 ? cambioPago : 0);
+    }, 0);
+  }
+
+  formatearMoneda(valor: number): string {
+    return valor.toLocaleString('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      maximumFractionDigits: 0
     });
   }
 

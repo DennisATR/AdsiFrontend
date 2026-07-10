@@ -13,10 +13,17 @@ export class PrintService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Obtiene el buffer ESC/POS en formato base64 desde el backend.
+   * Obtiene el buffer ESC/POS de una factura en formato base64 desde el backend.
    */
   obtenerBufferFactura(facturaId: number): Observable<{buffer: string}> {
     return this.http.get<{buffer: string}>(`${this.urlBase}factura/${facturaId}/imprimir`);
+  }
+
+  /**
+   * Obtiene el buffer ESC/POS de la tirilla de cierre de caja en formato base64 desde el backend.
+   */
+  obtenerBufferCierreCaja(cierreCajaId: number): Observable<{buffer: string}> {
+    return this.http.get<{buffer: string}>(`${this.urlBase}cierre-caja/${cierreCajaId}/imprimir`);
   }
 
   /**

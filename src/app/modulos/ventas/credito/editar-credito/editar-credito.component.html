@@ -51,11 +51,29 @@
           <label for="montoPago">Monto a Pagar</label>
           <input formControlName="montoPago" id="montoPago" type="number" 
                  placeholder="Ingrese el monto" step="0.01" class="validate"
-                 [class.error]="montoPago?.invalid && montoPago?.touched" />
+                 [class.error]="montoPago?.invalid && montoPago?.touched"
+                 (click)="onMontoPagoClick()" />
           <div *ngIf="montoPago?.invalid && montoPago?.touched" class="error-message">
             <small *ngIf="montoPago?.errors?.['required']">El monto es obligatorio</small>
             <small *ngIf="montoPago?.errors?.['min']">El monto debe ser mayor a 0</small>
           </div>
+        </div>
+
+        <div class="input">
+          <label for="montoRecibido">Monto Recibido (Efectivo dado por el cliente)</label>
+          <input formControlName="montoRecibido" id="montoRecibido" type="number" 
+                 placeholder="Ingrese el monto recibido" step="0.01" class="validate"
+                 [class.error]="montoRecibido?.invalid && montoRecibido?.touched" />
+          <div *ngIf="montoRecibido?.invalid && montoRecibido?.touched" class="error-message">
+            <small *ngIf="montoRecibido?.errors?.['min']">El monto recibido debe ser mayor a 0</small>
+          </div>
+        </div>
+
+        <!-- Cambio -->
+        <div class="input" *ngIf="calcularCambio() > 0" style="margin-top: 10px;">
+          <label>Cambio a Devolver</label>
+          <input type="text" class="validate" disabled [value]="calcularCambio() | currency:'COP':'symbol-narrow':'1.0-0'" 
+                 style="color: #2e7d32; font-weight: bold; font-size: 1.1em; background-color: #e8f5e9; border: 1px solid #4caf50; width: 100%; box-sizing: border-box;" />
         </div>
 
         <div class="input">
@@ -74,7 +92,7 @@
 
     <div class="modal-footer">
       <button type="button" (click)="RegistrarPago()" class="btn-submit">
-        ✓ Registrar Pago
+        Registrar Pago
       </button>
       <button type="button" (click)="CerrarModal()" class="btn-cancel">
         Cancelar

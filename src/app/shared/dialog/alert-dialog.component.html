@@ -1,0 +1,47 @@
+<div class="adsi-overlay" [class.visible]="visible" (click)="dismiss()">
+  <div class="adsi-card" [class.visible]="visible" (click)="$event.stopPropagation()">
+
+    <!-- Icono -->
+    <div class="adsi-icon-wrap" [ngClass]="type">
+      <!-- Success -->
+      <svg *ngIf="type === 'success'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+      <!-- Error -->
+      <svg *ngIf="type === 'error'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+      <!-- Warning -->
+      <svg *ngIf="type === 'warning'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <!-- Info -->
+      <svg *ngIf="type === 'info'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+    </div>
+
+    <!-- Contenido -->
+    <div class="adsi-content">
+      <h3>{{ title }}</h3>
+      <p>{{ message }}</p>
+
+      <!-- Tarjeta nativa para mostrar el vuelto de forma segura -->
+      <div *ngIf="cambio > 0" class="adsi-cambio-card">
+        <div class="adsi-cambio-label">Cambio a devolver:</div>
+        <div class="adsi-cambio-value">{{ cambio | currency:'COP':'symbol-narrow':'1.0-0' }}</div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="adsi-actions">
+      <button *ngIf="isConfirm" class="adsi-btn adsi-btn-cancel" (click)="dismiss()">
+        Cancelar
+      </button>
+      <button class="adsi-btn adsi-btn-confirm" [ngClass]="type" (click)="accept()">
+        {{ isConfirm ? 'Confirmar' : 'Aceptar' }}
+      </button>
+    </div>
+
+  </div>
+</div>

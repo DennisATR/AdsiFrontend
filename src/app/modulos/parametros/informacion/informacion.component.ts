@@ -6,6 +6,7 @@ import { AlmacenModel } from '../../../modelos/almacen.model';
 import { MetodoPagoModel } from '../../../modelos/metodoPago.model';
 import { InformacionService } from '../../../servicios/parametros/informacion.service';
 import { MetodoPagoService } from '../../../servicios/ventas/metodo-pago.service';
+import { DialogService } from '../../../servicios/dialog.service';
 
 @Component({
   selector: 'app-informacion',
@@ -32,7 +33,8 @@ export class InformacionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private servicioInformacion: InformacionService,
-    private servicioMetodoPago: MetodoPagoService
+    private servicioMetodoPago: MetodoPagoService,
+    private dialogService: DialogService
   ) {}
 
   // ─── INIT ──────────────────────────────────────────────────────────────────
@@ -53,7 +55,7 @@ export class InformacionComponent implements OnInit {
     this.servicioInformacion.ObtenerAlmacenes().subscribe({
       next: almacenes => {
         this.almacenes = almacenes ?? [];
-        this.CargarInformacion(); // ⚠️ depende de almacenes
+        this.CargarInformacion(); // depende de almacenes
       },
       error: err => console.error('Error cargando almacenes:', err)
     });
@@ -180,14 +182,16 @@ export class InformacionComponent implements OnInit {
   }
 
   EliminarAlmacen(id: number) {
-    if (!confirm('¿Está seguro de eliminar este almacén?')) return;
-
-    this.servicioInformacion.EliminarAlmacen(id).subscribe({
-      next: () => {
-        this.almacenes = this.almacenes.filter(a => a.id !== id);
-        this.RefrescarTodo();
-      },
-      error: err => this.manejarError(err)
+    this.dialogService.confirmar('Está seguro de eliminar este almacén? Esta acción no se puede deshacer.').then(confirmed => {
+      if (confirmed) {
+        this.servicioInformacion.EliminarAlmacen(id).subscribe({
+          next: () => {
+            this.almacenes = this.almacenes.filter(a => a.id !== id);
+            this.RefrescarTodo();
+          },
+          error: err => this.manejarError(err)
+        });
+      }
     });
   }
 
@@ -260,13 +264,15 @@ export class InformacionComponent implements OnInit {
   }
 
   EliminarMetodoPago(id: number) {
-    if (!confirm('¿Está seguro de eliminar este método de pago?')) return;
-
-    this.servicioMetodoPago.EliminarMetodoPago(String(id)).subscribe({
-      next: () => {
-        this.metodosPago = this.metodosPago.filter(m => m.id !== id);
-      },
-      error: err => this.manejarError(err)
+    this.dialogService.confirmar('Está seguro de eliminar este método de pago? Esta acción no se puede deshacer.').then(confirmed => {
+      if (confirmed) {
+        this.servicioMetodoPago.EliminarMetodoPago(String(id)).subscribe({
+          next: () => {
+            this.metodosPago = this.metodosPago.filter(m => m.id !== id);
+          },
+          error: err => this.manejarError(err)
+        });
+      }
     });
   }
 

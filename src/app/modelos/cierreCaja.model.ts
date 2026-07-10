@@ -9,4 +9,6 @@ export class CierreCajaModel {
     Estado?: string;
     Caja?: number;
     Entrega?: number;
+    FechaHoraApertura?: string;
+    FechaHoraCierre?: string;
   }

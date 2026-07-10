@@ -130,8 +130,14 @@ export class CrearZapatoComponent implements OnInit {
 
   RegistrarZapato() {
     let campos = this.ObtenerFormGroup;
-    let datos = {
-      id: campos['CodigoBarra'].value,
+
+    // Obtener el valor del CodigoBarra usando getRawValue para acceder
+    // al control aunque esté deshabilitado
+    const codigoBarra: string | null = this.fGroup.getRawValue()['CodigoBarra'];
+
+    // Si CodigoBarra no tiene valor, no incluir 'id' en el payload
+    // para evitar el error VALIDATION_FAILED (must be string) del backend
+    let datos: any = {
       Descripcion: campos['Descripcion'].value,
       Categoria: campos['Categoria'].value,
       Talla: campos['Talla'].value,
@@ -143,6 +149,10 @@ export class CrearZapatoComponent implements OnInit {
       proveedorId: parseInt(campos['proveedorId'].value),
       Genero: campos['Genero'].value,
     };
+
+    if (codigoBarra && codigoBarra.trim() !== '') {
+      datos.id = codigoBarra.trim();
+    }
 
     console.log(datos);
 
@@ -174,8 +184,13 @@ export class CrearZapatoComponent implements OnInit {
     }
 
     let campos = this.ObtenerFormGroupSerie;
-    let datos = {
-      Prefijo: campos['Prefijo'].value,
+    
+    // Obtener el valor del Prefijo usando getRawValue para acceder al control
+    // aunque esté deshabilitado
+    const prefijo: string | null = this.fGroupSerie.getRawValue()['Prefijo'];
+
+    // Construir el payload omitiendo Prefijo si es null/vacío
+    let datos: any = {
       Descripcion: campos['Descripcion'].value,
       Categoria: campos['Categoria'].value,
       Color: campos['Color'].value,
@@ -188,6 +203,10 @@ export class CrearZapatoComponent implements OnInit {
       proveedorId: parseInt(campos['proveedorId'].value),
       Genero: campos['Genero'].value,
     };
+
+    if (prefijo && prefijo.trim() !== '') {
+      datos.Prefijo = prefijo.trim();
+    }
 
     console.log('Datos para serie:', datos);
 

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { ConfiguracionRutasBackend } from '../../config/configuracion.rutas.backend';
-import { catchError, Observable, throwError } from 'rxjs';
-import { FacturaModel } from '../../modelos/factura.model';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {catchError, Observable, throwError} from 'rxjs';
+import {ConfiguracionRutasBackend} from '../../config/configuracion.rutas.backend';
+import {FacturaModel} from '../../modelos/factura.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +39,9 @@ export class FacturaService {
   EditarFactura(id: string, datos: any): Observable<any> {
     return this.http.put<any>(`${this.urlBase}factura/${id}`, datos);
   }
-  
+
+  ImprimirFacturaServidor(id: number): Observable<any> {
+    return this.http.post<any>(`${this.urlBase}factura/${id}/imprimir-servidor`, {});
+  }
+
 }
