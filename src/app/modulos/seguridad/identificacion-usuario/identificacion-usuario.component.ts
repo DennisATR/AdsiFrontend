@@ -14,6 +14,7 @@ import { UsuarioValidadoModel } from '../../../modelos/usuario.validado.model';
 })
 export class IdentificacionUsuarioComponent {
   fGroup: FormGroup = new FormGroup({});
+  mostrarClave: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,31 +35,35 @@ export class IdentificacionUsuarioComponent {
     });
   }
 
-  IdentificarUsuario() {
-  if (this.fGroup.invalid) {
-    alert('Datos incompletos');
-    return;
+  toggleClave() {
+    this.mostrarClave = !this.mostrarClave;
   }
 
-  const usuario = this.obtenerFormGroup['usuario'].value;
-  const clave = this.obtenerFormGroup['clave'].value;
+  IdentificarUsuario() {
+    if (this.fGroup.invalid) {
+      alert('Datos incompletos');
+      return;
+    }
 
-  this.servicioSeguridad.IdentificarUsuario(usuario, clave).subscribe({
-    next: (resp: UsuarioValidadoModel) => {
-      if (resp?.user && resp?.token) {
-        this.servicioSeguridad.AlmacenarDatosUsuarioIdentificado(resp.user);
-        this.servicioSeguridad.AlmacenarDatosUsuarioValidado(resp);
-        this.router.navigate(['/inicio']);
-      } else {
+    const usuario = this.obtenerFormGroup['usuario'].value;
+    const clave = this.obtenerFormGroup['clave'].value;
+
+    this.servicioSeguridad.IdentificarUsuario(usuario, clave).subscribe({
+      next: (resp: UsuarioValidadoModel) => {
+        if (resp?.user && resp?.token) {
+          this.servicioSeguridad.AlmacenarDatosUsuarioIdentificado(resp.user);
+          this.servicioSeguridad.AlmacenarDatosUsuarioValidado(resp);
+          this.router.navigate(['/inicio']);
+        } else {
+          alert('Usuario o clave incorrectos');
+        }
+      },
+      error: (err) => {
+        console.log(err);
         alert('Usuario o clave incorrectos');
       }
-    },
-    error: (err) => {
-      console.log(err);
-      alert('Usuario o clave incorrectos');
-    }
-  });
-}
+    });
+  }
 
   get obtenerFormGroup() {
     return this.fGroup.controls;

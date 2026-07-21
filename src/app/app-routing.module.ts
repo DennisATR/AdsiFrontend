@@ -12,7 +12,7 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/inicio'
+        redirectTo: '/seguridad/identificar-usuario'
     },
     {
         path: 'parametros',
@@ -23,9 +23,9 @@ const routes: Routes = [
         loadChildren: () => import("./modulos/reportes/reportes.module").then(m => m.ReportesModule)
     },
     {
-        path:"seguridad",
+        path: "seguridad",
         loadChildren: () => import("./modulos/seguridad/seguridad.module").then(m => m.SeguridadModule)
-      },
+    },
     {
         path: 'ventas',
         loadChildren: () => import("./modulos/ventas/ventas.module").then(m => m.VentasModule)
@@ -37,7 +37,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

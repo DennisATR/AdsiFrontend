@@ -50,7 +50,7 @@
         <div class="input">
           <label for="montoPago">Monto a Pagar</label>
           <input formControlName="montoPago" id="montoPago" type="number" 
-                 placeholder="Ingrese el monto" step="0.01" class="validate"
+                 placeholder="Ingrese el monto" step="10000" class="validate"
                  [class.error]="montoPago?.invalid && montoPago?.touched"
                  (click)="onMontoPagoClick()" />
           <div *ngIf="montoPago?.invalid && montoPago?.touched" class="error-message">
@@ -62,7 +62,7 @@
         <div class="input">
           <label for="montoRecibido">Monto Recibido (Efectivo dado por el cliente)</label>
           <input formControlName="montoRecibido" id="montoRecibido" type="number" 
-                 placeholder="Ingrese el monto recibido" step="0.01" class="validate"
+                 placeholder="Ingrese el monto recibido" step="10000" class="validate"
                  [class.error]="montoRecibido?.invalid && montoRecibido?.touched" />
           <div *ngIf="montoRecibido?.invalid && montoRecibido?.touched" class="error-message">
             <small *ngIf="montoRecibido?.errors?.['min']">El monto recibido debe ser mayor a 0</small>
