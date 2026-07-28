@@ -6,4 +6,12 @@ export class EfectivoEnCajaModel{
     entrega?: number;
     efectivoEnCaja?: number;
     quedaEnCaja?: number;
+    resumenVentas?: any[];
+    totalVentas?: number;
+    totalZapatosVendidos?: number;
+    resumenMetodoPago?: any[];
+    totalMetodoPago?: number;
+    entregaCierre?: number;
+    detalleGastos?: any[];
+    detalleEntregas?: any[];
 }

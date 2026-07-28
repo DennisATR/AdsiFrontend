@@ -114,6 +114,7 @@ export class SeguridadService {
       item.idMenu = permiso.menuId;
       item.ruta = datosRuta[0].ruta;
       item.texto = datosRuta[0].texto;
+      item.icono = (datosRuta[0] as any).icono;
 
       menu.push(item);
     }

@@ -1,8 +1,8 @@
-export class UsuarioModel{
+export class UsuarioModel {
     id?: number;
     Nombre?: string;
     Telefono?: string;
-    FechaReg?: Date;
+    FechaReg?: string;
     Apellido?: string;
     Clave?: string;
     Correo?: string;

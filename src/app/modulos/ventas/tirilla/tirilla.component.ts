@@ -256,27 +256,28 @@ export class TirillaComponent implements OnInit {
 
     forkJoin({
       informacion: this.informacionService.ObtenerInformacion(),
-      gastos: this.gastoService.BuscarGastosPorFecha(this.fechaConsulta),
-      entregas: this.entregaService.BuscarEntregasPorFecha(this.fechaConsulta),
-      zapatosVendidos: this.ventaService.ObtenerCantidadZapatosVendidosPorFecha(this.fechaConsulta),
-      resumen: this.ventaService.ObtenerResumenDelDia(this.fechaConsulta),
-      resumenGastos: this.gastoService.ObtenerResumenDelDia(this.fechaConsulta),
-      resumenMetodoPago: this.metodoPagoService.ObtenerResumenDelDia(this.fechaConsulta),
       cierreCaja: cierreCaja$,
-      resumenEntregas: this.entregaService.ObtenerResumenDelDia(this.fechaConsulta),
       cierreCajaEfectivo: this.cierreCajaService.ObtenerCierreCajaPorFechaEfectivo(this.fechaConsulta)
     }).subscribe({
-      next: ({ informacion, gastos, entregas, zapatosVendidos, resumen, resumenGastos, resumenMetodoPago, cierreCaja, resumenEntregas, cierreCajaEfectivo }) => {
+      next: ({ informacion, cierreCaja, cierreCajaEfectivo }) => {
         this.infoLocal = informacion?.[0] ?? null;
         this.cierreCajaHoy = cierreCaja;
-        this.resumenDelDiaVentas = resumen ?? [];
-        this.resumenDelDiaGastos = resumenGastos ?? [];
-        this.resumenDelDiaMetodoPago = resumenMetodoPago ?? [];
-        this.resumenDelDiaEntregas = resumenEntregas ?? [];
+        
         this.cierreCajaEfectivo = cierreCajaEfectivo ?? null;
-        this.totalGastosHoy = (gastos ?? []).reduce((total, gasto) => total + (gasto.Valor ?? 0), 0);
-        this.totalEntregasHoy = (entregas ?? []).reduce((total, entrega) => total + (entrega.Cobro ?? 0), 0);
-        this.totalZapatosVendidosHoy = zapatosVendidos?.cantidad ?? 0;
+        this.resumenDelDiaVentas = this.cierreCajaEfectivo?.resumenVentas ?? [];
+        
+        // Ya vienen mapeados correctamente desde el backend con (concepto, cantidad, valor)
+        this.resumenDelDiaGastos = this.cierreCajaEfectivo?.detalleGastos ?? [];
+
+        this.resumenDelDiaMetodoPago = this.cierreCajaEfectivo?.resumenMetodoPago ?? [];
+        
+        // Ya vienen mapeados correctamente desde el backend con (empresa, cantidadCajas, cobro)
+        this.resumenDelDiaEntregas = this.cierreCajaEfectivo?.detalleEntregas ?? [];
+
+        this.totalGastosHoy = this.cierreCajaEfectivo?.gastos ?? 0;
+        this.totalEntregasHoy = this.cierreCajaEfectivo?.entrega ?? 0;
+        this.totalZapatosVendidosHoy = this.cierreCajaEfectivo?.totalZapatosVendidos ?? 0;
+        
         this.cargando = false;
       },
       error: (error: any) => {

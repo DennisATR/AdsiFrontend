@@ -1,11 +1,218 @@
-/* Ocultar items dinámicos en pantallas grandes */
-.menu-dinamico {
-	display: none;
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&family=Montserrat:wght@600;700;900&display=swap');
+
+/* ══════════════════════════════════════
+   Botón hamburguesa (trigger)
+══════════════════════════════════════ */
+.sidenav-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff !important;
+  padding: 4px;
+  margin-left: 10px;
 }
 
-/* Mostrar items dinámicos solo en pantallas pequeñas */
+/* ══════════════════════════════════════
+   Sidenav base
+══════════════════════════════════════ */
+.snav.sidenav {
+  width: 350px;
+  background: #ffffff;
+  border-right: 1px solid #e2eaf6;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Lexend', sans-serif;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Quitar padding/margen por defecto de Materialize en los <li> */
+.snav.sidenav li>a,
+.snav.sidenav li {
+  padding: 0;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   Brand / Nombre del local
+══════════════════════════════════════ */
+.snav-brand-li {
+  list-style: none;
+  padding: 24px 20px 16px !important;
+  border-bottom: 1px solid #e8f0fe;
+}
+
+.snav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.snav-brand-icon {
+  color: #1a1a2e;
+  flex-shrink: 0;
+}
+
+.snav-brand-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #0b1c30;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ══════════════════════════════════════
+   Tarjeta de perfil del usuario
+══════════════════════════════════════ */
+.snav-profile-li {
+  list-style: none;
+  padding: 12px 16px !important;
+}
+
+.snav-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #eff4ff;
+  border: 1px solid #dce9ff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: background 0.2s ease;
+}
+
+.snav-profile-card:hover {
+  background: #e5eeff;
+}
+
+.snav-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #dce9ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #3f5a8a;
+}
+
+.snav-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.snav-username {
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0b1c30;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.snav-role {
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #45464d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+/* ══════════════════════════════════════
+   Etiqueta de sección
+══════════════════════════════════════ */
+.snav-section-label {
+  list-style: none;
+  padding: 12px 20px 4px !important;
+  font-family: 'Lexend', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #76777d;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════
+   Links de navegación
+══════════════════════════════════════ */
+.snav-link {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px !important;
+  margin: 2px 10px !important;
+  border-radius: 8px !important;
+  font-family: 'Lexend', sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #45464d !important;
+  text-decoration: none;
+  transition: background 0.18s ease, color 0.18s ease !important;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.snav-link:hover {
+  background: #dce9ff !important;
+  color: #0b1c30 !important;
+}
+
+.snav-link-icon {
+  flex-shrink: 0;
+  color: inherit;
+  transition: color 0.18s ease;
+  display: flex;
+  align-items: center;
+}
+
+.snav-link-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ══════════════════════════════════════
+   Divider y Cerrar sesión
+══════════════════════════════════════ */
+.snav-footer-divider {
+  list-style: none;
+  height: 1px;
+  background: #e2eaf6;
+  margin: 8px 20px !important;
+  padding: 0 !important;
+}
+
+.snav-link-logout {
+  color: #45464d !important;
+}
+
+.snav-link-logout:hover {
+  background: #ffdad6 !important;
+  color: #ba1a1a !important;
+}
+
+/* ══════════════════════════════════════
+   Menú dinámico (ocultar en escritorio)
+══════════════════════════════════════ */
+.menu-dinamico {
+  display: none;
+}
+
 @media (max-width: 992px) {
-	.menu-dinamico {
-		display: block;
-	}
+  .menu-dinamico {
+    display: block;
+  }
 }
