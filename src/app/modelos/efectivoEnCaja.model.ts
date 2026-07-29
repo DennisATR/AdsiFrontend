@@ -1,4 +1,4 @@
-export class EfectivoEnCajaModel{
+export class EfectivoEnCajaModel {
     fecha?: string;
     ventasEfectivo?: number;
     base?: number;
@@ -14,4 +14,8 @@ export class EfectivoEnCajaModel{
     entregaCierre?: number;
     detalleGastos?: any[];
     detalleEntregas?: any[];
+    TotalReembolsos?: number;
+    devoluciones?: number;
+    credito?: number;
+    abonos?: number;
 }

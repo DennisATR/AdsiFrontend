@@ -76,19 +76,31 @@ export class TirillaComponent implements OnInit {
   }
 
   get TotalVentaResumen(): number {
-    return this.resumenDelDiaVentas.reduce((total, item) => total + (item.valor ?? 0), 0);
+    return this.resumenDelDiaVentas.reduce((total, item: any) => total + (item.valor ?? item.Valor ?? 0), 0);
+  }
+
+  get TotalCantidadVentas(): number {
+    return this.resumenDelDiaVentas.reduce((total, item: any) => total + (item.cantidad ?? item.Cantidad ?? 0), 0);
   }
 
   get TotalGastosResumen(): number {
-    return this.resumenDelDiaGastos.reduce((total, item) => total + (item.valor ?? 0), 0);
+    return this.resumenDelDiaGastos.reduce((total, item: any) => total + (item.valor ?? item.Valor ?? 0), 0);
+  }
+
+  get TotalCantidadGastos(): number {
+    return this.resumenDelDiaGastos.reduce((total, item: any) => total + (item.cantidad ?? item.Cantidad ?? 0), 0);
   }
 
   get TotalMetodoPagoResumen(): number {
-    return this.resumenDelDiaMetodoPago.reduce((total, item) => total + (item.valor ?? 0), 0);
+    return this.resumenDelDiaMetodoPago.reduce((total, item: any) => total + (item.valor ?? item.Valor ?? 0), 0);
   }
 
   get TotalEntregasResumen(): number {
-    return this.resumenDelDiaEntregas.reduce((total, item) => total + (item.Cobro ?? 0), 0);
+    return this.resumenDelDiaEntregas.reduce((total, item: any) => total + (item.cobro ?? item.Cobro ?? 0), 0);
+  }
+
+  get TotalCantidadEntregas(): number {
+    return this.resumenDelDiaEntregas.reduce((total, item: any) => total + (item.cantidadCajas ?? item.CantidadCajas ?? item.NumCajas ?? 0), 0);
   }
 
   /** Persiste el lugar de impresión seleccionado en localStorage. */
@@ -211,24 +223,31 @@ export class TirillaComponent implements OnInit {
    * Sigue el mismo patrón que la impresión de facturas.
    */
   procesarImpresionCierreCaja(cierreId: number): void {
-    if (this.lugarImpresion === 'cliente') {
+    const lugar = this.lugarImpresion || 'cliente';
+    if (lugar === 'cliente') {
       this.printService.obtenerBufferCierreCaja(cierreId).subscribe({
         next: (res) => {
           this.printService.imprimirLocal(res.buffer).subscribe({
             next: () => {
               console.log('Tirilla de cierre enviada al agente local');
             },
-            error: () => {
+            error: (err) => {
+              console.warn('⚠️ Impresora no disponible para tirilla de cierre. Guardando en pendientes...');
+              this.printService.agregarAPendientes(cierreId, 'cierre', 'cliente');
               this.dialogService.mostrar(
-                'No se pudo comunicar con el agente de impresión local. Asegúrate de que el script se está ejecutando.',
-                'error'
+                `El cierre quedó registrado. Advertencia: No hay conexión con la impresora. La tirilla #${cierreId} se imprimirá automáticamente al conectar la impresora.`,
+                'warning'
               );
             }
           });
         },
         error: (err) => {
           console.error('Error al obtener buffer de cierre:', err);
-          this.dialogService.mostrar('Error al obtener los datos de impresión del cierre de caja.', 'error');
+          this.printService.agregarAPendientes(cierreId, 'cierre', 'cliente');
+          this.dialogService.mostrar(
+            `El cierre quedó registrado. Advertencia: No se pudieron obtener los datos de impresión. La tirilla #${cierreId} quedó guardada en pendientes.`,
+            'warning'
+          );
         }
       });
     } else {
@@ -239,7 +258,11 @@ export class TirillaComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al imprimir tirilla en servidor:', err);
-          this.dialogService.mostrar('Error al imprimir la tirilla en el servidor. El cierre quedó registrado.', 'error');
+          this.printService.agregarAPendientes(cierreId, 'cierre', 'servidor');
+          this.dialogService.mostrar(
+            `El cierre quedó registrado. Advertencia: No se pudo imprimir en el servidor. La tirilla #${cierreId} quedó guardada en pendientes.`,
+            'warning'
+          );
         }
       });
     }

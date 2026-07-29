@@ -29,9 +29,10 @@
           <div class="card-top">
             <span class="cliente-nombre">Cliente: <span>{{ credito.clienteNombre }} {{ credito.clienteApellido
                 }}</span></span>
-            <span class="status" [class.pagado]="credito.saldo === 0"
-              [class.pendiente]="credito.saldo && credito.saldo > 0">
-              {{ credito.saldo === 0 ? 'Pagado' : 'Pendiente' }}
+            <span class="status"
+              [class.pagado]="credito.estado === 'Pagado'"
+              [class.pendiente]="credito.estado !== 'Pagado'">
+              {{ credito.estado || 'Pendiente' }}
             </span>
           </div>
           <div class="card-meta">
@@ -45,12 +46,12 @@
         <!-- Saldo y acción -->
         <div class="card-right">
           <div class="amounts">
-            <div [class.amount-pending]="(credito.saldo ?? 0) > 0" [class.amount-paid]="(credito.saldo ?? 0) === 0">
+            <div [class.amount-pending]="credito.estado !== 'Pagado'" [class.amount-paid]="credito.estado === 'Pagado'">
               {{ (credito.saldo ?? 0) | currency:'COP':'symbol':'1.0-0' }}
             </div>
             <div class="amount-label">saldo</div>
           </div>
-          <button type="button" (click)="AbrirModalPago(credito)" [disabled]="credito.saldo === 0" class="btn-abonar">
+          <button type="button" (click)="AbrirModalPago(credito)" [disabled]="credito.estado === 'Pagado'" class="btn-abonar">
             Abonar
           </button>
         </div>

@@ -226,14 +226,48 @@ body {
   background-color: #f8fafc;
 }
 
-.resumen-icon {
-  font-size: 2rem;
+.resumen-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   flex-shrink: 0;
 }
 
-.icon-gasto  { color: #dc2626; }
-.icon-entrega { color: #2563eb; }
-.icon-zapatos { color: #7c3aed; }
+.wrapper-gasto {
+  background-color: #fef2f2;
+}
+
+.wrapper-entrega {
+  background-color: #eff6ff;
+}
+
+.wrapper-zapatos {
+  background-color: #faf5ff;
+}
+
+.resumen-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.icon-gasto, .icon-gasto path, .icon-gasto circle {
+  color: #dc2626 !important;
+  stroke: #dc2626 !important;
+}
+
+.icon-entrega, .icon-entrega path {
+  color: #2563eb !important;
+  stroke: #2563eb !important;
+}
+
+.icon-zapatos, .icon-zapatos path {
+  color: #7c3aed !important;
+  stroke: #7c3aed !important;
+}
 
 .resumen-info {
   display: flex;

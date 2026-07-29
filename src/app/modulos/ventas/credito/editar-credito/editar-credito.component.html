@@ -1,102 +1,129 @@
 <!-- Modal de Pago -->
 <div *ngIf="mostrarModal" class="modal-overlay" (click)="CerrarModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+
     <div class="modal-header">
       <h5>Registrar Abono</h5>
       <button type="button" class="btn-close" (click)="CerrarModal()">✕</button>
     </div>
 
     <div class="modal-body" *ngIf="creditoSeleccionado">
-      <!-- Información del Crédito -->
-      <div class="credit-info">
-        <div class="info-row two-cols">
-          <div class="info-pair">
-            <strong>Factura</strong>
-            <span>#{{ creditoSeleccionado.facturaId }}</span>
-          </div>
-          <div class="info-pair">
-            <strong>Cliente</strong>
-            <span>{{ creditoSeleccionado.clienteNombre }} {{ creditoSeleccionado.clienteApellido }}</span>
-          </div>
-        </div>
-        <div class="info-row">
-          <strong>Producto</strong>
-          <span>{{ creditoSeleccionado.zapatoDescripcion }}</span>
-        </div>
-        <div class="info-row two-cols">
-          <div class="info-pair">
-            <strong>Talla / Color</strong>
-            <span>{{ creditoSeleccionado.zapatoTalla }} / {{ creditoSeleccionado.zapatoColor }}</span>
-          </div>
-          <div class="info-pair">
-            <strong>Valor Total</strong>
-            <span class="amount">${{ creditoSeleccionado.valorTotal | number:'1.2-2' }}</span>
-          </div>
-        </div>
-        <div class="info-row two-cols balance-row">
-          <div class="info-pair">
-            <strong>Valor Abonado</strong>
-            <span class="amount-paid">${{ creditoSeleccionado.valorAbonado | number:'1.2-2' }}</span>
-          </div>
-          <div class="info-pair">
-            <strong>Saldo Pendiente</strong>
-            <span class="amount-pending">${{ creditoSeleccionado.saldo | number:'1.2-2' }}</span>
-          </div>
-        </div>
-      </div>
+      <!-- Layout de dos columnas -->
+      <div class="modal-dos-columnas">
 
-      <!-- Formulario de Pago -->
-      <form [formGroup]="fgPago" (ngSubmit)="RegistrarPago()" class="payment-form">
-        <div class="input">
-          <label for="montoPago">Monto a Pagar</label>
-          <input formControlName="montoPago" id="montoPago" type="number" 
-                 placeholder="Ingrese el monto" step="10000" class="validate"
-                 [class.error]="montoPago?.invalid && montoPago?.touched"
-                 (click)="onMontoPagoClick()" />
-          <div *ngIf="montoPago?.invalid && montoPago?.touched" class="error-message">
-            <small *ngIf="montoPago?.errors?.['required']">El monto es obligatorio</small>
-            <small *ngIf="montoPago?.errors?.['min']">El monto debe ser mayor a 0</small>
-          </div>
-        </div>
+        <!-- COLUMNA IZQUIERDA: Formulario -->
+        <div class="col-formulario">
+          <h6 class="col-titulo">Datos del Abono</h6>
 
-        <div class="input">
-          <label for="montoRecibido">Monto Recibido (Efectivo dado por el cliente)</label>
-          <input formControlName="montoRecibido" id="montoRecibido" type="number" 
-                 placeholder="Ingrese el monto recibido" step="10000" class="validate"
-                 [class.error]="montoRecibido?.invalid && montoRecibido?.touched" />
-          <div *ngIf="montoRecibido?.invalid && montoRecibido?.touched" class="error-message">
-            <small *ngIf="montoRecibido?.errors?.['min']">El monto recibido debe ser mayor a 0</small>
-          </div>
+          <form [formGroup]="fgPago" (ngSubmit)="RegistrarPago()" class="payment-form">
+
+            <!-- Método de Pago (appSearchSelect) -->
+            <div class="input">
+              <label for="MetodoPagoNombre">Método de Pago</label>
+              <input formControlName="MetodoPagoNombre" id="MetodoPagoNombre" appSearchSelect
+                     [opciones]="metodosPagoNombres" [permitirPersonalizado]="false"
+                     (opcionSeleccionada)="onMetodoPagoSeleccionado($event)"
+                     placeholder="Seleccionar método de pago..." type="text" class="validate"
+                     [class.error]="fgPago.get('MetodoPagoNombre')?.invalid && fgPago.get('MetodoPagoNombre')?.touched" />
+              <div *ngIf="fgPago.get('MetodoPagoNombre')?.invalid && fgPago.get('MetodoPagoNombre')?.touched" class="error-message">
+                <small>Seleccione un método de pago.</small>
+              </div>
+            </div>
+
+            <!-- Monto Recibido (appFormatoMiles) -->
+            <div class="input">
+              <label for="montoRecibido">Monto Recibido</label>
+              <input formControlName="montoRecibido" id="montoRecibido" appFormatoMiles type="text" class="validate"
+                     placeholder="$0" />
+              <div class="field-hint">Efectivo entregado por el cliente</div>
+            </div>
+
+            <!-- Monto a Abonar (appFormatoMiles) -->
+            <div class="input">
+              <label for="montoPago">Valor del Abono</label>
+              <input formControlName="montoPago" id="montoPago" appFormatoMiles type="text" class="validate"
+                     placeholder="$0" (click)="onMontoPagoClick()"
+                     [class.error]="montoPago?.invalid && montoPago?.touched" />
+              <div class="field-hint">Haz clic para pagar el saldo total</div>
+              <div *ngIf="montoPago?.invalid && montoPago?.touched" class="error-message">
+                <small *ngIf="montoPago?.errors?.['required']">El monto es obligatorio.</small>
+              </div>
+            </div>
+
+            <!-- Saldo restante luego del abono -->
+            <div class="saldo-preview" *ngIf="montoPago?.value">
+              <div class="saldo-row">
+                <span>Saldo pendiente luego del abono:</span>
+                <strong [class.saldo-cero]="calcularSaldoRestante() <= 0"
+                        [class.saldo-positivo]="calcularSaldoRestante() > 0">
+                  {{ calcularSaldoRestante() | currency:'COP':'symbol-narrow':'1.0-0' }}
+                </strong>
+              </div>
+            </div>
+
+          </form>
         </div>
 
-        <!-- Cambio -->
-        <div class="input" *ngIf="calcularCambio() > 0" style="margin-top: 10px;">
-          <label>Cambio a Devolver</label>
-          <input type="text" class="validate" disabled [value]="calcularCambio() | currency:'COP':'symbol-narrow':'1.0-0'" 
-                 style="color: #2e7d32; font-weight: bold; font-size: 1.1em; background-color: #e8f5e9; border: 1px solid #4caf50; width: 100%; box-sizing: border-box;" />
-        </div>
+        <!-- COLUMNA DERECHA: Info del Producto/Crédito -->
+        <div class="col-info">
+          <h6 class="col-titulo">Información del Crédito</h6>
 
-        <div class="input">
-          <label for="metodoPago">Método de Pago</label>
-          <input formControlName="MetodoPagoNombre" id="metodoPago" appSearchSelect
-                 [opciones]="metodosPagoNombres" [permitirPersonalizado]="false"
-                 (opcionSeleccionada)="onMetodoPagoSeleccionado($event)"
-                 placeholder="Seleccionar método de pago..." type="text" class="validate"
-                 [class.error]="metodoPago?.invalid && metodoPago?.touched" />
-          <div *ngIf="metodoPago?.invalid && metodoPago?.touched" class="error-message">
-            <small>El método de pago es obligatorio</small>
+          <div class="info-card">
+            <div class="info-item">
+              <span class="info-key">Factura</span>
+              <span class="info-val">#{{ creditoSeleccionado.facturaId }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">Cliente</span>
+              <span class="info-val">{{ creditoSeleccionado.clienteNombre }} {{ creditoSeleccionado.clienteApellido }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">Producto</span>
+              <span class="info-val">{{ creditoSeleccionado.zapatoDescripcion }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">Talla / Color</span>
+              <span class="info-val">{{ creditoSeleccionado.zapatoTalla }} / {{ creditoSeleccionado.zapatoColor }}</span>
+            </div>
+
+            <div class="info-separator"></div>
+
+            <div class="info-item">
+              <span class="info-key">Total</span>
+              <span class="info-val info-total">{{ creditoSeleccionado.valorTotal | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-key">Abonado</span>
+              <span class="info-val info-abonado">{{ creditoSeleccionado.valorAbonado | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+            </div>
+            <div class="info-item info-saldo-item">
+              <span class="info-key">Saldo Pendiente</span>
+              <span class="info-val info-saldo">{{ creditoSeleccionado.saldo | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+            </div>
+
+            <div class="info-separator"></div>
+
+            <div class="info-item">
+              <span class="info-key">Estado</span>
+              <span class="badge-estado" [class.pagado]="creditoSeleccionado.estado === 'Pagado'" [class.pendiente]="creditoSeleccionado.estado !== 'Pagado'">
+                {{ creditoSeleccionado.estado || 'Pendiente' }}
+              </span>
+            </div>
           </div>
         </div>
-      </form>
+
+      </div><!-- fin modal-dos-columnas -->
     </div>
 
     <div class="modal-footer">
-      <button type="button" (click)="RegistrarPago()" class="btn-submit">
-        Registrar Pago
-      </button>
-      <button type="button" (click)="CerrarModal()" class="btn-cancel">
+      <button type="button" (click)="CerrarModal()" class="btn-cancel" [disabled]="guardando">
         Cancelar
       </button>
+      <button type="button" (click)="RegistrarPago()" class="btn-submit" [disabled]="guardando || fgPago.invalid">
+        <span *ngIf="guardando" class="btn-spinner"></span>
+        {{ guardando ? 'Registrando...' : 'Registrar Abono' }}
+      </button>
     </div>
+
   </div>
 </div>
