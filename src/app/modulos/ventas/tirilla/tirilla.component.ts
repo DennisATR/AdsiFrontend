@@ -68,7 +68,7 @@ export class TirillaComponent implements OnInit {
     private metodoPagoService: MetodoPagoService,
     private dialogService: DialogService,
     private printService: PrintService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.lugarImpresion = localStorage.getItem(STORAGE_KEY_LUGAR_IMPRESION) ?? 'cliente';
@@ -88,7 +88,7 @@ export class TirillaComponent implements OnInit {
   }
 
   get TotalEntregasResumen(): number {
-    return this.resumenDelDiaEntregas.reduce((total, item) => total + (item.cobro ?? 0), 0);
+    return this.resumenDelDiaEntregas.reduce((total, item) => total + (item.Cobro ?? 0), 0);
   }
 
   /** Persiste el lugar de impresión seleccionado en localStorage. */
@@ -262,22 +262,22 @@ export class TirillaComponent implements OnInit {
       next: ({ informacion, cierreCaja, cierreCajaEfectivo }) => {
         this.infoLocal = informacion?.[0] ?? null;
         this.cierreCajaHoy = cierreCaja;
-        
+
         this.cierreCajaEfectivo = cierreCajaEfectivo ?? null;
         this.resumenDelDiaVentas = this.cierreCajaEfectivo?.resumenVentas ?? [];
-        
+
         // Ya vienen mapeados correctamente desde el backend con (concepto, cantidad, valor)
         this.resumenDelDiaGastos = this.cierreCajaEfectivo?.detalleGastos ?? [];
 
         this.resumenDelDiaMetodoPago = this.cierreCajaEfectivo?.resumenMetodoPago ?? [];
-        
+
         // Ya vienen mapeados correctamente desde el backend con (empresa, cantidadCajas, cobro)
         this.resumenDelDiaEntregas = this.cierreCajaEfectivo?.detalleEntregas ?? [];
 
         this.totalGastosHoy = this.cierreCajaEfectivo?.gastos ?? 0;
         this.totalEntregasHoy = this.cierreCajaEfectivo?.entrega ?? 0;
         this.totalZapatosVendidosHoy = this.cierreCajaEfectivo?.totalZapatosVendidos ?? 0;
-        
+
         this.cargando = false;
       },
       error: (error: any) => {

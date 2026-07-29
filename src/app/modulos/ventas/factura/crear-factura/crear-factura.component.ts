@@ -837,7 +837,8 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   procesarImpresionLocalSiEsNecesario(facturaId: number) {
-    if (this.lugarImpresion === 'cliente') {
+    const lugar = this.lugarImpresion || 'cliente';
+    if (lugar === 'cliente') {
       this.printService.obtenerBufferFactura(facturaId).subscribe({
         next: (res) => {
           this.printService.imprimirLocal(res.buffer).subscribe({
@@ -847,22 +848,32 @@ export class CrearFacturaComponent implements OnInit {
               this.limpiarFormulario();
             },
             error: (err) => {
+              console.warn('⚠️ Agente de impresión no disponible. Guardando factura en pendientes...');
+              this.printService.agregarAPendientes(facturaId, 'factura', 'cliente');
               this.dialogService.mostrar(
-                'No se pudo comunicar con el agente de impresión local. Asegúrate de que el script se está ejecutando.',
-                'error'
-              );
-              // No se cierra la sesión para que el usuario pueda reintentar
+                `Venta registrada con éxito. Advertencia: No hay conexión con la impresora. La factura #${facturaId} quedó guardada y se imprimirá automáticamente al conectar la impresora.`,
+                'warning'
+              ).then(() => {
+                this.cerrarModal();
+                this.limpiarFormulario();
+              });
             }
           });
         },
         error: (err) => {
-          console.error('Error al obtener buffer:', err);
-          this.dialogService.mostrar('Error al obtener los datos de impresión.', 'error');
-          // No se cierra la sesión para que el usuario pueda reintentar
+          console.error('Error al obtener buffer de impresión:', err);
+          this.printService.agregarAPendientes(facturaId, 'factura', 'cliente');
+          this.dialogService.mostrar(
+            `Venta registrada con éxito. Advertencia: No se pudieron obtener los datos de impresión. La factura #${facturaId} se guardó en pendientes.`,
+            'warning'
+          ).then(() => {
+            this.cerrarModal();
+            this.limpiarFormulario();
+          });
         }
       });
     } else {
-      // Impresión en servidor: se llama AQUÍ, después de que todos los pagos ya están en BD
+      // Impresión en servidor
       this.servicioFactura.ImprimirFacturaServidor(facturaId).subscribe({
         next: () => {
           console.log('Impresion enviada al servidor');
@@ -871,8 +882,14 @@ export class CrearFacturaComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al imprimir en servidor:', err);
-          this.dialogService.mostrar('Error al imprimir en el servidor. La venta quedó registrada.', 'error');
-          // No se cierra la sesión para que el usuario pueda reintentar
+          this.printService.agregarAPendientes(facturaId, 'factura', 'servidor');
+          this.dialogService.mostrar(
+            `Venta registrada con éxito. Advertencia: No se pudo imprimir en el servidor. La factura #${facturaId} quedó guardada en pendientes.`,
+            'warning'
+          ).then(() => {
+            this.cerrarModal();
+            this.limpiarFormulario();
+          });
         }
       });
     }

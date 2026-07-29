@@ -1,5 +1,5 @@
-export class ResumenDelDiaEntregasModel{
-    empresa?: string;
-    cantidadCajas?: number;
-    cobro?: number;
+export class ResumenDelDiaEntregasModel {
+    Empresa?: string;
+    CantidadCajas?: number;
+    Cobro?: number;
 }

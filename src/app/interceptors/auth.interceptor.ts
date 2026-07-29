@@ -15,8 +15,10 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = this.servicioSeguridad.ObtenerTokenLocalStorage();
         let clonedRequest = request;
-        
-        if (token) {
+
+        const esPeticionImpresora = request.url.includes('localhost:4000') || request.url.includes(':4000') || request.url.includes('/imprimir');
+
+        if (token && !esPeticionImpresora) {
             clonedRequest = request.clone({
                 setHeaders: { Authorization: `Bearer ${token}` }
             });
@@ -25,8 +27,11 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(clonedRequest).pipe(
             catchError((error: any) => {
                 if (error instanceof HttpErrorResponse) {
-                    // status 0 indica que el servidor está apagado/inaccesible o no responde
-                    if (error.status === 0) {
+                    if (esPeticionImpresora) {
+                        return throwError(() => error);
+                    }
+
+                    if (error.status === 401) {
                         this.servicioSeguridad.RemoverDatosUsuarioValidado();
                         this.router.navigate(["/seguridad/identificar-usuario"]);
                     }

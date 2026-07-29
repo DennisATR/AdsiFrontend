@@ -131,9 +131,9 @@
 					<span>Cobro</span>
 				</div>
 				<div class="tabla-row" *ngFor="let item of resumenDelDiaEntregas">
-					<span>{{ item.empresa || '-' }}</span>
-					<span>{{ item.cantidadCajas ?? 0 }}</span>
-					<span>{{ (item.cobro ?? 0) | currency:'$':'symbol':'1.0-0' }}</span>
+					<span>{{ item.Empresa || '-' }}</span>
+					<span>{{ item.CantidadCajas ?? 0 }}</span>
+					<span>{{ (item.Cobro ?? 0) | currency:'$':'symbol':'1.0-0' }}</span>
 				</div>
 				<div class="tabla-total">
 					<span>Total entregas</span>
@@ -195,8 +195,8 @@
 		<!-- Selector de lugar de impresión -->
 		<div class="selector-impresion">
 			<label for="LugarImpresionTirilla" class="selector-label">Lugar de impresión</label>
-			<select id="LugarImpresionTirilla" class="select-impresion"
-				[(ngModel)]="lugarImpresion" (ngModelChange)="guardarLugarImpresion()">
+			<select id="LugarImpresionTirilla" class="select-impresion" [(ngModel)]="lugarImpresion"
+				(ngModelChange)="guardarLugarImpresion()">
 				<option value="servidor">Imprimir en Caja / Servidor</option>
 				<option value="cliente">Imprimir en mi Computador</option>
 			</select>
