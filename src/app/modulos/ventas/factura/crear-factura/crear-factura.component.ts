@@ -134,14 +134,18 @@ export class CrearFacturaComponent implements OnInit {
       return;
     }
 
-    const almacenId = this.obtenerAlmacenIdDesdePrefijo(zapatoId);
+    let almacenId: number | undefined = this.obtenerAlmacenIdDesdePrefijo(zapatoId) || undefined;
+    let esVirtual = false;
+
     if (!almacenId) {
-      alert('No se encontró un almacén para el prefijo del zapato. Verifique el ID y la configuración de almacenes.');
-      return;
+      esVirtual = true;
+      almacenId = this.almacenes.length > 0 ? this.almacenes[0].id : 1;
     }
 
     const nuevaVenta: VentaModel = {
-      zapatoId: zapatoId,
+      zapatoId: esVirtual ? 'VIRTUAL' : zapatoId,
+      codigoVirtual: esVirtual ? zapatoId : undefined,
+      esVirtual: esVirtual,
       Cantidad: parseInt(cantidad),
       Precio: precio,
       almacenId: almacenId
@@ -287,6 +291,29 @@ export class CrearFacturaComponent implements OnInit {
       alert('Por favor ingrese un ID de zapato válido.');
       return;
     }
+
+    const almacenId = this.obtenerAlmacenIdDesdePrefijo(zapatoId);
+    if (!almacenId) {
+      // Es un código virtual, no existe en la base de datos de almacenes.
+      this.fGroup.patchValue({
+        Descripcion: 'Producto Externo/Virtual',
+        Categoria: 'N/A',
+        Talla: 'N/A',
+        Color: 'N/A',
+        Referencia: 'N/A',
+        PrecioVentaMin: 0,
+        PrecioVentaMax: 999999999,
+        CantidadDisponible: 999
+      });
+      setTimeout(() => {
+        const precioVentaInput = document.getElementById('PrecioVenta');
+        if (precioVentaInput) {
+          precioVentaInput.focus();
+        }
+      }, 100);
+      return;
+    }
+
     this.servicioZapato.BuscarZapato(zapatoId).subscribe({
       next: (respuesta: ZapatoModel) => {
         this.fGroup.patchValue({
@@ -719,7 +746,9 @@ export class CrearFacturaComponent implements OnInit {
         Precio: linea.Precio,
         almacenId: linea.almacenId,
         zapatoId: linea.zapatoId,
-        facturaId: facturaId
+        facturaId: facturaId,
+        esVirtual: linea.esVirtual,
+        codigoVirtual: linea.codigoVirtual
       };
 
       this.servicioVenta.RegistrarVenta(ventaData, this.lugarImpresion).subscribe({

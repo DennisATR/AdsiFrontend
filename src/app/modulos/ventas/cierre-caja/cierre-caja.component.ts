@@ -126,4 +126,59 @@ export class CierreCajaComponent implements OnInit {
         this.cargandoReporte = false;
       });
   }
+
+  ExportarCSV() {
+    const hoy = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Bogota' });
+    this.ventaService.ExportarVentasDia(hoy).subscribe({
+      next: (ventas: any[]) => {
+        if (!ventas || ventas.length === 0) {
+          alert('No hay ventas registradas para hoy.');
+          return;
+        }
+
+        // Agrupar ventas por almacén o virtuales
+        const grupos: { [key: string]: any[] } = {};
+
+        ventas.forEach(venta => {
+          let grupo = 'Virtuales';
+          if (!venta.esVirtual && venta.almacen && venta.almacen.Nombre) {
+            grupo = venta.almacen.Nombre;
+          }
+          if (!grupos[grupo]) {
+            grupos[grupo] = [];
+          }
+          grupos[grupo].push(venta);
+        });
+
+        // Generar y descargar un CSV por cada grupo
+        Object.keys(grupos).forEach(grupo => {
+          const ventasGrupo = grupos[grupo];
+          let csvContent = "data:text/csv;charset=utf-8,";
+          csvContent += "Codigo Zapato,Cantidad,Valor Venta,Fecha de Venta\n";
+
+          ventasGrupo.forEach(v => {
+            const codigo = v.esVirtual ? (v.codigoVirtual || 'VIRTUAL') : (v.zapatoId || '');
+            const cantidad = v.Cantidad || 0;
+            const precio = v.Precio || 0;
+            const fecha = v.factura?.Fecha ? new Date(v.factura.Fecha).toLocaleString('es-CO') : '';
+            csvContent += `${codigo},${cantidad},${precio},${fecha}\n`;
+          });
+
+          const encodedUri = encodeURI(csvContent);
+          const link = document.createElement("a");
+          link.setAttribute("href", encodedUri);
+          const nombreArchivo = `Ventas_${grupo.replace(/\s+/g, '_')}_${hoy}.csv`;
+          link.setAttribute("download", nombreArchivo);
+          document.body.appendChild(link); // Required for FF
+          
+          link.click();
+          document.body.removeChild(link);
+        });
+      },
+      error: (err: any) => {
+        console.error('Error al exportar ventas:', err);
+        alert('Ocurrió un error al exportar las ventas.');
+      }
+    });
+  }
 }

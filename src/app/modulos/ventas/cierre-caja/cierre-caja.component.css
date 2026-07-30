@@ -148,6 +148,15 @@ body {
   box-shadow: 0 4px 12px rgba(5,150,105,0.35);
 }
 
+.btn-exportar {
+  background: linear-gradient(135deg, #ca8a04, #eab308);
+}
+
+.btn-exportar:hover:not([disabled]) {
+  background: linear-gradient(135deg, #a16207, #ca8a04);
+  box-shadow: 0 4px 12px rgba(234,179,8,0.35);
+}
+
 /* Readonly input */
 .readonly-input {
   background-color: #f1f5f9 !important;

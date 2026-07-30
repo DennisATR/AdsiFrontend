@@ -91,6 +91,9 @@
           <span *ngIf="!cargandoReporte">Generar Reporte</span>
           <span *ngIf="cargandoReporte">Generando...</span>
         </button>
+        <button class="btn-custom btn-exportar waves-effect" type="button" (click)="ExportarCSV()">
+          Descargar Ventas CSV
+        </button>
         <button class="btn-custom waves-effect waves-light" type="button" (click)="GuardarCierreCaja()"
           [disabled]="cargando">
           <span *ngIf="!cargando">Guardar</span>

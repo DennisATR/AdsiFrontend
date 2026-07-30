@@ -62,4 +62,8 @@ export class VentaService {
       })
     );
   }
+
+  ExportarVentasDia(fecha: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.urlBase}venta/exportar-dia/fecha/${fecha}`);
+  }
 }

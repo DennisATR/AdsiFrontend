@@ -6,4 +6,6 @@ export class VentaModel{
     zapatoId?: string;
     facturaId?: number;
     tipoVenta?: string; // 'contado' o 'credito'
+    esVirtual?: boolean;
+    codigoVirtual?: string;
 }

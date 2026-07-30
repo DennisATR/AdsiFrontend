@@ -14,8 +14,10 @@
 	position: relative;
 	display: flex;
 	align-items: center;
-	margin-left: 12px;
-	margin-right: 12px;
+	height: 100%;
+	margin-left: 8px;
+	margin-right: 16px;
+	z-index: 10;
 }
 
 .btn-bell {
@@ -77,9 +79,14 @@
 		margin-left: 8px;
 	}
 
-	/* PONERSE EN EL CENTRO */ 
+	/* Keep brand logo positioned nicely */
 	.brand-logo {
 		margin: 0 auto;
 		font-size: 1.5rem;
+	}
+
+	.notificacion-bell-container {
+		margin-right: 12px;
+		display: flex !important;
 	}
 }

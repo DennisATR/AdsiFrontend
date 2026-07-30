@@ -12,7 +12,7 @@ import { NotificacionModel } from '../../../modelos/notificacion.model';
   styleUrls: ['./encabezado.component.css']
 })
 export class EncabezadoComponent implements OnInit {
-  listaMenus: ItemEncabezadoModel[] = ConfiguracionEncabezado.listaMenus;
+  listaMenus: ItemEncabezadoModel[] = [];
   sesionActiva: boolean = false;
   notificaciones: NotificacionModel[] = [];
   mostrarDropdown: boolean = false;
@@ -22,9 +22,16 @@ export class EncabezadoComponent implements OnInit {
     private notificacionService: NotificacionService
   ) {}
 
+  get tienePermisoNotificaciones(): boolean {
+    return this.listaMenus.some(m => String(m.idMenu) === '21' || m.texto === 'Notificaciones');
+  }
+
+  get menusNavegacion(): ItemEncabezadoModel[] {
+    return this.listaMenus.filter(m => String(m.idMenu) !== '21' && m.texto !== 'Notificaciones');
+  }
+
   ngOnInit() {
     this.ValidarSesion();
-    this.listaMenus = this.servicioSeguridad.ObtenerItemsEncabezado();
     this.notificacionService.notificaciones$.subscribe((list) => {
       this.notificaciones = list;
     });
@@ -32,7 +39,7 @@ export class EncabezadoComponent implements OnInit {
 
   toggleDropdown() {
     this.mostrarDropdown = !this.mostrarDropdown;
-    if (this.mostrarDropdown) {
+    if (this.mostrarDropdown && this.tienePermisoNotificaciones) {
       this.notificacionService.cargarPendientes().subscribe();
     }
   }
@@ -43,7 +50,9 @@ export class EncabezadoComponent implements OnInit {
         if (datos.user != null) {
           this.sesionActiva = true;
           this.listaMenus = this.servicioSeguridad.ObtenerItemsEncabezado();
-          this.notificacionService.cargarPendientes().subscribe();
+          if (this.tienePermisoNotificaciones) {
+            this.notificacionService.cargarPendientes().subscribe();
+          }
         } else {
           this.sesionActiva = false;
           this.listaMenus = [];

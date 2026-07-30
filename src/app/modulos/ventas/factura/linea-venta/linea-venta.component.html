@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let linea of lineasVenta; let i = index" class="fila-producto">
-          <td class="col-zapato">{{ linea.zapatoId }}</td>
+          <td class="col-zapato">{{ linea.esVirtual ? linea.codigoVirtual + ' (Virtual)' : linea.zapatoId }}</td>
           <td class="col-cantidad">
             <input type="number" [(ngModel)]="linea.Cantidad" (change)="actualizarCantidad(i, linea.Cantidad ?? 0)"
               min="1" class="input-tabla" />

@@ -18,7 +18,7 @@ export class EditarZapatoComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: string = "";
   fgValidador!: FormGroup;
-  
+
   generos = ConfiguracionListas.generos;
   proveedores: ProveedorModel[] = [];
   proveedoresNombres: string[] = [];
@@ -91,7 +91,8 @@ export class EditarZapatoComponent implements OnInit {
           precioVentaMin: datos.PrecioVentaMin,
           cantidad: datos.Cantidad,
           proveedorId: datos.proveedorId,
-          proveedorNombre: proveedorNombreCompleto
+          proveedorNombre: proveedorNombreCompleto,
+          genero: datos.Genero
         });
 
         // Obtener la referencia del zapato
