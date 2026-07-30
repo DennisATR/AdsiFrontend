@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AlertDialogComponent } from './shared/dialog/alert-dialog.component';
+import { NotificacionDropdownComponent } from './public/pagina-maestra/notificacion-dropdown/notificacion-dropdown.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AlertDialogComponent } from './shared/dialog/alert-dialog.component';
     InicioComponent,
     RutaNoEncontradaComponent,
     MenuLateralComponent,
-    AlertDialogComponent
+    AlertDialogComponent,
+    NotificacionDropdownComponent
   ],
   imports: [
     BrowserModule,

@@ -19,6 +19,7 @@ import {PrintService} from '../../../../servicios/ventas/print.service';
 import {VentaService} from '../../../../servicios/ventas/venta.service';
 import {LineaVentaComponent} from '../linea-venta/linea-venta.component';
 import {DialogService} from '../../../../servicios/dialog.service';
+import {NotificacionService} from '../../../../servicios/ventas/notificacion.service';
 
 @Component({
   selector: 'app-crear-factura',
@@ -62,7 +63,8 @@ export class CrearFacturaComponent implements OnInit {
     private servicioPagoFactura: PagoFacturaService,
     private servicioCredito: CreditoService,
     private printService: PrintService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private servicioNotificacion: NotificacionService
   ) { }
 
   ngOnInit() {
@@ -727,6 +729,8 @@ export class CrearFacturaComponent implements OnInit {
 
           // Si todas las ventas se registraron correctamente
           if (ventasRegistradas === this.lineasVenta.length && !erroresEncontrados) {
+            // Verificar exhibición en segundo plano (guardado silencioso)
+            this.verificarNotificacionesExhibicion();
             // Paso 3: Registrar todos los pagos
             this.registrarMultiplesPagos(facturaId);
           }
@@ -949,5 +953,21 @@ export class CrearFacturaComponent implements OnInit {
       currentField.focus();
       this.fGroup.get(fieldName)?.markAsTouched();
     }
+  }
+
+  verificarNotificacionesExhibicion(): void {
+    if (!this.lineasVenta || this.lineasVenta.length === 0) return;
+    this.lineasVenta.forEach(linea => {
+      if (linea.zapatoId) {
+        this.servicioNotificacion.verificarExhibicion(linea.zapatoId, linea.Cantidad || 1).subscribe({
+          next: (res) => {
+            console.log(`Verificación de exhibición para ${linea.zapatoId}:`, res);
+          },
+          error: (err) => {
+            console.error(`Error verificando exhibición para ${linea.zapatoId}:`, err);
+          }
+        });
+      }
+    });
   }
 }
