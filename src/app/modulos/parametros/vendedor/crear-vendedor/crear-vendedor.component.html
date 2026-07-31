@@ -29,16 +29,16 @@
     <!-- Sección de Contacto -->
     <div class="form-section">
       <div class="row">
-        <div class="input col s12 m6 l6">
-          <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, telefono)"
-            type="email" class="validate" />
+        <div class="input col s12 m6 l4">
+          <input formControlName="Correo" id="Correo" #correo (keydown.enter)="focusNext(correo, telefono)" type="email"
+            class="validate" />
           <label for="Correo">Correo Electrónico</label>
           <div *ngIf="ObtenerFormGroup['Correo'].invalid && ObtenerFormGroup['Correo'].touched" class="error-message">
             <small>El correo es obligatorio y debe tener un formato válido.</small>
           </div>
         </div>
-        <div class="input col s12 m6 l6">
-          <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="submitOrFocusNext(telefono)"
+        <div class="input col s12 m6 l4">
+          <input formControlName="Telefono" id="Telefono" #telefono (keydown.enter)="focusNext(telefono, clave)"
             type="text" class="validate" />
           <label for="Telefono">Teléfono Celular</label>
           <div *ngIf="ObtenerFormGroup['Telefono'].invalid && ObtenerFormGroup['Telefono'].touched"
@@ -46,9 +46,16 @@
             <small>El teléfono debe tener al menos 10 caracteres.</small>
           </div>
         </div>
+        <div class="input col s12 m6 l4">
+          <input formControlName="Clave" id="Clave" #clave (keydown.enter)="submitOrFocusNext(clave)" type="password"
+            class="validate" />
+          <label for="Clave">Contraseña</label>
+          <div *ngIf="ObtenerFormGroup['Clave'].invalid && ObtenerFormGroup['Clave'].touched" class="error-message">
+            <small>La contraseña es obligatoria.</small>
+          </div>
+        </div>
       </div>
     </div>
-
     <div class="row button-row">
       <div class="col s12 button-container">
         <button class="btn-custom waves-effect waves-light" type="button" (click)="Registrarse()">

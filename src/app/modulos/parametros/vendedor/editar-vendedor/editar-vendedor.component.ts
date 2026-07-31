@@ -34,7 +34,8 @@ export class EditarVendedorComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       correo: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.minLength(10)]]
+      telefono: ['', [Validators.required, Validators.minLength(10)]],
+      clave: ['', [Validators.minLength(6)]] // Optional in edit
     });
   }
 
@@ -61,7 +62,7 @@ export class EditarVendedorComponent implements OnInit {
       return;
     }
 
-    let datos = {
+    let datos: any = {
       id : this.recordId,
       Nombre: this.fgValidador.controls['nombre'].value,
       Apellido: this.fgValidador.controls['apellido'].value,
@@ -69,6 +70,10 @@ export class EditarVendedorComponent implements OnInit {
       Telefono: this.fgValidador.controls['telefono'].value,
       FechaReg: new Date()
     };
+
+    if (this.fgValidador.controls['clave'].value) {
+      datos.Clave = this.fgValidador.controls['clave'].value;
+    }
 
     this.servicio.EditarVendedor(this.recordId, datos).subscribe({
       next: (data: any) => {
@@ -91,4 +96,5 @@ export class EditarVendedorComponent implements OnInit {
   get apellido() { return this.fgValidador.get('apellido'); }
   get correo() { return this.fgValidador.get('correo'); }
   get telefono() { return this.fgValidador.get('telefono'); }
+  get clave() { return this.fgValidador.get('clave'); }
 }

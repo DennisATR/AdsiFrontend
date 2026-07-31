@@ -37,6 +37,15 @@ export class InicioComponent implements OnInit {
   VerificarBaseCaja() {
     const datosSesion = this.servicioSeguridad.ObtenerDatosUsuarioIdentificado();
     if (!datosSesion) return;
+
+    // Verificar si el usuario tiene permiso para Cierre de Caja (idMenu '14')
+    const itemsMenu = this.servicioSeguridad.ObtenerItemsEncabezado();
+    const tienePermisoCierre = itemsMenu && itemsMenu.some(m => String(m.idMenu) === '14' || m.texto === 'Cierre de Caja');
+    if (!tienePermisoCierre) {
+      this.mostrarModalBase = false;
+      return;
+    }
+
     const hoy = new Date().toLocaleDateString('sv-SE', {timeZone: 'America/Bogota'});
     const fechaGuardada = localStorage.getItem('fecha-base-caja');
     console.log('Datos de sesión:', datosSesion);

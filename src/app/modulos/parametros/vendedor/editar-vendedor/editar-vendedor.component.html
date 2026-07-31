@@ -50,6 +50,16 @@
               <small *ngIf="telefono?.errors?.['minlength']">El teléfono debe tener al menos 10 caracteres</small>
             </div>
           </div>
+
+          <!-- Contraseña -->
+          <div class="input">
+            <input type="password" id="clave" formControlName="clave" class="validate"
+              [class.error]="clave?.invalid && clave?.touched">
+            <label for="clave">Contraseña (Dejar vacío para no cambiar)</label>
+            <div *ngIf="clave?.invalid && clave?.touched" class="error-message">
+              <small *ngIf="clave?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</small>
+            </div>
+          </div>
         </div>
 
         <div class="button-container">

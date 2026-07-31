@@ -3,10 +3,7 @@ import { UsuarioModel } from '../../../../modelos/usuario.model';
 import { ConfiguracionPaginacion } from '../../../../config/configuracion.paginacion';
 import { SeguridadService } from '../../../../servicios/seguridad.service';
 
-interface RolModel {
-  id: number;
-  nombre: string;
-}
+import { RolModel } from '../../../../modelos/rol.model';
 
 @Component({
   selector: 'app-listar-usuario',
@@ -21,11 +18,7 @@ total = 0;
 usuarios: UsuarioModel[] = [];
 totalItems = 0;
 
-rolesDisponibles: RolModel[] = [
-    { id: 1, nombre: 'Administrador' },
-    { id: 2, nombre: 'Vendedor' },
-    { id: 3, nombre: 'Bodeguero' }
-  ];
+rolesDisponibles: RolModel[] = [];
 registrosPorPagina = ConfiguracionPaginacion.registrosPorPagina;
 constructor(
   private servicioSeguridad: SeguridadService
@@ -34,8 +27,20 @@ constructor(
 }
 
 ngOnInit(){
+  this.obtenerRoles();
   this.obtenerUsuarios();
-}    
+}
+
+obtenerRoles(): void {
+  this.servicioSeguridad.ObtenerRoles().subscribe({
+    next: (respuesta) => {
+      this.rolesDisponibles = respuesta;
+    },
+    error: (err) => {
+      console.log(err);
+    }
+  });
+}
   obtenerUsuarios(): void {
     this.servicioSeguridad.obtenerUsuarios().subscribe({
       next: (respuesta) => {
@@ -83,6 +88,6 @@ ngOnInit(){
    */
   obtenerNombreRol(rolId: number): string {
     const rol = this.rolesDisponibles.find(r => r.id === rolId);
-    return rol ? rol.nombre : `ID: ${rolId}`;
+    return rol ? rol.Nombre! : `ID: ${rolId}`;
   }
 }

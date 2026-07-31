@@ -29,6 +29,7 @@ export class CrearVendedorComponent implements OnInit {
       Apellido: ['', [Validators.required, Validators.minLength(2)]],
       Correo: ['', [Validators.required, Validators.email]],
       Telefono: ['', [Validators.required, Validators.minLength(10)]],
+      Clave: ['', [Validators.required]],
     });
   }
 
@@ -39,7 +40,8 @@ export class CrearVendedorComponent implements OnInit {
       Nombre: campos['Nombre'].value,
       Apellido: campos['Apellido'].value,
       Correo: campos['Correo'].value,
-      Telefono: campos['Telefono'].value
+      Telefono: campos['Telefono'].value,
+      Clave: campos['Clave'].value
     };
 
     this.servicioVendedor.RegistrarVendedor(datos).subscribe({
