@@ -64,6 +64,14 @@ export class MenuLateralComponent implements OnDestroy, OnInit {
     });
   }
 
+  tienePermiso(idMenu: string): boolean {
+    return this.listaMenus.some(m => String(m.idMenu) === idMenu);
+  }
+
+  get modulosMovil(): ItemEncabezadoModel[] {
+    return this.listaMenus.filter(m => String(m.idMenu) !== '11' && String(m.idMenu) !== '14' && String(m.idMenu) !== '21');
+  }
+
   cerrarMenu() {
     const elems = document.querySelectorAll('.sidenav');
     elems.forEach((el: any) => {

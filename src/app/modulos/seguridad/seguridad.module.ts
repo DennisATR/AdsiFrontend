@@ -5,13 +5,11 @@ import { IdentificacionUsuarioComponent } from './identificacion-usuario/identif
 import { RecuperarClaveComponent } from './recuperar-clave/recuperar-clave.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.component';
-import { CambioClaveComponent } from './cambio-clave/cambio-clave.component';
 import { ListarUsuarioComponent } from './usuario/listar-usuario/listar-usuario.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { EditarUsuarioComponent } from './usuario/editar-usuario/editar-usuario.component';
 import { EliminarUsuarioComponent } from './usuario/eliminar-usuario/eliminar-usuario.component';
 import { SharedDirectivesModule } from '../../shared/shared-directives.module';
-
 
 @NgModule({
   declarations: [
@@ -19,7 +17,6 @@ import { SharedDirectivesModule } from '../../shared/shared-directives.module';
     RecuperarClaveComponent,
     CrearUsuarioComponent,
     ListarUsuarioComponent,
-    CambioClaveComponent,
     EliminarUsuarioComponent,
     EditarUsuarioComponent
   ],

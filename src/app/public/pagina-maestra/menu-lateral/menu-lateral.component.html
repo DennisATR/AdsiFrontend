@@ -32,9 +32,9 @@
   </li>
 
   <!-- ── Menú dinámico (solo móvil) ── -->
-  <div class="menu-dinamico" *ngIf="listaMenus && listaMenus.length">
+  <div class="menu-dinamico" *ngIf="modulosMovil && modulosMovil.length">
     <li class="snav-section-label">Módulos</li>
-    <li *ngFor="let menu of listaMenus">
+    <li *ngFor="let menu of modulosMovil">
       <a class="snav-link" [routerLink]="menu.ruta" (click)="cerrarMenu()">
         <span class="snav-link-icon" [innerHTML]="menu.safeIcono"></span>
         <span>{{ menu.texto }}</span>
@@ -43,9 +43,9 @@
   </div>
 
   <!-- ── Navegación principal ── -->
-  <li class="snav-section-label">General</li>
+  <li class="snav-section-label" *ngIf="tienePermiso('11') || tienePermiso('14')">General</li>
 
-  <li>
+  <li *ngIf="tienePermiso('11')">
     <a class="snav-link" routerLink="/parametros/informacion" (click)="cerrarMenu()">
       <svg class="snav-link-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"
         fill="currentColor">
@@ -56,7 +56,7 @@
     </a>
   </li>
 
-  <li>
+  <li *ngIf="tienePermiso('14')">
     <a class="snav-link" routerLink="/ventas/cierre-caja" (click)="cerrarMenu()">
       <svg class="snav-link-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"
         fill="currentColor">
@@ -64,17 +64,6 @@
           d="M80-120v-80h800v80H80Zm160-160v-320h80v320h-80Zm200 0v-320h80v320h-80Zm200 0v-320h80v320h-80ZM80-680v-80l400-200 400 200v80H80Zm146-80h508l-254-127-254 127Zm254-63Z" />
       </svg>
       <span>Cierre de Caja</span>
-    </a>
-  </li>
-
-  <li>
-    <a class="snav-link" routerLink="/seguridad/cambio-clave" (click)="cerrarMenu()">
-      <svg class="snav-link-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"
-        fill="currentColor">
-        <path
-          d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z" />
-      </svg>
-      <span>Cambiar Clave</span>
     </a>
   </li>
 

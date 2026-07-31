@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IdentificacionUsuarioComponent } from './identificacion-usuario/identificacion-usuario.component';
-import { CambioClaveComponent } from './cambio-clave/cambio-clave.component';
 import { RecuperarClaveComponent } from './recuperar-clave/recuperar-clave.component';
 import { CerrarSesionComponent } from './cerrar-sesion/cerrar-sesion.component';
 import { CrearUsuarioComponent } from './usuario/crear-usuario/crear-usuario.component'; 
@@ -18,18 +17,13 @@ const routes: Routes = [
     canActivate: [ValidarSesionInactivaGuard]
   },
   {
-    path: 'cambio-clave',
-    component: CambioClaveComponent,
-    canActivate: [ValidarSesionActivaGuard]
-  },
-  {
     path: 'recuperar-clave',
     component: RecuperarClaveComponent,
     canActivate: [ValidarSesionInactivaGuard]
   },
   {
     path: 'cerrar-sesion',
-    component:CerrarSesionComponent,
+    component: CerrarSesionComponent,
     canActivate: [ValidarSesionActivaGuard]
   },
   {
@@ -44,7 +38,7 @@ const routes: Routes = [
   },
   {
     path: 'usuario/editar-usuario/:id',
-    component:  EditarUsuarioComponent,
+    component: EditarUsuarioComponent,
     canActivate: [ValidarSesionActivaGuard]
   },
   {
@@ -52,7 +46,6 @@ const routes: Routes = [
     component: EliminarUsuarioComponent,
     canActivate: [ValidarSesionActivaGuard]
   }
-
 ];
 
 @NgModule({

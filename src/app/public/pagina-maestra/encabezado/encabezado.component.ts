@@ -27,7 +27,7 @@ export class EncabezadoComponent implements OnInit {
   }
 
   get menusNavegacion(): ItemEncabezadoModel[] {
-    return this.listaMenus.filter(m => String(m.idMenu) !== '21' && m.texto !== 'Notificaciones');
+    return this.listaMenus.filter(m => String(m.idMenu) !== '21' && String(m.idMenu) !== '11' && String(m.idMenu) !== '14' && m.texto !== 'Notificaciones');
   }
 
   ngOnInit() {

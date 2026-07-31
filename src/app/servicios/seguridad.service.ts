@@ -3,8 +3,8 @@ import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioModel } from '../modelos/usuario.model';
 import { ConfiguracionRutasBackend } from '../config/configuracion.rutas.backend';
+
 import { UsuarioValidadoModel } from '../modelos/usuario.validado.model';
-import { cambiarClavemodel } from '../modelos/cambiarClave.model';
 import { RolModel } from '../modelos/rol.model';
 import { PermisoModel } from '../modelos/permiso.model';
 import { ConfiguracionEncabezado } from '../config/configuracion.encabezado';
@@ -167,13 +167,6 @@ export class SeguridadService {
           return throwError(() => error);
         })
       );
-  }
-
-  CambiarClave(datos: any): Observable<cambiarClavemodel> {
-    return this.http.patch<cambiarClavemodel>(
-      `${this.urlBase}cambiar-clave`,
-      datos
-    );
   }
 
   // Método para obtener todos los usuarios

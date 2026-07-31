@@ -71,6 +71,20 @@ export namespace ConfiguracionEncabezado {
             icono: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-undo2-icon lucide-undo-2"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>`
         },
         {
+            id: "11",
+            ruta: "/parametros/informacion",
+            texto: "Información del Local",
+            accion: "Guardar",
+            icono: `<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>`
+        },
+        {
+            id: "14",
+            ruta: "/ventas/cierre-caja",
+            texto: "Cierre de Caja",
+            accion: "Guardar",
+            icono: `<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M80-120v-80h800v80H80Zm160-160v-320h80v320h-80Zm200 0v-320h80v320h-80Zm200 0v-320h80v320h-80ZM80-680v-80l400-200 400 200v80H80Zm146-80h508l-254-127-254 127Zm254-63Z"/></svg>`
+        },
+        {
             id: "21",
             ruta: "#",
             texto: "Notificaciones",
