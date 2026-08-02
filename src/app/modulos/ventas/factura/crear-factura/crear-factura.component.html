@@ -228,9 +228,9 @@
                         Cancelar
                     </button>
                     <button class="btn-modal-confirmar" type="button" (click)="confirmarVenta()"
-                        [disabled]="!puedeContinuar()"
+                        [disabled]="!puedeContinuar() || guardandoVenta"
                         [title]="!puedeContinuar() ? (pagosAplicados.length === 0 ? 'Seleccione un método de pago' : 'Complete todos los pagos para finalizar') : 'Finalizar venta'">
-                        {{ pagosAplicados.length === 0 ? 'Confirmar Venta' : (calcularSaldoPendiente() !== 0 ? 'Confirmar Venta (' + calcularSaldoPendiente() + ')' : 'Confirmar Venta') }}
+                        {{ guardandoVenta ? 'Procesando Venta...' : (pagosAplicados.length === 0 ? 'Confirmar Venta' : (calcularSaldoPendiente() !== 0 ? 'Confirmar Venta (' + calcularSaldoPendiente() + ')' : 'Confirmar Venta')) }}
                     </button>
                 </div>
             </div>

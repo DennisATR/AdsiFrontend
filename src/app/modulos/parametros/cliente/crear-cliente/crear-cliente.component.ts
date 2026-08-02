@@ -48,13 +48,13 @@ export class CrearClienteComponent implements OnInit {
       Correo: ['', [Validators.email]],
       Telefono: ['', [Validators.minLength(7), Validators.maxLength(10)]],
       FechaNac: [''],
-      Identificacion: ['']
+      Identificacion: ['', [Validators.required]]
     });
   }
 
   RegistrarCliente() {
     let campos = this.ObtenerFormGroup;
-    let datos = {
+    let datos: any = {
       Nombre: campos["Nombre"].value,
       Apellido: campos["Apellido"].value,
       Identificacion: campos["Identificacion"].value || "",
@@ -62,8 +62,10 @@ export class CrearClienteComponent implements OnInit {
       Barrio: campos["Barrio"].value || "",
       Correo: campos["Correo"].value || "",
       Telefono: campos["Telefono"].value || "",
-      FechaNac: new Date(campos["FechaNac"].value).toISOString(),
     };
+    if (campos["FechaNac"].value) {
+      datos.FechaNac = new Date(campos["FechaNac"].value).toISOString();
+    }
 
     this.servicioCliente.RegistrarCliente(datos).subscribe({
       next: (respuesta: ClienteModel) => {

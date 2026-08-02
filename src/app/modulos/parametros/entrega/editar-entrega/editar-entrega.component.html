@@ -7,14 +7,14 @@
         <div class="card-content">
             <form [formGroup]="fgValidador" (ngSubmit)="ActualizarRegistro()">
                 <div class="form-grid">
-                    <!-- Remitente -->
+                    <!-- Número de Guía -->
                     <div class="input">
-                        <input type="text" id="remitente" formControlName="remitente" class="validate"
-                            [class.error]="remitente?.invalid && remitente?.touched">
-                        <label for="remitente">Remitente</label>
-                        <div *ngIf="remitente?.invalid && remitente?.touched" class="error-message">
-                            <small *ngIf="remitente?.errors?.['required']">El remitente es requerido</small>
-                            <small *ngIf="remitente?.errors?.['minlength']">El remitente debe tener al menos 2 caracteres</small>
+                        <input type="text" id="numeroGuia" formControlName="numeroGuia" class="validate"
+                            [class.error]="numeroGuia?.invalid && numeroGuia?.touched">
+                        <label for="numeroGuia">Número de Guía</label>
+                        <div *ngIf="numeroGuia?.invalid && numeroGuia?.touched" class="error-message">
+                            <small *ngIf="numeroGuia?.errors?.['required']">El número de guía es requerido</small>
+                            <small *ngIf="numeroGuia?.errors?.['minlength']">El número de guía debe tener al menos 2 caracteres</small>
                         </div>
                     </div>
 

@@ -38,7 +38,7 @@ export class CrearEntregaComponent implements OnInit {
 
   ConstruirFormulario() {
     this.fGroup = this.fb.group({
-      Remitente: ['', [Validators.required]],
+      NumeroGuia: ['', [Validators.required]],
       EmpresaTrans: ['', [Validators.required]],
       NumCajas: ['', [Validators.required, Validators.min(1)]],
       Cobro: ['', [Validators.required, Validators.min(0)]],
@@ -59,7 +59,7 @@ export class CrearEntregaComponent implements OnInit {
   RegistrarEntrega() {
     let campos = this.ObtenerFormGroup;
     let datos = {
-      Remitente: campos['Remitente'].value,
+      NumeroGuia: campos['NumeroGuia'].value,
       EmpresaTrans: campos['EmpresaTrans'].value,
       NumCajas: parseInt(campos['NumCajas'].value),
       Cobro: parseFloat(campos['Cobro'].value),

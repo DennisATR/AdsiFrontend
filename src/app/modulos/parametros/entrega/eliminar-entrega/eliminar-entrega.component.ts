@@ -12,7 +12,7 @@ import { EntregaModel } from '../../../../modelos/entrega.model';
 export class EliminarEntregaComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: number = 0;
-  remitente: string = "";
+  numeroGuia: string = "";
   empresaTrans: string = "";
   numCajas: number = 0;
   cobro: number = 0;
@@ -34,7 +34,7 @@ export class EliminarEntregaComponent implements OnInit {
   BuscarRegistro() {
     this.servicio.BuscarEntrega(this.recordId).subscribe({
       next: (datos: EntregaModel) => {
-        this.remitente = datos.Remitente!;
+        this.numeroGuia = datos.NumeroGuia!;
         this.empresaTrans = datos.EmpresaTrans!;
         this.numCajas = datos.NumCajas!;
         this.cobro = datos.Cobro!;

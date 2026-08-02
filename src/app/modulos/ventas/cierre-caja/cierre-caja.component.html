@@ -14,7 +14,7 @@
 
         <!-- Base Caja -->
         <div class="input col s4">
-          <input formControlName="Base" id="Base" type="number" min="0" step="10000" class="validate" />
+          <input formControlName="Base" id="Base" appFormatoMiles type="text" class="validate" />
           <label for="Base">Base de Caja</label>
           <div *ngIf="ObtenerFormGroup['Base'].invalid && ObtenerFormGroup['Base'].touched" class="error-message">
             <small>La base es obligatoria y debe ser mayor o igual a 0.</small>
@@ -23,7 +23,7 @@
 
         <!-- Entrega -->
         <div class="input col s4">
-          <input formControlName="Entrega" id="Entrega" type="number" min="0" step="10000" class="validate"
+          <input formControlName="Entrega" id="Entrega" appFormatoMiles type="text" class="validate"
             placeholder="Sin entrega registrada" />
           <label for="Entrega">Entrega</label>
           <div *ngIf="ObtenerFormGroup['Entrega'].invalid && ObtenerFormGroup['Entrega'].touched" class="error-message">
@@ -36,7 +36,7 @@
           <span class="estado-label">Estado</span>
           <span class="badge" [ngClass]="{
             'badge-abierto': cierreCajaHoy.Estado === 'Abierto',
-            'badge-cerrado': cierreCajaHoy.Estado === 'Cerrado'
+            'badge-cerrado': cierreCajaHoy.Estado === 'Cerrado' || cierreCajaHoy.Estado === 'Cerrada'
           }">
             {{ cierreCajaHoy.Estado }}
           </span>

@@ -118,6 +118,11 @@
 	color: #dc2626;
 }
 
+.estado-cerrado {
+	color: #dc2626 !important;
+	font-weight: 700;
+}
+
 .detalle-resumen h6 {
 	margin: 0 0 0.7rem 0;
 	text-transform: uppercase;
@@ -438,7 +443,8 @@
 	padding-right: 0px;
 }
 
-.input input[type="number"] {
+.input input[type="number"],
+.input input[type="text"] {
 	width: 100%;
 	max-width: 100%;
 	padding: 0.75rem 1rem;
@@ -450,14 +456,16 @@
 	box-sizing: border-box;
 }
 
-.input input[type="number"]:focus {
+.input input[type="number"]:focus,
+.input input[type="text"]:focus {
 	outline: none;
 	border-color: #3b82f6;
 	box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 	background-color: #fefefe;
 }
 
-.input input[type="number"]:hover {
+.input input[type="number"]:hover,
+.input input[type="text"]:hover {
 	border-color: #9ca3af;
 }
 

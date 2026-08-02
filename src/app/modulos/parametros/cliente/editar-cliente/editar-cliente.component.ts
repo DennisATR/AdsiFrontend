@@ -35,7 +35,7 @@ export class EditarClienteComponent {
     this.fgValidador = this.fb.group({
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
-      identificacion: [''],
+      identificacion: ['', [Validators.required]],
       telefono: [''],
       correo: ['', [Validators.email]],
       ciudad: ['', [Validators.required]],
@@ -71,7 +71,7 @@ export class EditarClienteComponent {
       return;
     }
 
-    let datos = {
+    let datos: any = {
       Nombre: this.fgValidador.controls['nombre'].value,
       Apellido: this.fgValidador.controls['apellido'].value,
       Identificacion: this.fgValidador.controls['identificacion'].value || "",
@@ -79,8 +79,10 @@ export class EditarClienteComponent {
       Correo: this.fgValidador.controls['correo'].value || "",
       Ciudad: this.fgValidador.controls['ciudad'].value,
       Barrio: this.fgValidador.controls['barrio'].value || "",
-      FechaNac: this.fgValidador.controls['fechaNac'].value ? new Date(this.fgValidador.controls['fechaNac'].value).toISOString() : null
     };
+    if (this.fgValidador.controls['fechaNac'].value) {
+      datos.FechaNac = new Date(this.fgValidador.controls['fechaNac'].value).toISOString();
+    }
 
     this.servicio.EditarCliente(this.recordId, datos).subscribe({
       next: (data: any) => {

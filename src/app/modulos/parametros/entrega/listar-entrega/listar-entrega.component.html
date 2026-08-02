@@ -15,7 +15,7 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Remitente</th>
+        <th>Número de Guía</th>
         <th>Empresa Transportadora</th>
         <th>Número de Cajas</th>
         <th>Cobro</th>
@@ -27,7 +27,7 @@
     <tbody>
       <tr *ngFor="let entrega of entregasFiltradas | paginate: { itemsPerPage: registrosPorPagina, currentPage: pag, totalItems: totalItems }">
         <td>{{ entrega.id }}</td>
-        <td>{{ entrega.Remitente || 'N/A' }}</td>
+        <td>{{ entrega.NumeroGuia || 'N/A' }}</td>
         <td>{{ entrega.EmpresaTrans || 'N/A' }}</td>
         <td>{{ entrega.NumCajas || 0 }}</td>
         <td>{{ entrega.Cobro || 0 }}</td>

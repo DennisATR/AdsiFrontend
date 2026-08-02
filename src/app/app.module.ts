@@ -15,6 +15,9 @@ import { AlertDialogComponent } from './shared/dialog/alert-dialog.component';
 import { NotificacionDropdownComponent } from './public/pagina-maestra/notificacion-dropdown/notificacion-dropdown.component';
 
 
+import { SharedDirectivesModule } from './shared/shared-directives.module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +33,8 @@ import { NotificacionDropdownComponent } from './public/pagina-maestra/notificac
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    SharedDirectivesModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]

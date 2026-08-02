@@ -1,6 +1,6 @@
 export class EntregaModel{
     id?: number;
-    Remitente?: string;
+    NumeroGuia?: string;
     EmpresaTrans?: string;
     NumCajas?: number;
     Cobro?: number;

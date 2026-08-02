@@ -33,7 +33,7 @@ export class EditarEntregaComponent implements OnInit {
 
   ConstruirFormulario() {
     this.fgValidador = this.fb.group({
-      remitente: ['', [Validators.required, Validators.minLength(2)]],
+      numeroGuia: ['', [Validators.required, Validators.minLength(2)]],
       empresaTrans: ['', [Validators.required, Validators.minLength(2)]],
       numCajas: ['', [Validators.required, Validators.min(1)]],
       cobro: ['', [Validators.required, Validators.min(0)]],
@@ -46,7 +46,7 @@ export class EditarEntregaComponent implements OnInit {
     this.servicio.BuscarEntrega(this.recordId).subscribe({
       next: (datos: EntregaModel) => {
         this.fgValidador.patchValue({
-          remitente: datos.Remitente,
+          numeroGuia: datos.NumeroGuia,
           empresaTrans: datos.EmpresaTrans,
           numCajas: datos.NumCajas,
           cobro: datos.Cobro,
@@ -68,7 +68,7 @@ export class EditarEntregaComponent implements OnInit {
     }
 
     let datos = {
-      Remitente: this.fgValidador.controls['remitente'].value,
+      NumeroGuia: this.fgValidador.controls['numeroGuia'].value,
       EmpresaTrans: this.fgValidador.controls['empresaTrans'].value,
       NumCajas: this.fgValidador.controls['numCajas'].value,
       Cobro: this.fgValidador.controls['cobro'].value,
@@ -93,7 +93,7 @@ export class EditarEntregaComponent implements OnInit {
   }
 
   // Getters para validaciones
-  get remitente() { return this.fgValidador.get('remitente'); }
+  get numeroGuia() { return this.fgValidador.get('numeroGuia'); }
   get empresaTrans() { return this.fgValidador.get('empresaTrans'); }
   get numCajas() { return this.fgValidador.get('numCajas'); }
   get cobro() { return this.fgValidador.get('cobro'); }

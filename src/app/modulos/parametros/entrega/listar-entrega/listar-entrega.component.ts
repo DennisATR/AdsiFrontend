@@ -46,7 +46,7 @@ export class ListarEntregaComponent {
       } else {
         this.entregasFiltradas = this.entregas.filter(e =>
           e.id?.toString().toLowerCase().includes(query) ||
-          e.Remitente?.toLowerCase().includes(query) ||
+          e.NumeroGuia?.toLowerCase().includes(query) ||
           e.EmpresaTrans?.toLowerCase().includes(query) ||
           e.Observacion?.toLowerCase().includes(query)
         );

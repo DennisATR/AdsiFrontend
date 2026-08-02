@@ -41,4 +41,12 @@ export class AlertDialogComponent implements OnInit {
 
   @HostListener('document:keydown.escape')
   onEscape() { this.dismiss(); }
+
+  @HostListener('document:keydown.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    if (!this.visible) return;
+    event.preventDefault();
+    event.stopPropagation();
+    this.accept();
+  }
 }

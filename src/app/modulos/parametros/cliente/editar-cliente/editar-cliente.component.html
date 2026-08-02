@@ -32,13 +32,16 @@
                         <input type="text" id="identificacion" formControlName="identificacion" class="validate"
                             [class.error]="identificacion?.invalid && identificacion?.touched">
                         <label for="identificacion">Identificación</label>
+                        <div *ngIf="identificacion?.invalid && identificacion?.touched" class="error-message">
+                            <small *ngIf="identificacion?.errors?.['required']">La identificación es requerida</small>
+                        </div>
                     </div>
 
                     <!-- Fecha de Nacimiento -->
                     <div class="input">
                         <input type="date" id="fechaNac" formControlName="fechaNac" class="validate"
                             [class.error]="fechaNac?.invalid && fechaNac?.touched">
-                        <label for="fechaNac">Fecha de Nacimiento</label>
+                        <label for="fechaNac">Fecha de Nacimiento (Opcional)</label>
                     </div>
 
                     <!-- Ciudad -->
@@ -62,9 +65,8 @@
                     <div class="input">
                         <input type="email" id="correo" formControlName="correo" class="validate"
                             [class.error]="correo?.invalid && correo?.touched">
-                        <label for="correo">Correo Electrónico</label>
+                        <label for="correo">Correo Electrónico (Opcional)</label>
                         <div *ngIf="correo?.invalid && correo?.touched" class="error-message">
-                            <small *ngIf="correo?.errors?.['required']">El correo es requerido</small>
                             <small *ngIf="correo?.errors?.['email']">El formato del correo no es válido</small>
                         </div>
                     </div>

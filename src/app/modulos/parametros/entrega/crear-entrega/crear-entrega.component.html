@@ -7,12 +7,12 @@
         <div class="form-section">
             <div class="row">
                 <div class="input col s12 m6 l7">
-                    <input formControlName="Remitente" id="Remitente" #remitente
-                        (keydown.enter)="focusNext(remitente, empresaTrans)" type="text" class="validate" />
-                    <label for="Remitente">Remitente</label>
-                    <div *ngIf="ObtenerFormGroup['Remitente'].invalid && ObtenerFormGroup['Remitente'].touched"
+                    <input formControlName="NumeroGuia" id="NumeroGuia" #numeroGuia
+                        (keydown.enter)="focusNext(numeroGuia, empresaTrans)" type="text" class="validate" />
+                    <label for="NumeroGuia">Número de Guía</label>
+                    <div *ngIf="ObtenerFormGroup['NumeroGuia'].invalid && ObtenerFormGroup['NumeroGuia'].touched"
                         class="error-message">
-                        <small>El remitente es obligatorio.</small>
+                        <small>El número de guía es obligatorio.</small>
                     </div>
                 </div>
 

@@ -40,7 +40,7 @@
 		<div class="resumen-rapido">
 			<div class="linea-item">
 				<span>Estado cierre</span>
-				<strong>{{ cierreCajaHoy?.Estado || 'Sin cierre' }}</strong>
+				<strong [ngClass]="{'estado-cerrado': cierreCajaHoy?.Estado === 'Cerrado' || cierreCajaHoy?.Estado === 'Cerrada'}">{{ cierreCajaHoy?.Estado || 'Sin cierre' }}</strong>
 			</div>
 			<div class="linea-item">
 				<span>Base de caja</span>
@@ -257,7 +257,7 @@
 
 			<!-- Campo: Monto Real -->
 			<div class="input">
-				<input id="montoRealInput" type="number" min="0" class="validate" placeholder=" " [(ngModel)]="montoReal"
+				<input id="montoRealInput" appFormatoMiles type="text" class="validate" placeholder=" " [(ngModel)]="montoReal"
 					(input)="RecalcularValorADejar()" />
 				<label for="montoRealInput">Monto real en caja</label>
 			</div>

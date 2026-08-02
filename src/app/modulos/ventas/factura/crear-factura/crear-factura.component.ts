@@ -43,6 +43,7 @@ export class CrearFacturaComponent implements OnInit {
   almacenes: AlmacenModel[] = [];
   mostrarModalFinalizar: boolean = false;
   totalVenta: number = 0;
+  guardandoVenta: boolean = false;
 
   // Múltiples pagos
   pagosAplicados: Array<{metodoPagoId: number, monto: number, montoRecibido: number}> = [];
@@ -194,6 +195,7 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   limpiarFormulario(): void {
+    this.guardandoVenta = false;
     this.fGroup.reset();
     this.lineasVenta = [];
     this.totalFactura = 0;
@@ -414,6 +416,7 @@ export class CrearFacturaComponent implements OnInit {
 
   // Método para cerrar el modal
   cerrarModal(): void {
+    this.guardandoVenta = false;
     this.mostrarModalFinalizar = false;
     // Limpiar campos del modal
     this.pagosAplicados = [];
@@ -588,6 +591,9 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   confirmarVenta(): void {
+    if (this.guardandoVenta) {
+      return;
+    }
     const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
 
     // Si no hay pagos registrados, verifica si hay un abono manual
@@ -672,6 +678,10 @@ export class CrearFacturaComponent implements OnInit {
   }
 
   RegistrarFactura() {
+    if (this.guardandoVenta) {
+      return;
+    }
+
     // Si hay múltiples pagos, solo valida los campos básicos de factura
     if (this.pagosAplicados.length > 1) {
       if (!this.fGroup.get('clienteId')?.value || !this.fGroup.get('vendedorId')?.value) {
@@ -694,6 +704,7 @@ export class CrearFacturaComponent implements OnInit {
       return;
     }
 
+    this.guardandoVenta = true;
     let campos = this.ObtenerFormGroup;
 
     // Calcular el total de facturas sumando las líneas de venta
@@ -723,6 +734,7 @@ export class CrearFacturaComponent implements OnInit {
         this.registrarLineasVenta(facturaId, totalFactura);
       },
       error: (err: any) => {
+        this.guardandoVenta = false;
         if (err.error && err.error.error && err.error.error.message) {
           alert('Error al registrar factura: ' + err.error.error.message);
         } else {

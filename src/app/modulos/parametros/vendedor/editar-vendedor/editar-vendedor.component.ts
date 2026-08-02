@@ -13,6 +13,7 @@ import { VendedorService } from '../../../../servicios/parametros/vendedor.servi
 export class EditarVendedorComponent implements OnInit {
   BASE_URL: String = ConfiguracionRutasBackend.urlBackend;
   recordId: string = '';
+  fechaReg: string = '';
   fgValidador!: FormGroup;
 
   constructor(
@@ -35,18 +36,20 @@ export class EditarVendedorComponent implements OnInit {
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       correo: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.minLength(10)]],
-      clave: ['', [Validators.minLength(6)]] // Optional in edit
+      clave: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
 
   BuscarRegistro() {
     this.servicio.BuscarVendedor(this.recordId).subscribe({
       next: (datos: VendedorModel) => {
+        this.fechaReg = datos.FechaReg || '';
         this.fgValidador.patchValue({
           nombre: datos.Nombre,
           apellido: datos.Apellido,
           correo: datos.Correo,
-          telefono: datos.Telefono
+          telefono: datos.Telefono,
+          clave: datos.Clave
         });
       },
       error: (err) => {
@@ -68,12 +71,9 @@ export class EditarVendedorComponent implements OnInit {
       Apellido: this.fgValidador.controls['apellido'].value,
       Correo: this.fgValidador.controls['correo'].value,
       Telefono: this.fgValidador.controls['telefono'].value,
-      FechaReg: new Date()
+      Clave: this.fgValidador.controls['clave'].value,
+      FechaReg: this.fechaReg || new Date().toLocaleString('sv-SE', {timeZone: 'America/Bogota'})
     };
-
-    if (this.fgValidador.controls['clave'].value) {
-      datos.Clave = this.fgValidador.controls['clave'].value;
-    }
 
     this.servicio.EditarVendedor(this.recordId, datos).subscribe({
       next: (data: any) => {
