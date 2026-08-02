@@ -7,4 +7,6 @@ export class UsuarioModel {
     Clave?: string;
     Correo?: string;
     rolId?: number;
+    radiusUser?: string;
+    radiusClave?: string;
 }

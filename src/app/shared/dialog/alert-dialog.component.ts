@@ -12,13 +12,32 @@ export class AlertDialogComponent implements OnInit {
   @Input() type: AlertType = 'info';
   @Input() isConfirm: boolean = false;
   @Input() cambio: number = 0;
+  @Input() wifiUser: string = '';
+  @Input() wifiPassword: string = '';
   @Output() dialogResult = new EventEmitter<boolean>();
 
   visible = false;
+  copiedUser = false;
+  copiedPassword = false;
 
   ngOnInit() {
     // Trigger animation on next frame
     requestAnimationFrame(() => { this.visible = true; });
+  }
+
+  copiarTexto(texto: string, tipo: 'user' | 'pass') {
+    if (!texto) return;
+    navigator.clipboard.writeText(texto).then(() => {
+      if (tipo === 'user') {
+        this.copiedUser = true;
+        setTimeout(() => { this.copiedUser = false; }, 2000);
+      } else {
+        this.copiedPassword = true;
+        setTimeout(() => { this.copiedPassword = false; }, 2000);
+      }
+    }).catch(err => {
+      console.error('Error al copiar:', err);
+    });
   }
 
   get title(): string {

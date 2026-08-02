@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VendedorService } from '../../../../servicios/parametros/vendedor.service';
+import { DialogService } from '../../../../servicios/dialog.service';
 import { VendedorModel } from '../../../../modelos/vendedor.model';
 import { ListarVendedorComponent } from '../listar-vendedor/listar-vendedor.component';
 
@@ -16,7 +17,8 @@ export class CrearVendedorComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private servicioVendedor: VendedorService
+    private servicioVendedor: VendedorService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -46,7 +48,11 @@ export class CrearVendedorComponent implements OnInit {
 
     this.servicioVendedor.RegistrarVendedor(datos).subscribe({
       next: (respuesta: VendedorModel) => {
-        alert('Vendedor registrado correctamente.');
+        if (respuesta.radiusUser && respuesta.radiusClave) {
+          this.dialogService.mostrarWifi('Vendedor registrado correctamente.', respuesta.radiusUser, respuesta.radiusClave);
+        } else {
+          this.dialogService.mostrar('Vendedor registrado correctamente.', 'success');
+        }
         if (this.listarVendedorComponent) {
           this.listarVendedorComponent.obtenerVendedores();
         }

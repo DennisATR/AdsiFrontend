@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeguridadService } from '../../../../servicios/seguridad.service';
+import { DialogService } from '../../../../servicios/dialog.service';
 import { UsuarioModel } from '../../../../modelos/usuario.model';
 import { RolModel } from '../../../../modelos/rol.model';
 import { ListarUsuarioComponent } from '../listar-usuario/listar-usuario.component';
@@ -19,7 +20,8 @@ export class CrearUsuarioComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private servicioSeguridad: SeguridadService
+    private servicioSeguridad: SeguridadService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -81,7 +83,11 @@ export class CrearUsuarioComponent implements OnInit {
 
     this.servicioSeguridad.RegistrarUsuario(datos).subscribe({
       next: (respuesta: UsuarioModel) => {
-        alert('Registro correcto, se ha enviado un mensaje para validar su dirección de correo electrónico.');
+        if (respuesta.radiusUser && respuesta.radiusClave) {
+          this.dialogService.mostrarWifi('Usuario registrado correctamente.', respuesta.radiusUser, respuesta.radiusClave);
+        } else {
+          this.dialogService.mostrar('Usuario registrado correctamente.', 'success');
+        }
         if (this.listarUsuarioComponent) {
           this.listarUsuarioComponent.obtenerUsuarios();
         }

@@ -211,3 +211,98 @@
   line-height: 1.1;
   display: block;
 }
+
+/* Tarjeta estilizada para Credenciales de WiFi */
+.adsi-wifi-card {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  text-align: left;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.adsi-wifi-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.adsi-wifi-icon {
+  width: 20px;
+  height: 20px;
+  color: #0284c7;
+}
+
+.adsi-wifi-group {
+  margin-bottom: 10px;
+}
+
+.adsi-wifi-group:last-child {
+  margin-bottom: 0;
+}
+
+.adsi-wifi-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.adsi-wifi-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  gap: 10px;
+}
+
+.adsi-wifi-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: monospace, monospace;
+  letter-spacing: 0.03em;
+}
+
+.adsi-wifi-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.adsi-wifi-copy-btn:hover {
+  background: #0369a1;
+  transform: translateY(-1px);
+}
+
+.adsi-wifi-copy-btn .copy-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.adsi-wifi-copy-btn .copied-text {
+  color: #ffffff;
+  font-weight: 700;
+}
+

@@ -31,6 +31,51 @@
         <div class="adsi-cambio-label">Cambio a devolver:</div>
         <div class="adsi-cambio-value">{{ cambio | currency:'COP':'symbol-narrow':'1.0-0' }}</div>
       </div>
+
+      <!-- Credenciales de WiFi con botones de copiado -->
+      <div *ngIf="wifiUser || wifiPassword" class="adsi-wifi-card">
+        <div class="adsi-wifi-header">
+          <svg class="adsi-wifi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+            <line x1="12" y1="20" x2="12.01" y2="20"></line>
+          </svg>
+          <span>Acceso WiFi Generado</span>
+        </div>
+
+        <!-- Usuario WiFi -->
+        <div class="adsi-wifi-group" *ngIf="wifiUser">
+          <span class="adsi-wifi-label">Su usuario de WiFi es:</span>
+          <div class="adsi-wifi-field">
+            <strong class="adsi-wifi-val">{{ wifiUser }}</strong>
+            <button type="button" class="adsi-wifi-copy-btn" (click)="copiarTexto(wifiUser, 'user')">
+              <svg *ngIf="!copiedUser" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span *ngIf="!copiedUser">Copiar</span>
+              <span *ngIf="copiedUser" class="copied-text">✓ Copiado</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Contraseña WiFi -->
+        <div class="adsi-wifi-group" *ngIf="wifiPassword">
+          <span class="adsi-wifi-label">Su contraseña de WiFi es:</span>
+          <div class="adsi-wifi-field">
+            <strong class="adsi-wifi-val">{{ wifiPassword }}</strong>
+            <button type="button" class="adsi-wifi-copy-btn" (click)="copiarTexto(wifiPassword, 'pass')">
+              <svg *ngIf="!copiedPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span *ngIf="!copiedPassword">Copiar</span>
+              <span *ngIf="copiedPassword" class="copied-text">✓ Copiada</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Botones -->

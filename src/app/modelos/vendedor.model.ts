@@ -7,4 +7,6 @@ export class VendedorModel{
     Correo?: string;
     Clave?: string;
     usuarioId?: number;
+    radiusUser?: string;
+    radiusClave?: string;
 }
