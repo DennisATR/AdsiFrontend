@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeguridadService } from '../../servicios/seguridad.service';
 import { CierreCajaService } from '../../servicios/ventas/cierre-caja.service';
 
+import { CierreCajaModel } from '../../modelos/cierreCaja.model';
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
@@ -47,13 +49,26 @@ export class InicioComponent implements OnInit {
     }
 
     const hoy = new Date().toLocaleDateString('sv-SE', {timeZone: 'America/Bogota'});
-    const fechaGuardada = localStorage.getItem('fecha-base-caja');
-    console.log('Datos de sesión:', datosSesion);
-    console.log('Fecha guardada en localStorage:', fechaGuardada);
-    console.log('Fecha actual formateada:', hoy);
-    if (fechaGuardada !== hoy) {
-      this.mostrarModalBase = true;
-    }
+
+    // Consultar en la base de datos si YA existe un cierre/base registrado para hoy
+    this.cierreCajaService.ObtenerCierreDelDia(hoy).subscribe({
+      next: (cierres: CierreCajaModel[]) => {
+        if (cierres && cierres.length > 0) {
+          // Ya existe un registro para hoy en la BD -> NO mostrar modal a nadie más hoy
+          this.mostrarModalBase = false;
+          if (cierres[0].id) {
+            localStorage.setItem('cierre-caja-id', cierres[0].id.toString());
+          }
+        } else {
+          // No existe ningún registro de hoy -> este es el primer usuario con permiso del día
+          this.mostrarModalBase = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al verificar cierre del día:', err);
+        this.mostrarModalBase = false;
+      }
+    });
   }
 
   RegistrarBase() {

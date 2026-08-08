@@ -551,7 +551,19 @@ export class CrearFacturaComponent implements OnInit {
   puedeContinuar(): boolean {
     const tipoVenta = this.fGroup.get('tipoVenta')?.value || 'contado';
 
-    // Necesita método de pago seleccionado
+    // Si ya hay pagos agregados a la lista:
+    if (this.pagosAplicados.length > 0) {
+      if (tipoVenta === 'contado') {
+        // Con pagos agregados: el saldo pendiente debe ser 0
+        return this.calcularSaldoPendiente() === 0;
+      } else {
+        // Crédito con pagos agregados: se puede continuar
+        return true;
+      }
+    }
+
+    // Si NO hay pagos agregados en la lista (pago único directo):
+    // Necesita método de pago seleccionado en el formulario
     if (!this.fGroup.get('metodoPagoId')?.valid) {
       return false;
     }
@@ -577,13 +589,8 @@ export class CrearFacturaComponent implements OnInit {
     }
 
     if (tipoVenta === 'contado') {
-      // CONTADO: requiere pagos agregados O abono exacto al total
-      if (this.pagosAplicados.length === 0) {
-        // Sin pagos agregados: abono debe ser 0 o exacto al total
-        return abono === 0 || abono === this.totalVenta;
-      }
-      // Con pagos: el saldo debe ser 0
-      return this.calcularSaldoPendiente() === 0;
+      // CONTADO: abono debe ser 0 (pago total por defecto) o exacto al total
+      return abono === 0 || abono === this.totalVenta;
     } else {
       // CRÉDITO: solo requiere abono > 0 (puede ser parcial)
       return abono > 0;
@@ -682,8 +689,8 @@ export class CrearFacturaComponent implements OnInit {
       return;
     }
 
-    // Si hay múltiples pagos, solo valida los campos básicos de factura
-    if (this.pagosAplicados.length > 1) {
+    // Si hay pagos ya agregados en la lista (1 o más), solo valida cliente y vendedor
+    if (this.pagosAplicados.length >= 1) {
       if (!this.fGroup.get('clienteId')?.value || !this.fGroup.get('vendedorId')?.value) {
         alert('Debe seleccionar cliente y vendedor.');
         return;

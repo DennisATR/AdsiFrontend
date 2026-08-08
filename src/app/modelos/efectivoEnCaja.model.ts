@@ -18,4 +18,5 @@ export class EfectivoEnCajaModel {
     devoluciones?: number;
     credito?: number;
     abonos?: number;
+    vendedoresVentas?: Array<{vendedor: string; zapatosVendidos: number}>;
 }

@@ -58,6 +58,11 @@
 				<span>Abonos</span>
 				<strong>{{ (cierreCajaEfectivo?.abonos ?? 0) | currency:'$':'symbol':'1.0-0' }}</strong>
 			</div>
+			<!-- Vendedores y zapatos vendidos -->
+			<div class="linea-item" *ngFor="let item of cierreCajaEfectivo?.vendedoresVentas">
+				<span>- {{ item.vendedor || 'Vendedor' }}</span>
+				<strong>{{ item.zapatosVendidos || 0 }} zap.</strong>
+			</div>
 		</div>
 
 		<div class="separador"></div>

@@ -10,12 +10,13 @@ export namespace ConfiguracionListas {
         'San Andrés', 'Mitú', 'Puerto Carreño', 'Inírida', 'Mocoa',
         'Arauca', 'Apartadó', 'Itagüí', 'Soacha', 'Bello',
         'Envigado', 'Palmira', 'Buenaventura', 'Tumaco', 'Ipiales',
-        'Tuquerres', 'Maicao'
+        'Tuquerres', 'Maicao', 'Cumbal', 'Sandoná', 'Guachucal', 'Samaniego',
+        'El Tambo', 'Pasto', 'Santader', 'Ecuador'
     ];
 
     // Conceptos de Gasto
     export const conceptosGasto: string[] = [
-        'Arriendo', 'Servicio de luz', 'Servicio de agua', 'Pan del día', 'Internet',
+        'Arriendo', 'Servicio de luz', 'Servicio de agua', 'Pan del día', 'Publicidad', 'Internet',
         'Papel higiénico', 'Artículos de limpieza', 'Retiro de caja', 'Otros'
     ];
 
@@ -40,11 +41,13 @@ export namespace ConfiguracionListas {
     export const colores: string[] = [
         // Colores básicos
         'Negro', 'Blanco', 'Gris', 'Azul', 'Rojo', 'Verde', 'Amarillo',
-        'Café', 'Beige', 'Marrón',
+        'Café', 'Beige', 'Marrón', 'Turquesa', 'Morado', 'Vinotinto'
+        , 'Lila', 'Salmon', 'Violeta', 'Tomate', 'Lima', 'Turquesa', 'Navy', "Nude"
+        , "Marron",
 
         // Tonos y variantes
         'Azul marino', 'Azul cielo', 'Verde oliva', 'Verde militar',
-        'Rojo vino', 'Burdeos', 'Rosado', 'Fucsia', 'Naranja', 'Mostaza',
+        'Burdeos', 'Rosado', 'Fucsia', 'Naranja', 'Mostaza',
         'Crema', 'Arena', 'Chocolate', 'Caramelo', 'Caqui',
 
         // Metálicos y especiales
@@ -71,8 +74,8 @@ export namespace ConfiguracionListas {
     ];
 
     export const razonesDevolucion: string[] = [
-        'Producto defectuoso', 'Talla incorrecta', 'Cambio de producto', 
-        'Color diferente al pedido', 'Entrega tardía', 'Producto equivocado', 
+        'Producto defectuoso', 'Talla incorrecta', 'Cambio de producto',
+        'Color diferente al pedido', 'Entrega tardía', 'Producto equivocado',
         'Dañado durante el envío'
     ];
 }

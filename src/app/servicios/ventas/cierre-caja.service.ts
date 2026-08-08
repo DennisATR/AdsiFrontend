@@ -27,6 +27,11 @@ export class CierreCajaService {
     return this.http.get<CierreCajaModel[]>(`${this.urlBase}cierre-caja`);
   }
 
+  ObtenerCierreDelDia(fechaStr: string): Observable<CierreCajaModel[]> {
+    const filter = encodeURIComponent(JSON.stringify({ where: { FechaHoraApertura: { like: `${fechaStr}%` } } }));
+    return this.http.get<CierreCajaModel[]>(`${this.urlBase}cierre-caja?filter=${filter}`);
+  }
+
   BuscarCierreCaja(id: number): Observable<CierreCajaModel> {
     return this.http.get<CierreCajaModel>(`${this.urlBase}cierre-caja/${id}`);
   }

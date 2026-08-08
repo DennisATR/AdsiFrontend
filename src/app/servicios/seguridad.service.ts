@@ -51,7 +51,21 @@ export class SeguridadService {
   /**
    * Obtiene los datos del usuario
    */
+  /**
+   * Obtiene los datos del usuario
+   */
   ObtenerDatosUsuarioIdentificado(): UsuarioModel | null {
+    let ls = localStorage.getItem("datos-sesion");
+    if (!ls) return null;
+    
+    // Validar expiración diaria de sesión
+    const hoy = new Date().toLocaleDateString('sv-SE', {timeZone: 'America/Bogota'});
+    const fechaSesion = localStorage.getItem("fecha-sesion");
+    if (fechaSesion !== hoy) {
+      this.RemoverDatosUsuarioValidado();
+      return null;
+    }
+
     let datosLS = localStorage.getItem("datos-usuario");
     if (datosLS) {
       let datos = JSON.parse(datosLS);
@@ -68,6 +82,8 @@ export class SeguridadService {
     } else {
       let datosString = JSON.stringify(datos);
       localStorage.setItem("datos-sesion", datosString);
+      const hoy = new Date().toLocaleDateString('sv-SE', {timeZone: 'America/Bogota'});
+      localStorage.setItem("fecha-sesion", hoy);
       // Si la respuesta incluye permisos, construir y almacenar el encabezado
       if (datos.menu && datos.menu.length > 0) {
         this.ConstruirEncabezado(datos.menu);
@@ -88,6 +104,13 @@ export class SeguridadService {
   validacionDeSesion(): UsuarioValidadoModel | null {
     let ls = localStorage.getItem("datos-sesion");
     if (ls) {
+      const hoy = new Date().toLocaleDateString('sv-SE', {timeZone: 'America/Bogota'});
+      const fechaSesion = localStorage.getItem("fecha-sesion");
+      if (fechaSesion !== hoy) {
+        // La sesión fue iniciada en un día anterior -> expirar automáticamente la sesión
+        this.RemoverDatosUsuarioValidado();
+        return null;
+      }
       let objUsuario = JSON.parse(ls);
       this.ActualizarComportamientoUsuario(objUsuario);
       return objUsuario;
@@ -147,6 +170,10 @@ export class SeguridadService {
       localStorage.removeItem("datos-sesion");
     }
     localStorage.removeItem("menu-lateral");
+    localStorage.removeItem("menu-encabezado");
+    localStorage.removeItem("fecha-sesion");
+    localStorage.removeItem("fecha-base-caja");
+    localStorage.removeItem("cierre-caja-id");
     this.ActualizarComportamientoUsuario(new UsuarioValidadoModel());
   }
 
