@@ -43,7 +43,7 @@ export namespace ConfiguracionListas {
         'Negro', 'Blanco', 'Gris', 'Azul', 'Rojo', 'Verde', 'Amarillo',
         'Café', 'Beige', 'Marrón', 'Turquesa', 'Morado', 'Vinotinto'
         , 'Lila', 'Salmon', 'Violeta', 'Tomate', 'Lima', 'Turquesa', 'Navy', "Nude"
-        , "Marron",
+        , "Marron", "Moraleche", "Charol",
 
         // Tonos y variantes
         'Azul marino', 'Azul cielo', 'Verde oliva', 'Verde militar',
