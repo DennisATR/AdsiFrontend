@@ -46,12 +46,12 @@
 
     <!-- Notification Item Card -->
     <div *ngFor="let item of notificacionesVisibles" class="notification-card" [class.expanded]="isExpandida(item.id)"
-      [class.atendida]="item.Estado === 'atendida'" (click)="toggleCard(item.id)">
+      [class.atendida]="item.Estado === 'atendida'">
 
       <div class="card-accent-border" [class.accent-atendida]="item.Estado === 'atendida'"></div>
 
-      <!-- COLLAPSED CARD VIEW -->
-      <div *ngIf="!isExpandida(item.id)" class="card-collapsed-content">
+      <!-- COLLAPSED HEADER BAR (Clickable to toggle expansion) -->
+      <div class="card-collapsed-content" (click)="toggleCard($event, item.id)">
         <div class="card-left-info">
           <div class="card-top-bar">
             <span *ngIf="item.Estado !== 'atendida'" class="badge-exhibicion-pill">
@@ -75,37 +75,17 @@
           <span class="code-pill-sm">{{ item.zapatoId }}</span>
         </div>
 
-        <div class="card-right-arrow">
+        <div class="card-right-arrow" [class.rotated]="isExpandida(item.id)">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
             class="chevron-icon">
-            <polyline points="9 18 15 12 9 6"></polyline>
+            <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </div>
       </div>
 
       <!-- EXPANDED CARD VIEW (Shows Accept Button if pending) -->
-      <div *ngIf="isExpandida(item.id)" class="card-body">
-        <div class="card-top-bar">
-          <span *ngIf="item.Estado !== 'atendida'" class="badge-exhibicion-pill">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12 9v4" />
-              <path
-                d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
-              <path d="M12 16h.01" />
-            </svg>
-            Exhibición Vendida
-          </span>
-          <span *ngIf="item.Estado === 'atendida'" class="badge-atendida-pill">
-            ✓ Atendida
-          </span>
-          <span class="card-timestamp">{{ item.FechaHora | date: 'dd/MM/yyyy hh:mm a' : 'UTC' }}</span>
-        </div>
-
-        <h4 class="card-shoe-title">{{ item.descripcion }}</h4>
-
+      <div *ngIf="isExpandida(item.id)" class="card-body" (click)="$event.stopPropagation()">
         <div class="card-meta-info">
           <p class="meta-line">
             <span class="meta-label">Código:</span>
@@ -135,12 +115,12 @@
         </div>
 
         <div *ngIf="item.Estado !== 'atendida'" class="card-actions">
-          <button class="btn-accept" (click)="aceptar($event, item.id)">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          <button class="btn-accept" [disabled]="procesandoId === item.id" (click)="aceptar($event, item.id)">
+            <svg *ngIf="procesandoId !== item.id" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            Aceptar / Exhibición Lista
+            <span>{{ procesandoId === item.id ? 'Aceptando...' : 'Aceptar / Exhibición Lista' }}</span>
           </button>
         </div>
       </div>

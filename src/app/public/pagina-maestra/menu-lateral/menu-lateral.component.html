@@ -43,7 +43,20 @@
   </div>
 
   <!-- ── Navegación principal ── -->
-  <li class="snav-section-label" *ngIf="tienePermiso('11') || tienePermiso('14')">General</li>
+  <li class="snav-section-label" *ngIf="tienePermiso('22') || tienePermiso('11') || tienePermiso('14')">General</li>
+
+  <li *ngIf="tienePermiso('22')">
+    <a class="snav-link" routerLink="/reportes/dashboard" (click)="cerrarMenu()">
+      <svg class="snav-link-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="7" height="9" x="3" y="3" rx="1"/>
+        <rect width="7" height="5" x="14" y="3" rx="1"/>
+        <rect width="7" height="9" x="14" y="12" rx="1"/>
+        <rect width="7" height="5" x="3" y="16" rx="1"/>
+      </svg>
+      <span>Dashboard</span>
+    </a>
+  </li>
 
   <li *ngIf="tienePermiso('11')">
     <a class="snav-link" routerLink="/parametros/informacion" (click)="cerrarMenu()">

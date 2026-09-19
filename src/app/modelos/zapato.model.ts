@@ -5,9 +5,11 @@ export class ZapatoModel{
     Talla?: number;
     Color?: string;
     Referencia?: string;
+    PrecioCosto?: number;
     PrecioVentaMax?: number;
     PrecioVentaMin?: number;
     Cantidad?: number;
     proveedorId?: number;
     Genero?: string;
+    Fecha?: string;
 }

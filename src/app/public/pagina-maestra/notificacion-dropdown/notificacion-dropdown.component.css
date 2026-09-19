@@ -258,9 +258,13 @@
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+.card-right-arrow.rotated {
+  transform: rotate(180deg) !important;
+  opacity: 1 !important;
+}
+
 .notification-card:hover .card-right-arrow {
   opacity: 1;
-  transform: translateX(2px);
 }
 
 /* EXPANDED CARD VIEW */

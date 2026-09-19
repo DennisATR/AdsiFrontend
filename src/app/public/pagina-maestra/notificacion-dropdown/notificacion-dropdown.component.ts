@@ -15,6 +15,7 @@ export class NotificacionDropdownComponent implements OnInit, OnChanges {
   notificacionesHistorial: NotificacionModel[] = [];
   modoHistorial: boolean = false;
   cargandoHistorial: boolean = false;
+  procesandoId: number | null = null;
 
   constructor(private notificacionService: NotificacionService) {}
 
@@ -30,12 +31,22 @@ export class NotificacionDropdownComponent implements OnInit, OnChanges {
     return this.modoHistorial ? this.notificacionesHistorial : this.notificaciones;
   }
 
-  toggleCard(id?: number) {
+  toggleCard(event?: Event, id?: number) {
+    if (event) {
+      event.stopPropagation();
+    }
     if (!id) return;
+
     if (this.notificacionExpandidaId === id) {
       this.notificacionExpandidaId = null;
     } else {
       this.notificacionExpandidaId = id;
+      if (event && event.currentTarget) {
+        const el = event.currentTarget as HTMLElement;
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 60);
+      }
     }
   }
 
@@ -45,10 +56,15 @@ export class NotificacionDropdownComponent implements OnInit, OnChanges {
   }
 
   aceptar(event: Event, id?: number) {
-    event.stopPropagation();
-    if (!id) return;
+    if (event) {
+      event.stopPropagation();
+    }
+    if (!id || this.procesandoId === id) return;
+
+    this.procesandoId = id;
     this.notificacionService.aceptarNotificacion(id).subscribe({
       next: () => {
+        this.procesandoId = null;
         if (this.notificacionExpandidaId === id) {
           this.notificacionExpandidaId = null;
         }
@@ -57,6 +73,7 @@ export class NotificacionDropdownComponent implements OnInit, OnChanges {
         }
       },
       error: (err) => {
+        this.procesandoId = null;
         console.error('Error al aceptar notificación:', err);
       }
     });

@@ -1,0 +1,777 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   DASHBOARD — Estilos armónicos con la aplicación (Tema Claro)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.card-container {
+  max-width: 1400px;
+  margin: 1rem auto;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #334155;
+}
+
+/* ─── Encabezado Principal ───────────────────────────────────────────────── */
+.dash-header-bar {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(30, 41, 59, 0.15);
+}
+
+.dash-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dash-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.dash-title svg {
+  color: #60a5fa;
+}
+
+.dash-subtitle {
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 100px;
+  padding: 4px 14px;
+  font-weight: 500;
+}
+
+/* ─── Panel de Filtros por Fecha ────────────────────────────────────────── */
+.filter-section {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-presets {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-right: 4px;
+}
+
+.btn-filtro {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-filtro:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #1e293b;
+}
+
+.btn-filtro.activo {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  border-color: #1d4ed8;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+/* Controls de Fecha */
+.custom-date-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.date-input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.date-input-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.date-input {
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.btn-filtrar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+}
+
+.btn-filtrar:hover {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ─── Error y Spinner ────────────────────────────────────────────────────── */
+.dash-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.dash-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Grid de KPIs ───────────────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+}
+
+.kpi-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-card.ventas         .kpi-icon { background: #eff6ff; color: #2563eb; }
+.kpi-card.ganancia-bruta .kpi-icon { background: #ecfdf5; color: #059669; }
+.kpi-card.egresos        .kpi-icon { background: #fef2f2; color: #dc2626; }
+.kpi-card.ganancia-neta  .kpi-icon { background: #f0f9ff; color: #0284c7; }
+.kpi-card.ticket         .kpi-icon { background: #fffbeb; color: #d97706; }
+.kpi-card.ganancia-neta.negativo .kpi-icon { background: #fef2f2; color: #dc2626; }
+
+.kpi-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.kpi-value.negativo { color: #dc2626; }
+
+.kpi-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.kpi-badge {
+  display: inline-block;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 100px;
+  padding: 1px 8px;
+  font-weight: 600;
+}
+
+.kpi-badge:not(.positivo) {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ─── Tarjetas de gráficos ───────────────────────────────────────────────── */
+.graficos-principales,
+.graficos-secundarios {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.graficos-principales {
+  grid-template-columns: 1fr;
+}
+
+.graficos-secundarios {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.chart-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+  margin-bottom: 24px;
+}
+
+.chart-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+}
+
+.chart-card.wide {
+  grid-column: 1 / -1;
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.chart-card-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* Selector de Año */
+.anio-selector { display: flex; gap: 6px; }
+
+.btn-anio {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #64748b;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: inherit;
+}
+
+.btn-anio:hover  { color: #1e293b; border-color: #94a3b8; }
+.btn-anio.activo { background: #2563eb; border-color: #1d4ed8; color: #ffffff; font-weight: 600; }
+
+/* ─── Canvas wrappers ────────────────────────────────────────────────────── */
+.chart-canvas-wrap {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+.chart-canvas-wrap.chart-canvas-sm { height: 220px; }
+.chart-canvas-wrap.chart-canvas-lg { height: 380px; }
+
+/* ─── Desplegable de Categoría (Estilo de Formulario del Proyecto) ─────── */
+.categoria-dropdown-wrap {
+  position: relative;
+  margin: 6px 0 0 0;
+  z-index: 5;
+}
+
+.categoria-dropdown-wrap .input {
+  position: relative;
+  margin-bottom: 0;
+  min-width: 230px;
+}
+
+.categoria-dropdown-wrap .input select.browser-default {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: 42px !important;
+  padding: 0.6rem 0.85rem !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 8px !important;
+  font-size: 0.875rem !important;
+  color: #374151 !important;
+  background-color: #ffffff !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+.categoria-dropdown-wrap .input select.browser-default:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.categoria-dropdown-wrap .input select.browser-default:hover {
+  border-color: #9ca3af !important;
+}
+
+.categoria-dropdown-wrap .input label {
+  position: absolute !important;
+  top: -9px !important;
+  left: 10px !important;
+  font-size: 0.75rem !important;
+  color: #374151 !important;
+  font-weight: 600 !important;
+  background: #ffffff !important;
+  padding: 0 4px !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Flex layout para Métodos de Pago en tarjeta ancha */
+.metodos-pago-flex {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.chart-dona-wrap {
+  flex: 0 0 260px;
+}
+
+.flex-fill {
+  flex: 1;
+  min-width: 260px;
+}
+
+/* ─── Lista Desglosada Métodos de Pago ───────────────────────────────────── */
+.metodos-list-container {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metodo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.82rem;
+}
+
+.metodo-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metodo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.metodo-nombre {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.metodo-valores {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metodo-monto {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.metodo-badge {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+/* ─── Sección de Análisis de Gastos por Concepto ───────────────────────── */
+.gastos-analisis-section {
+  margin-bottom: 24px;
+}
+
+.gastos-resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.gasto-kpi-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.gasto-kpi-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.04em;
+}
+
+.gasto-kpi-valor {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.gasto-kpi-valor.destique {
+  color: #2563eb;
+}
+
+/* Barras de distribución por concepto */
+.conceptos-barras-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.concepto-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.concepto-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.concepto-tit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.concepto-nombre {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.concepto-cant {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.concepto-monto-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.concepto-monto {
+  font-weight: 700;
+}
+
+.concepto-pct {
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  padding: 1px 7px;
+  border-radius: 100px;
+}
+
+.progress-bar-bg {
+  height: 8px;
+  width: 100%;
+  background-color: #f1f5f9;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+
+/* ─── Tabla Desglose Egresos ─────────────────────────────────────────────── */
+.desglose-card { overflow: auto; }
+
+.desglose-resumen {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.desglose-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #475569;
+  padding: 6px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.desglose-row.total-final {
+  border-bottom: none;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 2px solid #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.desglose-seccion {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #475569;
+  margin: 12px 0 8px;
+}
+
+.desglose-tabla-wrap {
+  margin-bottom: 18px;
+  overflow-x: auto;
+}
+
+.desglose-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.desglose-tabla th {
+  background-color: #f1f5f9;
+  text-align: left;
+  color: #334155;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 2px solid #cbd5e1;
+  white-space: nowrap;
+}
+
+.desglose-tabla td {
+  padding: 8px 10px;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.desglose-tabla tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Colores Utilitarios */
+.rojo  { color: #dc2626 !important; }
+.naranja { color: #d97706 !important; }
+.verde { color: #059669 !important; }
+.bold  { font-weight: 700; }
+.negativo { color: #dc2626; }
+
+.metodo-badge.naranja-bg {
+  background-color: #fef3c7 !important;
+  color: #b45309 !important;
+}
+
+.metodo-badge.rojo-bg {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+.metodo-badge.verde-bg {
+  background-color: #d1fae5 !important;
+  color: #047857 !important;
+}
+
+.progress-bar-fill.naranja {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.egreso-subbadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 4px;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.egreso-subbadge.rojo {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.egreso-subbadge.naranja {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.egreso-subbadge.verde {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.egreso-subbadge.neutral {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .card-container { padding: 1rem; margin: 0.5rem; }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .custom-date-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-filtrar {
+    justify-content: center;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .graficos-secundarios {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+}
+
+
