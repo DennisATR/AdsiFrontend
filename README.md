@@ -4,7 +4,7 @@ Frontend web para la administración comercial, control de inventario y punto de
 
 ---
 
-## 📌 Problema que Resuelve
+## Problema que Resuelve
 
 En el comercio minorista de calzado y retail, la administración tradicional suele sufrir de:
 - **Descontrol en inventario**: Dificultad para rastrear existencias por atributos específicos (referencia, talla, color, categoría y costo).
@@ -15,7 +15,7 @@ En el comercio minorista de calzado y retail, la administración tradicional sue
 
 ---
 
-## 🚀 Funcionalidades Principales
+## Funcionalidades Principales
 
 ### 1. Punto de Venta (POS) y Facturación
 - Generación rápida de facturas para ventas de **contado** y a **crédito**.
@@ -58,7 +58,7 @@ En el comercio minorista de calzado y retail, la administración tradicional sue
 
 ---
 
-## 🛠️ Tecnologías Usadas
+## Tecnologías Usadas
 
 - **Framework Principal**: [Angular 18](https://angular.dev/) (Single Page Application).
 - **Lenguaje**: [TypeScript 5.5](https://www.typescriptlang.org/).
@@ -76,7 +76,7 @@ En el comercio minorista de calzado y retail, la administración tradicional sue
 
 ---
 
-## 💻 Puesta en Marcha
+## Puesta en Marcha
 
 ### Prerrequisitos
 - [Node.js](https://nodejs.org/) (versión 18 o 20 LTS recomendada)
